@@ -1,12 +1,12 @@
-#What is WP-GraphQL Composer?
+# What is WP-GraphQL Composer?
 WP-GraphQL Composer is a library of [React]() components that does most of the the legwork for creating a [React-Apollo]() Wordpress theme.
 
 The components within this library are make up of reusable [Higher-Order-Components]() that are wrapped around a [React Stateless Component]() using Andrew Clark's Recompose library. This library was created to be an extension of the [WPGraphQL]() plugin, and component and their queries won't work without a [GraphQL]() server serving a Schema not identical to the created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed to my knowledge
 
-##What Does It Offer?
+## What Does It Offer?
 An easy solution to quickly creating a React app served by [WordPress]()
 
-##Getting Started
+## Getting Started
 Run the command npm install wp-graphql-composer in a your React app directory.
 Import `HttpLink` from `apollo-link-http` and `WPProvider` from `wp-graphql-composer`
 And wrap you root component in a WPProvider component like so.
@@ -31,7 +31,7 @@ And wrap you root component in a WPProvider component like so.
   );
 ```
 
-##Usage
+## Usage
 Simply import a component and pass the required props.
 
 ```
@@ -51,7 +51,7 @@ Simply import a component and pass the required props.
   );
 ```
 
-##Modifying Pre-Composed Components
+## Modifying Pre-Composed Components
 1. To create a new template for say the `Menu` component, import `menu`, `menuItem`, and `subItem` view components from `wp-graphql-composer`.
 `import { menu, menuItem, subItem } from 'wp-graphql-composer';`
 2. Next create new components to be the new view layers for the menu, menu item, and sub menu components. You don't have to change all three for but I am just to show how its done. I'm also using the `map` and `isEmpty` functions from the `lodash` package to help map the items.
@@ -102,4 +102,5 @@ Simply import a component and pass the required props.
 ```
 You can learn more about the [Menu]() component and the rest of the library in the [Components]() and [Documentation]() sections.
 
-##Composing New Components
+## Composing New Components
+Coming soon...
