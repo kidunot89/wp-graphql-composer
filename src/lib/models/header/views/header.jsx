@@ -2,11 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Attachment } from 'lib/models';
 
-const header = ({ url, title, description, logo, children }) => {
+const header = ({ url, title, description, logo, children, ...rest }) => {
   return (
-    <div className="app-header">
+    <div className="app-header" {...rest}>
       <div id="masthead" className="site-branding">
-        <Attachment mediaItemId={logo} className="site-logo" alt="site logo" fallback />
+        <Attachment
+          mediaItemId={logo}
+          className="site-logo"
+          alt="site logo"
+          fallback
+          style={{
+            width: '256px',
+            padding: '2em',
+            
+          }}
+        />
         <a href={url} data-testid="home-link"><h1 className="site-title">{title}</h1></a>
         <h1 className="site-description"><small>{description}</small></h1>
       </div>
