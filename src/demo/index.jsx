@@ -2,11 +2,12 @@ import React from 'react';
 import { NavLink, Switch, Route } from 'react-router-dom';
 import Docs from './docs';
 import Examples from './examples'
-import Library from './components';
+import Library from './lib';
 import Intro from './intro';
 import PageNav from './page-nav';
 import './style/normalize.css';
-import './style/skeleton.css'
+import './style/typography.css';
+import './style/skeleton.css';
 import './style/main.css';
 
 const Demo = () => (

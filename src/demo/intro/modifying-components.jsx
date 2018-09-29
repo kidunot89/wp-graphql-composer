@@ -92,12 +92,12 @@ const modComponents = ({ provider: WPProvider, ...rest }) => {
           </pre>
         </li>
         <li>Last lastly use the <code>compose</code> function on each of the imported components to
-         compose a new <code>CustomMenu</code> Component.
-         <LiveProvider scope={{ _, Menu, menu, menuItem, subMenu, WPProvider }} code={code} noInline={true}>
-          <LiveEditor />
-          <LiveError />
-          <LivePreview />
-        </LiveProvider>
+          compose a new <code>CustomMenu</code> Component.
+          <LiveProvider scope={{ _, Menu, menu, menuItem, subMenu, WPProvider }} code={code} noInline={true}>
+            <LiveEditor />
+            <LiveError />
+            <LivePreview />
+          </LiveProvider>
         </li>
       </ol>
       <p>You can learn more about the <Link to="/components#menu">Menu</Link> component and the rest of the 
