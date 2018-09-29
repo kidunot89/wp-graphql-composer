@@ -1,12 +1,21 @@
 import React from 'react';
 import { render } from "react-dom";
-import { TextInput } from "./lib";
+import { BrowserRouter as Router } from 'react-router-dom';
+import { HttpLink } from 'apollo-link-http';
+import { WPProvider } from 'lib';
+import Demo from 'demo'
 
-const App = () => (
-  <div style={{ width: 640, margin: "15px auto" }}>
-    <h1>Hello React</h1>
-    <TextInput label="Email Address" placeholder="name@example.com" />
-  </div>
+// Create HttpLink
+const httpLink = new HttpLink({
+  uri: '/graphql',
+  credentials: 'same-origin',
+});
+
+render(
+  <WPProvider link={httpLink}>
+    <Router>
+      <Demo />
+    </Router>
+  </WPProvider>,
+  document.getElementById("root")
 );
-
-render(<App />, document.getElementById("root"));
