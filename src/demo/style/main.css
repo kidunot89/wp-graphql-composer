@@ -6,10 +6,6 @@ body {
   min-height: 100%;
 }
 
-/**
- *  Font 
- **/
-
 .container.app {
   max-width: 1200px;
 }
@@ -71,10 +67,61 @@ body {
   color: #fff;
 }
 
+/**
+ * PAGE NAVIGATION
+ **/
+.page-navigation {
+  width: 100%;
+  margin: 0.3em 0.4em 0.6em;
+}
+
+.page-navigation ul {
+  position: relative;
+  margin: 0 auto;
+  list-style: none;
+}
+
+.page-navigation ul::before {
+  content: attr(data-heading)": ";
+  margin-right: 0.7em;
+
+  font-size: 1.3em;
+  font-weight: 600;
+}
+
+.page-navigation ul li {
+  display: inline;
+}
+
+.page-navigation ul li a {
+  margin: 0 0.4em;
+  padding: 0.5em 0.5em;
+  border-radius: 0.4em;
+  
+  font-size: 1.1em;
+  text-decoration: none;
+}
+
 .main {
   padding: 0.5em 0.5em;
 }
 
 .main section {
   margin: 1em 0 2em;
+}
+
+.main section.live-section .react-live{
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: stretch;
+  align-items: center;
+}
+
+.main section.live-section:nth-of-type(odd) .react-live {
+  flex-direction: row-reverse;
+}
+
+.main section.live-section .react-live .block{
+  flex-basis: 50%;
+  border-radius: 1.3em;
 }
