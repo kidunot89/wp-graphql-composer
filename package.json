@@ -60,5 +60,6 @@
       "target": "http://wpgraphql.example:8000",
       "ws": true
     }
-  }
+  },
+  "homepage": "https://api.axistaylor.com/composer"
 }
