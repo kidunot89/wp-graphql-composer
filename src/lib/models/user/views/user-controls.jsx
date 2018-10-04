@@ -7,10 +7,7 @@ const userControls = ({ className, userId, nicename, firstName, logout, ...rest 
       <h3>Welcome back, {' '} <strong>{nicename ? nicename : firstName}</strong>!</h3>
     </div>
     <div className="logout">
-      <button
-        className="logout-button"
-        onClick={logout}
-      >Logout</button>
+      <button onClick={logout}>Logout</button>
     </div>
   </div>
 );

@@ -2,7 +2,7 @@ import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { fas } from '@fortawesome/free-solid-svg-icons'
-import { render, cleanup, waitForElement } from 'react-testing-library';
+import { render, cleanup } from 'react-testing-library';
 
 import { Loading } from 'lib';
 

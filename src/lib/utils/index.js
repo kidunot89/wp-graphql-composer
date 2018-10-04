@@ -1,4 +1,4 @@
-import { mapProps, compose } from 'recompose';
+import { utilComposer } from 'lib/composers';
 
 import loading from './views/loading';
 import progressMapper from './controllers/process-loading';
@@ -6,18 +6,27 @@ import progressMapper from './controllers/process-loading';
 import error from './views/error';
 import errorMapper from './controllers/process-errors';
 
-loading.compose = ( template = loading, mapper = progressMapper ) => 
-  compose(
-    mapProps(mapper)
-  )(template);
+/**
+ * Creates composer for loading component
+ */
+loading.compose = utilComposer({ defaultView: loading, defaultMapper: progressMapper }); 
 
-const Loading = loading.compose();
+/**
+ * Composes default Loading component
+ */
+const Loading = loading.compose({});
 
-error.compose = ( template = error, mapper = errorMapper) => 
-  compose(
-    mapProps(mapper)
-  )(template);
+/**
+ * Creates composer for loading component
+ */
+error.compose = utilComposer({ defaultView: error, defaultMapper: errorMapper });
 
-const Error = error.compose();
+/**
+ * Composes default Error component
+ */
+const Error = error.compose({});
 
-export { Error, error, Loading, loading };
+/**
+ * Exports
+ */
+export { Error, error, errorMapper, Loading, loading, progressMapper };

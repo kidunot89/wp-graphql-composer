@@ -2,7 +2,7 @@ import React from 'react';
 import { render, cleanup, waitForElement } from 'react-testing-library';
 import { MockedProvider } from 'react-apollo/test-utils';
 
-import { HEADER_QUERY, Header, ATTACHMENT_QUERY } from 'lib';
+import { HEADER_QUERY, Header, header, ATTACHMENT_QUERY } from 'lib';
 
 afterEach(cleanup);
 
@@ -66,7 +66,7 @@ it(`renders a header component with a logo, title, and description loaded with m
   const title = await waitForElement(() => getByText('ChumBucket'));
   expect(title).toBeTruthy();
   expect(getByText('Eat here, dammit!!')).toBeTruthy();
-    expect(getByTestId('home-link')).toBeTruthy();
+  expect(getByTestId('home-link')).toBeTruthy();
 
   const image = await waitForElement(() => getByAltText(/site logo/));
   expect(image).toBeTruthy();
@@ -78,7 +78,7 @@ it(`renders a header component with a logo, title, and description loaded with m
     .toEqual('(max-width: 768px) 768px, (max-width: 1200px) 1024px');
 });
 
-if(`render a header component with a custom template`, async () => {
+it(`render a header component with a custom template`, async () => {
   const mocks = [{
     request: { query: HEADER_QUERY, },
     result: {
@@ -95,15 +95,17 @@ if(`render a header component with a custom template`, async () => {
     }
   }];
 
-  const NewHeader = header.compose(({title, description, url}) => (
+  const view = ({title, description, url}) => (
     <div>
       <h1 data-testid="header-title">{title}</h1>
       <h1><small data-testid="header-description">{description}</small></h1>
     </div>
-  ));
+  )
+
+  const NewHeader = header.compose({ view });
   
   const { getByTestId } = render(
-    <MockedProvider mocks={[]} addTypename={false}>
+    <MockedProvider mocks={mocks} addTypename={false}>
       <NewHeader />
     </MockedProvider>,
   );
@@ -112,7 +114,7 @@ if(`render a header component with a custom template`, async () => {
   expect(title).toBeTruthy();
   expect(title.innerHTML).toMatch(/ChumBucket/);
   
-  const description = getByTestId(/header-title/);
+  const description = getByTestId(/header-description/);
   expect(description).toBeTruthy();
   expect(description.innerHTML).toMatch(/Eat here, dammit!!/);
 });

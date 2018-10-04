@@ -33,14 +33,15 @@ export default () => (BaseComponent) => {
         return false;
       };
 
+      this.setState({ form: { username, password } });
       return true;
     }
 
     printErrors({ user, pass }) {
-      const formError = (user && pass) ? 'You must enter a username and password' : undefined;
+      const formError = undefined
       const userFieldError = (user) ? 'You must enter a username': undefined;
       const passFieldError = (pass) ? 'You must enter a password': undefined;
-      return Object.assign({ formError, userFieldError, passFieldError }, this.state.form);
+      return Object.assign(this.state.form, { formError, userFieldError, passFieldError });
     }
 
     processResults(payload) {
@@ -61,8 +62,6 @@ export default () => (BaseComponent) => {
       event.preventDefault();
       const { mutate } = this.props;
       const { password, username } = this.state.form;
-
-      
 
       // Validate
       if(!this.valid()) return;

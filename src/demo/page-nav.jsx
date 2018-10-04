@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, NavLink } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 const pageNav = () => (
   <Switch>
@@ -19,8 +19,8 @@ const pageNav = () => (
       </ul>
     )} />
     <Route path="/docs" render={() => null}/>
-    <Route path="/" render={() => (
-      <ul data-header="Sections">
+    <Route exact path="/" render={() => (
+      <ul data-heading="Sections">
         <li><a href="#what">What is WP-GraphQL Composer?</a></li>
         <li><a href="#offer">What Does It Offer?</a></li>
         <li><a href="#getting-started">Getting Started</a></li>

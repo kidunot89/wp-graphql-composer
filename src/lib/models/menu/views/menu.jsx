@@ -2,27 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { isEmpty, map } from 'lodash';
 
-const menu = ({ slug, items, MenuItem, ...rest }) => {
-  return (
-    <div id={`menu-${slug}`} {...rest}>
-      <ul>
-        { !isEmpty(items) &&
-          map(items, ({ id, ...r }) => (<li key={`menu-item-${id}`}><MenuItem id={id} {...r} /></li>))
-        }
-      </ul>
-    </div>
-  )
-};
+const menu = ({ className, slug, items, itemView: MenuItem, ...rest }) => (
+  <div id={`menu-${slug}`} {...rest} className={`menu ${className}`}>
+    <ul>
+      { !isEmpty(items) &&
+        map(items, ({ id, ...r }) => (<li className="menu-item" key={`menu-item-${id}`}><MenuItem id={id} {...r} /></li>))
+      }
+    </ul>
+  </div>
+);
 
 menu.propTypes = {
   slug: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.shape({})),
-  MenuItem: PropTypes.func,
+  itemView: PropTypes.func,
 }
 
 menu.defaultProps = {
   items: [],
-  MenuItem: () => null,
+  itemView: () => null,
 };
 
 export default menu;

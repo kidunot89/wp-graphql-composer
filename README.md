@@ -60,9 +60,6 @@ Simply import a component and pass the required props.
     <ol {...rest}>
       {_.map(items, ({ id, ...rest }) => (<li key={id}><Item id={id} {...rest} /></li>))}
     </ol>
-  ),
-  ({ url, label, ...rest }) => (
-    <a href={url} {...rest}>{label}</a>
   );
 
   const customMenuItem = ({ url, label, items, SubMenu, ...rest }) => (
@@ -80,9 +77,9 @@ Simply import a component and pass the required props.
 ```
 3. Last lastly use the `compose` function on each of the imported components to compose a new `CustomMenu` Component.
 ```
-  const CustomSubMenu = subMenu.compose(customMenu);
-  const CustomMenuItem = menuItem.compose(customMenuItem, CustomMenu);
-  const CustomMenu = menu.compose(customMenu, CustomMenuItem);
+  const CustomSubMenu = subMenu.compose({ view: customMenu });
+  const CustomMenuItem = menuItem.compose({ view: customMenuItem, subMenuView: CustomMenu });
+  const CustomMenu = menu.compose({ view: customMenu, itemView: CustomMenuItem });
 
   const App = () => (
     <div className="app">
@@ -102,5 +99,33 @@ Simply import a component and pass the required props.
 ```
 You can learn more about the [Menu]() component and the rest of the library in the [Components]() and [Documentation]() sections.
 
-## Composing New Components
-Coming soon...
+## Creating New Composers
+You can create a completely new composer function using the helper composer functions in `lib/composers`. There are two primary functions made `baseComposer` and `queryComposer`. They are similar but their uses are little different.
+
+`baseComposer` - composers created from the function create a composer wrapped in an loading component, errorComponent, and propMapper. Example below.
+
+```
+const composer = baseComposer({
+  view: ViewComponent, // default view layer component
+  loading: { view: LoadingViewComponent, cond: props => !!props.loading }, // default properties passed to loading handler 
+  error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' }, // default properties passed to error handler,
+  extraHocs: [], // default HOCs wrapped around the mapper and view layer component
+  mapper: props => props, // default mapper function
+})
+
+const ComposedComponent = composer({ view, loading, error, extraHocs, mapper }) // all default values can be overwritten in composed instances
+```
+
+`queryComposer` - similar to `baseComposer` but it includes conditional GraphQL HOCs each can have a `cond` function prop and `mapper`.
+```
+const composer = queryComposer({
+  view: ViewComponent, // default view layer component
+  queries: [{ query: GRAPHQL_QUERY, config: { options: {...}, ... }, mapper }] // default query properties
+  loading: { view: LoadingViewComponent, cond: props => !!props.loading }, // default properties passed to loading handler 
+  error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' }, // default properties passed to error handler,
+  extraHocs: [], // default HOCs wrapped around the mapper and view layer component
+  sharedMapper: props => props, // default mapper function
+})
+
+const ComposedComponent = composer({ view, queries, loading, error, extraHocs, mapper }) // all default values can be overwritten in composed instances
+```

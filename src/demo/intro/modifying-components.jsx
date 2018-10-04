@@ -30,9 +30,9 @@ const code = `
     </div>
   );
 
-  const CustomSubMenu = subMenu.compose(customMenu);
-  const CustomMenuItem = menuItem.compose(customMenuItem, CustomMenu);
-  const CustomMenu = menu.compose(customMenu, CustomMenuItem);
+  const CustomSubMenu = subMenu.compose({ view: customMenu });
+  const CustomMenuItem = menuItem.compose({ view: customMenuItem, subMenuView: CustomMenu });
+  const CustomMenu = menu.compose({ view: customMenu, itemView: CustomMenuItem });
 
   const App = () => (
     <div className="app">
@@ -70,9 +70,6 @@ const modComponents = ({ provider: WPProvider, ...rest }) => {
     <ol {...rest}>
       {_.map(items, ({ id, ...rest }) => (<li key={id}><Item id={id} {...rest} /></li>))}
     </ol>
-  ),
-  ({ url, label, ...rest }) => (
-    <a href={url} {...rest}>{label}</a>
   );
 
   const customMenuItem = ({ url, label, items, SubMenu, ...rest }) => (

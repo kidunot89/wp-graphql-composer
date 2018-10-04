@@ -9,6 +9,7 @@ import './style/normalize.css';
 import './style/typography.css';
 import './style/skeleton.css';
 import './style/main.css';
+import 'lib/style.css';
 
 const Demo = () => (
   <div className="container u-full-width app">
@@ -19,7 +20,7 @@ const Demo = () => (
       </div>
       <nav className="seven columns main-navigation">
         <ul>
-          <li><NavLink to="/">Getting Started</NavLink></li>
+          <li><NavLink exact to="/">Getting Started</NavLink></li>
           <li><NavLink to="/lib">Components</NavLink></li>
           <li><NavLink to="/examples">Examples</NavLink></li>
           <li><NavLink to="/docs">Documentation</NavLink></li>
@@ -29,10 +30,10 @@ const Demo = () => (
     <aside className="row page-navigation"><PageNav /></aside>
     <main className="row main">
       <Switch>
-        <Route exact path="/lib(.*)" component={Library} />
-        <Route exact path="/examples(.*)" component={Examples} />
-        <Route exact path="/docs(.*)" component={Docs} />
         <Route exact path="/" component={Intro} />
+        <Route path="/lib(.*)" component={Library} />
+        <Route path="/examples(.*)" component={Examples} />
+        <Route path="/docs(.*)" component={Docs} />
       </Switch>
     </main>
   </div>

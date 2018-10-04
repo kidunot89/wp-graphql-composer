@@ -146,19 +146,19 @@ it(`renders successful login action`, async () => {
 });
 
 it(`renders successful login with custom templates`, async () => {
-  const customUserControls = userControls.compose(
-    ({ userId, nicename, firstName, logout, ...rest }) => (
-    <div {...rest} data-testid="user-controls">
-      <button
-        data-testid="logout-button"
-        onClick={() => logout().then(c => c.resetStore())}
-      >Logout</button>
-    </div>
+  const customUserControls = userControls.compose({
+    view: ({ userId, nicename, firstName, logout, ...rest }) => (
+      <div {...rest} data-testid="user-controls">
+        <button
+          data-testid="logout-button"
+          onClick={() => logout().then(c => c.resetStore())}
+        >Logout</button>
+      </div>
     )
-  );
+  });
 
-  const CustomLogin = login.compose(
-    ({
+  const CustomLogin = login.compose({
+    view: ({
       username, password, userFieldError, passFieldError,
       formError, onChange, onSubmit, reset,
       ...rest,
@@ -181,8 +181,8 @@ it(`renders successful login with custom templates`, async () => {
         <button data-testid="login-button" type="submit">Log In</button>
       </form>
     ),
-    customUserControls,
-  );
+    userControlsView: customUserControls,
+  });
 
   const mocks = [
     {
