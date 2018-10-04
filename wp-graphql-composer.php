@@ -28,9 +28,8 @@
      * Adds actions and filters in one place
      */
     private function actions_and_filters() {
-      add_action( 'init', array( &$this, 'composer_init' ) );
       add_action( 'admin_init', array( &$this, 'admin_init' ) );
-      
+
       // Add GraphQL Secret
       add_filter( 'graphql_jwt_auth_secret_key', function() {
         return '2Q|-Sr}}O,2_DpnW?sw4w3)UMMK g8!:)l9F$K&vbAEO{INY&K@<zW8_ (+rLk.@';
