@@ -9,7 +9,7 @@ const login = ({
   <form className={`login-form${className ? ' ' + className : ''} `} onSubmit={onSubmit} {...rest}>
     { formError && <legend className="login-form-info">{formError}</legend> }
     {/* Login */}
-    <div className={`login-username${userFieldError ? ' error' : ''}`}>
+    <div className={`username-field${userFieldError ? ' error' : ''}`}>
       <input
         type="text"
         name="username"
@@ -17,10 +17,10 @@ const login = ({
         onChange={onChange}
         placeholder="Enter Username"
       />
-      { userFieldError && <small className="login-username-info">{userFieldError}</small> }
+      { userFieldError && <small className="field-info">{userFieldError}</small> }
     </div>
     {/* Password */}
-    <div className={`login-password${passFieldError ? ' error' : ''}`}>
+    <div className={`password-field${passFieldError ? ' error' : ''}`}>
       <input
         type="password"
         name="password"
@@ -28,9 +28,9 @@ const login = ({
         onChange={onChange}
         placeholder="Enter Password"
       />
-      { passFieldError && <small className="login-password-info">{passFieldError}</small> }
+      { passFieldError && <small className="field-info">{passFieldError}</small> }
     </div>
-    <button type="submit">Sign In</button>
+    <button className="login-submit" type="submit">Sign In</button>
   </form>
 );
 

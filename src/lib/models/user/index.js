@@ -1,58 +1,50 @@
 import { get } from 'lodash';
 import {
-  branch, compose,  mapProps, withHandlers,
-  renderComponent
+  branch, compose,  mapProps, renderComponent,
 } from 'recompose';
 import { graphql, withApollo } from 'react-apollo';
 
-import { whileLoading, forError, Loading, Error } from 'lib';
+import { whileLoading, forError, queryComposer } from 'lib/composers';
+import { Loading, Error } from 'lib/utils';
 import login from './views/login';
 import { loginFormHandler, userStatusHandler } from './controllers';
 import userControls from './views/user-controls';
 import { VIEWER_QUERY, LOGIN_MUTATION } from './query';
 
-/**
- * Composes user controls component
- * 
- * @param {React.Component} template - view layer of user controls
- * @param {React.Component} error - fallback component for handling errors
- * @param {React.Component} loading fallback component for handling loading state 
- */
-userControls.compose = (template = userControls, error = Error, loading = Loading) =>
-  compose(
-    graphql(VIEWER_QUERY),
-    whileLoading(loading),
-    forError(error),
-    mapProps(({ loggedIn, login, data, ...rest }) => {
-      const userId = get(data, 'viewer.userId');
-      const nicename = get(data, 'viewer.nicename');
-      const firstName = get(data, 'viewer.firstName');
+userControls.compose = queryComposer({
+  view: userControls,
+  queries:[{ query: VIEWER_QUERY }],
+  whileLoading: { view: Loading },
+  forError: { view: Error },
+  sharedMapper: ({ loggedIn, login, data, ...rest }) => {
+    const userId = get(data, 'viewer.userId');
+    const nicename = get(data, 'viewer.nicename');
+    const firstName = get(data, 'viewer.firstName');
 
-      return { userId, nicename, firstName, ...rest };
-    }),
-  )(template);
+    return { userId, nicename, firstName, ...rest };
+  },
+});
 
-const UserControls = userControls.compose();
+const UserControls = userControls.compose({});
 
-/**
- * Composes login component
- * 
- * @param {React.Component} template - view layer of login
- * @param {React.Component} userControlsTemplate - callback component for handling successful logins 
- */
-login.compose = (template = login, userControlsTemplate = userControls.compose(), error = Error) => 
+login.compose = ({
+  view = login,
+  userControlsView = UserControls,
+  forError: error = { view: Error },
+  loginCond = props => get(props, 'loggedIn'),
+}) => 
   compose(
     forError(error),
     withApollo,
     userStatusHandler(),
     branch(
-      props => get(props, 'loggedIn'),
-      renderComponent(userControlsTemplate),
+      props => loginCond(props),
+      renderComponent(userControlsView),
     ),
     graphql(LOGIN_MUTATION),
     loginFormHandler(),
-  )(template);
+  )(view);
 
-const Login = login.compose();
+const Login = login.compose({});
 
 export { Login, login, UserControls, userControls, VIEWER_QUERY, LOGIN_MUTATION };

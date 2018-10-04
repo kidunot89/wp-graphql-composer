@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
 
-const menuItem = ({ url, label, items, SubMenu, ...rest }) => (
+const menuItem = ({ url, label, items, subMenuView: SubMenu, ...rest }) => (
   <React.Fragment>
     <a href={url} {...rest}>{label}</a>
     {!isEmpty(items) && (<SubMenu className="sub-menu" items={items} />)}
@@ -13,14 +13,14 @@ menuItem.propTypes = {
   url: PropTypes.string,
   label: PropTypes.string,
   items: PropTypes.arrayOf(PropTypes.shape({})),
-  SubMenu: PropTypes.func,
+  subMenuView: PropTypes.func,
 };
 
 menuItem.defaultProps = {
   url: undefined,
   label: undefined,
   items: [],
-  SubMenu: () => null,
+  subMenuView: () => null,
 };
 
 export default menuItem;

@@ -4,6 +4,7 @@ import { graphql } from 'react-apollo';
 
 import { whileLoading, forError, Loading, Error } from 'lib';
 import main from './views/main';
+import processRoutes from './controllers/route_builder' 
 import { LOOP_QUERY } from './query';
 
 main.compose = (template = main, error = Error, loading = Loading) =>
@@ -12,8 +13,12 @@ main.compose = (template = main, error = Error, loading = Loading) =>
     whileLoading(loading),
     forError(error),
     mapProps(
-      ({ data, ...rest}) => rest,
+      ({ data, ...rest}) => {
+
+        return { ...rest };
+      },
     ),
+    processRoutes(),
   )(template);
 
 const Main = main.compose();

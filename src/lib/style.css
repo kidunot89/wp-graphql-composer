@@ -1,0 +1,115 @@
+/**
+ * HEADER COMPONENT
+ */
+.app-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 2em;
+}
+
+.app-header > * {
+  margin: 0em auto 1em;
+}
+
+.app-header .site-branding {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2em 4em 1.25em;
+}
+
+.app-header .site-branding .site-logo {
+  margin: 0 auto;
+}
+
+.app-header .site-branding .site-title, {
+  font-size: 2em;
+}
+
+.app-header .site-branding .site-description {
+  font-size: 1.9em;
+}
+
+/**
+ * MENU
+ */
+.menu {
+
+}
+
+.menu li.menu-item {
+
+}
+
+.menu li.menu-item a {
+
+}
+
+.menu li.menu-item a:hover {
+
+}
+
+.menu li.menu-item a:visited {
+
+}
+
+.menu li.menu-item a:active,
+.menu li.menu-item a.active {
+
+}
+
+/**
+ * LOGIN FORM
+ */
+form.login-form {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0 auto;
+}
+
+form.login-form > * {
+  margin-right: 1em;
+}
+
+.login-form .login-form-info {
+  margin-top: 0.45em;
+  color: tomato;
+  font-size: 1.2em
+}
+
+.login-form .username-field input,
+.login-form .password-field input {
+  border-radius: 5px;
+}
+
+.login-form .username-field.error input,
+.login-form .password-field.error input {
+  border-color: Tomato;
+}
+
+.login-form .username-field .field-info,
+.login-form .password-field .field-info {
+  display: block;
+  color: gray;
+}
+
+.login-form .login-submit {
+  border-radius: 5px;
+}
+
+/**
+ * USER CONTROLS
+ */
+.user-controls {
+
+}
+
+.user-controls .greeting {
+
+}
+
+.user-controls .logout {
+  
+}

@@ -46,9 +46,9 @@ it(`renders mock image at different sizes while maintaining the image's aspect r
   /**
    * Original Size and className
    */
-  const { container, getByAltText } = render(
+  const { getByAltText } = render(
     <MockedProvider mocks={mocks} addTypename={false}>
-      <Attachment mediaItemId={1} className="dummy-image" />
+      <Attachment mediaItemId={1} className="dummy-image" alt="dummy-image" />
     </MockedProvider>
   );
 
@@ -115,9 +115,9 @@ it(`renders nothing if fallback flag set and no src attribute is provided`, asyn
 });
 
 it(`renders fallback image with a custom attachment template component`, async () => {
-  const NewAttachment = attachment.compose(
-    props => <div data-testid="container"><img {...props} /></div>
-  );
+  const NewAttachment = attachment.compose({
+    view: props => <div data-testid="container"><img {...props} /></div>
+  });
   const mocks = [{
     request: {
       query: ATTACHMENT_QUERY,

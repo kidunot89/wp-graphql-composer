@@ -15,7 +15,7 @@ it(`renders 404 error message and icon`, () => {
   const icon = getByTestId(/error-icon/);
   expect(icon).toBeTruthy();
   expect(icon.innerHTML === '').toBeFalsy();
-  expect(getByText(/Sorry, we can't locate the page you\'re looking for\. Please, try again later\./)).toBeTruthy();
+  expect(getByText(/Sorry, we can't locate the content you're looking for\. Please, try again later\./)).toBeTruthy();
 });
 
 it(`renders 403 error message and custom icon`, () => {

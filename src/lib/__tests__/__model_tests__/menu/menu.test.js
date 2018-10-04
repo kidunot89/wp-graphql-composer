@@ -369,32 +369,54 @@ it(`renders a menu by location`, async () => {
 });
 
 it(`renders a menu with a custom template`, async () => {
-  const CustomSubMenu = subMenu.compose(
-    ({ Item, items, ...rest }) => (
-      <ol {...rest}>
+  const CustomSubMenu = subMenu.compose({
+    view: ({
+      itemView,
+      Item,
+      items,
+      ...rest
+    }) => (
+      <ol data-testid="custom-submenu" {...rest}>
         {_.map(items, ({ id, ...rest }) => (<li key={id}><Item id={id} {...rest} /></li>))}
       </ol>
     ),
-    ({ url, label, ...rest }) => (
+    Item: ({ url, label, ...rest }) => (
       <a href={url} {...rest}>{label}</a>
     ),
-  );
-  const CustomMenuItem = menuItem.compose(
-    ({ url, label, items, SubMenu, ...rest }) => (
+  });
+
+  const CustomMenuItem = menuItem.compose({
+    view: ({
+      url,
+      label,
+      items,
+      SubMenu,
+      subMenuView,
+      ...rest
+    }) => (
       <React.Fragment>
-        <a href={url} {...rest}>{label}</a>
+        <a data-testid="custom-menu-item" href={url} {...rest}>{label}</a>
         {!_.isEmpty(items) && (<SubMenu className="sub-menu" items={items} />)}
       </React.Fragment>
     ),
-    CustomSubMenu,
-  );
-  const CustomMenu = menu.compose(
-    ({ slug, className, 'data-testid': dataTestId, items, MenuItem }) => (
+    SubMenu: CustomSubMenu,
+  });
+
+  const CustomMenu = menu.compose({
+    view: ({
+      slug,
+      className,
+      'data-testid': dataTestId,
+      items,
+      MenuItem,
+      itemView
+    }) => (
       <div id={`menu-${slug}`} className={className} data-testid={dataTestId}>
         {_.map(items, ({ id, ...r}) => (<MenuItem key={id} id={id} {...r} />))}
       </div>
-    ), CustomMenuItem
-  );
+    ),
+    MenuItem: CustomMenuItem
+  });
 
 
   const mocks = [{
@@ -563,6 +585,11 @@ it(`renders a menu with a custom template`, async () => {
 
   const sub = testMenu.querySelector('.sub-menu');
   expect(sub).toBeTruthy();
+
+  const customMenuItems = getByTestId('custom-menu-item');
+  expect(customMenuItems).toBeTruthy();
+  const customSubMenus = getByTestId('custom-submenu');
+  expect(customSubMenus).toBeTruthy();
 
   const google = getByText(/Google/);
   expect(google).toBeTruthy();
