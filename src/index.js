@@ -7,7 +7,7 @@ import Demo from 'demo'
 
 // Create HttpLink
 const httpLink = new HttpLink({
-  uri: 'https://api.axistaylor.com/graphql',
+  uri: '/graphql',
   credentials: 'same-origin',
 });
 

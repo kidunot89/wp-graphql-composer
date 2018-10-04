@@ -56,11 +56,5 @@
     "react-transition-group": "^2.5.0",
     "recompose": "^0.30.0"
   },
-  "proxy": {
-    "/graphql": {
-      "target": "http://wpgraphql.example:8000",
-      "ws": true
-    }
-  },
   "homepage": "https://api.axistaylor.com/composer/"
 }
