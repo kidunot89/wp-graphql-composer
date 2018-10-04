@@ -7,13 +7,13 @@ import Demo from 'demo'
 
 // Create HttpLink
 const httpLink = new HttpLink({
-  uri: '/graphql',
+  uri: 'https://api.axistaylor.com/graphql',
   credentials: 'same-origin',
 });
 
 render(
   <WPProvider link={httpLink}>
-    <Router>
+    <Router basename="/composer">
       <Demo />
     </Router>
   </WPProvider>,
