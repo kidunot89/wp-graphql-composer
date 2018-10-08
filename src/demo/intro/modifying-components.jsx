@@ -11,20 +11,20 @@ import {
 import { Menu, menu, menuItem, subMenu } from 'lib';
 
 const code = `
-  const customSubMenu = ({ Item, items, ...rest }) => (
+  const customSubMenu = ({ itemView: Item, items, ...rest }) => (
     <ol {...rest}>
       {_.map(items, ({ id, ...rest }) => (<li key={id}><Item id={id} {...rest} /></li>))}
     </ol>
   );
 
-  const customMenuItem = ({ url, label, items, SubMenu, ...rest }) => (
+  const customMenuItem = ({ url, label, items, subMenuView: SubMenu, ...rest }) => (
     <React.Fragment>
       <a href={url} {...rest} style={{ padding: "1.4em 2em", color: "#595959" }}>{label}</a>
       {!_.isEmpty(items) && (<SubMenu className="sub-menu" items={items} />)}
     </React.Fragment>
   );
 
-  const customMenu = ({ slug, items, MenuItem, ...rest }) => (
+  const customMenu = ({ slug, items, itemView: MenuItem, ...rest }) => (
     <div className="custom-menu" {...rest}>
       {_.map(items, ({ id, ...r}) => (<MenuItem key={id} id={id} {...r} />))}
     </div>
@@ -55,7 +55,7 @@ const modComponents = ({ provider: WPProvider, ...rest }) => {
   return (
     <section {...rest}>
       <h3>Modifying Pre-Composed Components</h3>
-      <ol>
+      <ul>
         <li>To create a new template for say the <code>Menu</code> component, import <code>menu</code>, 
         <code>menuItem</code>, and <code>subItem</code> view components from <code>wp-graphql-composer</code>.
           <pre><code>{`import { menu, menuItem, subItem } from 'wp-graphql-composer';`}</code></pre>
@@ -96,7 +96,7 @@ const modComponents = ({ provider: WPProvider, ...rest }) => {
             <LivePreview />
           </LiveProvider>
         </li>
-      </ol>
+      </ul>
       <p>You can learn more about the <Link to="/components#menu">Menu</Link> component and the rest of the 
       library in the <Link to="/components">Components</Link> and <Link to="/docs">Documentation</Link> sections. </p>
     </section>

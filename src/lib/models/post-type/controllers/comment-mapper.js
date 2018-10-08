@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import v3 from 'uuid/v3';
-import { get, isEmpty, map, omit } from 'lodash';
+import { findIndex, get, omit } from 'lodash';
 import { setDisplayName, wrapDisplayName } from 'recompose';
+import { PostCommentsContext, postCommentsInitialState } from '../context';
 import {
   NEW_COMMENT_MUTATION,
   UPDATE_COMMENT_MUTATION,
@@ -9,6 +11,13 @@ import {
   POST_COMMENTS_QUERY,
 } from '../query';
 
+
+
+/**
+ * PostCommentStateManager - manages the state for a group of comment components
+ * 
+ * @param {React.Component} BaseComponent 
+ */
 export const postCommentsStateManager = (BaseComponent) => {
   const BaseFactory = React.createFactory(BaseComponent);
   
@@ -20,13 +29,7 @@ export const postCommentsStateManager = (BaseComponent) => {
       this.onDelete = this.onDelete.bind(this);
       this.onEdit = this.onEdit.bind(this);
       this.onUpdate = this.onUpdate.bind(this);
-      this.state = {
-        editing: {},
-        content: { new: '' },
-        errors: {}, 
-        author: '',
-        email: '',
-      };
+      this.state = postCommentsInitialState;
     }
 
     /**
@@ -34,76 +37,78 @@ export const postCommentsStateManager = (BaseComponent) => {
      * 
      * @returns {func} 
      */
-    onChange(id) {
+    onChange(key) {
       return ({ target: { name, value } }) => {
-        if (name === 'author' || name === 'email' ) {
-          this.setState({ [name]: value })
-        }
-        const { content } = this.state;
-        const key = id || 'new'
-        content[key] = value;
-        this.setState({ content });
+        const { workingState } = this.state;
+        workingState[key][name] = value;
+        this.setState({ workingState });
       }
     }
 
     /**
      * Returns event function for creating new post comment
      * 
+     * @param {string} - workingState key
      * @returns {func} 
      */
-    onCreate(event) {
-      const { client } = this.props;
-      const id = get(this.props, 'data.post.id');
-      const postId = get(this.props, 'data.post.postId');
-      const userId = get(this.props, 'data.viewer.userId');
+    onCreate(key) {
+      const { mutate } = this.props.client;
+      return () => {
+        const postId = get(this.props, 'data.post.postId');
+        const { userId } = this.props;
 
-      const { content: { new: content }, author, email } = this.state;
-      const now = new Date();
-      const date = `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`;
-      
-      if ( !userId && (!author || !email) ) {
-        const { errors } = this.state;
-        errors['new'] = 'Unregistered users must enter an author name and email to comment';
-        this.setState({ errors });
-        return;
-      }
+        const { workingState: { [key]: { author, authorEmail, authorUrl, content } } } = this.state;
+        const now = new Date();
+        const date = `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`;
+        
+        if ( !userId && (!author || !authorEmail) ) {
+          const { errors } = this.state;
+          errors['new'] = 'Unregistered users must enter an author name and email to comment';
+          this.setState({ errors });
+          return;
+        }
 
-      client.mutate({
-        mutation: NEW_COMMENT_MUTATION,
-        variables: {
-          agent: null,
-          approved: null,
-          author,
-          authorEmail: email,
-          authorIp: null,
-          authorUrl: null,
-          type: null,
-          userId: userId || null,
-          parent: null,
-          postId,
-          content,
-          date,
-          clientId: v3(`${author}${email}`, v3.URL),
-        },
-        refetchQueries: [
-          {
-            query: POST_COMMENTS_QUERY,
-            variables: { id }
+        mutate({
+          mutation: NEW_COMMENT_MUTATION,
+          variables: {
+            author,
+            authorEmail,
+            authorUrl,
+            type: null,
+            userId,
+            parent: null,
+            postId,
+            content,
+            date,
+            clientId: v3(`${author}${key}`, v3.URL),
+          },
+          update: ( cache, { data: { createComment: { comment } } } ) => {
+            const { post } = cache.readQuery({
+              query: POST_COMMENTS_QUERY,
+              variables: { id: this.props.id } 
+            });
+            
+            post.comments.nodes.push(comment);
+            cache.writeQuery({
+              query: POST_COMMENTS_QUERY,
+              data: { post: post }
+            });
           }
-        ]
-      })
-      .then(payload => {
-        console.log('create mutation success');
-        const { content } = this.state;
-        content['new'] = '';
-        this.setState({ content, author: '', email: '' });
-      })
-      .catch(error => {
-        console.warn('create mutation failed');
-        const { errors } = this.state;
-        errors['new'] = error.message;
-        this.setState({ errors });
-      });
+        })
+        .then(() => {
+          console.log('create mutation success');
+          const { editing, workingState } = this.state;
+          delete editing[key];
+          delete workingState[key];
+          this.setState({ editing, workingState });
+        })
+        .catch(error => {
+          console.warn('create mutation failed');
+          const { workingState } = this.state;
+          workingState[key]['error'] = error.message;
+          this.setState({ workingState });
+        });
+      };
     }
 
     /**
@@ -113,20 +118,34 @@ export const postCommentsStateManager = (BaseComponent) => {
      * @returns {func} 
      */
     onDelete(id) {
-      const { client } = this.props;
-
+      const { mutate } = this.props.client;
       return () => {
-        client.mutate({
+        mutate({
           mutation: DELETE_COMMENT_MUTATION,
-          variables: { clientId: v3(`${id}delete`, v3.URL), id },
-        })
-        .then(payload => {
+          variables: {
+            id,
+            clientId: v3(`${id}delete`, v3.URL),
+          },
+          update: (cache, { data: { deleteComment: { comment } } } ) => {
+            const { post } = cache.readQuery({
+              query: POST_COMMENTS_QUERY,
+              variables: { id: this.props.id }
+            });
 
+            const index = findIndex(post.comments.nodes, ({ id }) => id === comment.id );
+            post.comments.nodes.splice(index, 1);
+            cache.writeQuery({
+              query: POST_COMMENTS_QUERY,
+              data: { post: post }
+            });
+          },
+        })
+        .then(() => {
+          console.log('delete mutation success');
         })
         .catch(error => {
-          const { errors } = this.state;
-          errors[id] = error.message;
-          this.setState({ errors });
+          console.log('delete mutation success');
+          console.warn(error);
         });
       }
     }
@@ -134,85 +153,112 @@ export const postCommentsStateManager = (BaseComponent) => {
     /**
      * Returns event function for editing existing post comment
      * 
-     * @param {number} id - Global ID of comment object
+     * @param {number} key - workingState key
      * @returns {func} 
      */
-    onEdit(id, content) {
+    onEdit(key, content = '') {
+      const { userId } = this.props;
+
+      let author;
+      let authorEmail;
+      let authorUrl;
+      if (!userId && content === '') {
+        author = '';
+        authorEmail = ''
+        authorUrl = '';
+      }
+
       return () => {
-        const { editing, content: workingContent } = this.state;
-        editing[id] = true;
-        workingContent[id] = content
-        this.setState({ editing, content: workingContent })
+        const { editing, workingState } = this.state;
+        editing[key] = true;
+        workingState[key] = { author, authorEmail, authorUrl, content }
+        this.setState({ editing, content: workingState });
       }
     }
 
     /**
      * Returns event function for update existing post comment
      * 
+     * @param {number} key - workingState key
      * @param {number} id - Global ID of comment object
      * @returns {func} 
      */
-    onUpdate(id) {
-      const { client } = this.props;
+    onUpdate(key, id) {
+      const { mutate } = this.props.client;
 
-      return (event) => {
-        const content = this.state.content[id];
+      return () => {
+        const { workingState: { [key]: { content } } } = this.state;
         const now = new Date();
-        const date = `${(0 + now.getMonth()).slice(-2)}/${now.getDate()}/${now.getFullYear()}`
-        client.mutate({
+        const date = `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`
+        mutate({
           mutation: UPDATE_COMMENT_MUTATION,
           variables: {
-            clientId: v3(`${id}update`, v3.URL),
+            type: null,
             id,
             content,
             date,
-          }
+            clientId: v3(`${id}update`, v3.URL),
+          },
+          update: (cache, { data: { updateComment: { comment } } } ) => {
+            const { post } = cache.readQuery({
+              query: POST_COMMENTS_QUERY,
+              variables: { id: this.props.id }
+            });
+
+            const index = findIndex(post.comments.nodes, ({ id }) => id === comment.id )
+            post.comments.nodes[index] = comment;
+            cache.writeQuery({
+              query: POST_COMMENTS_QUERY,
+              data: { post: post }
+            });
+          },
         })
-        .then(payload => {
-          const { content } = this.state;
-          delete content[id];
-          this.setState({ content });
+        .then(() => {
+          console.log('update mutation success');
+          const { editing, workingState } = this.state;
+          delete editing[key];
+          delete workingState[key];
+          this.setState({ editing, workingState });
         })
         .catch(error => {
-          const { errors } = this.state;
-          errors[id] = error.message;
-          this.setState({ errors });
+          console.warn('update mutation failed');
+          const { workingState } = this.state;
+          workingState[key]['error'] = error.message;
+          this.setState({ workingState });
         });
       }
     }
 
     render() {
       const { onChange, onCreate, onDelete, onEdit, onUpdate } = this;
-      const { author, email, errors, editing, content } = this.state;
-      const userId = get(this.props, 'data.viewer.userId');
+      const { userId } = this.props;
 
-      const newCommentState = {
-        author: (!userId) ? author : undefined,
-        email: (!userId) ? email: undefined,
-        error: errors['new'],
-        message: content['new'],
-        onChange: onChange(),
-        onSubmit: onCreate,
+      const context = {
+        ...this.state,
+        onChange,
+        onCreate,
+        onDelete,
+        onEdit,
+        onUpdate,
+        userId,
       };
 
-      const state = (id, content) => {
-        return {
-          onChange: onChange(id), 
-          onDelete: onDelete(id), 
-          onEdit: onEdit(id, content), 
-          onUpdate: onUpdate(id)
-        };
-      }
-
-      return BaseFactory({
-        ...this.props,
-        newCommentState,
-        editing,
-        errors,
-        state,
-      });
+      return (
+        <PostCommentsContext.Provider value={context}>
+          <BaseFactory {...this.props} />
+        </PostCommentsContext.Provider>
+      );
     }
   }
+
+  PostCommentsStateManager.propTypes = {
+    id: PropTypes.string.isRequired,
+    userId: PropTypes.number,
+  };
+
+  PostCommentsStateManager.defaultProps = {
+    userId: null,
+  };
 
   if (process.env.NODE_ENV !== 'production') {
     return setDisplayName(wrapDisplayName(BaseComponent, 'postCommentsStateManager'))(PostCommentsStateManager)
@@ -221,39 +267,15 @@ export const postCommentsStateManager = (BaseComponent) => {
   return PostCommentsStateManager;
 };
 
-export const commentsMapper = ({
-  data, editing, errors, state,
-  EditCommentView, ...rest,
-}) => {
+/**
+ * Maps props to post-comments
+ * @param {*} param0 
+ */
+export const commentsMapper = ({ data, ...rest }) => {
   const postId = get(data, 'post.postId');
-  const userId = get(data, 'data.viewer.userId');
   const commentStatus = get(data, 'post.commentStatus');
-  const comments = get(data, 'post.comments.nodes');
-
-  const commentsData = (comments && !isEmpty(comments)) ?
-    map(comments, ({id, author, content, ...rest }) => {
-      if (author.userId === userId) {
-        return {
-          id,
-          author,
-          content,
-          ...rest,
-          editing: editing[id],
-          error: errors[id],
-          ...state(id, content),
-        }
-      }
-
-      return {
-        id,
-        author,
-        content,
-        ...rest,
-      }
-    }) :
-    null;
-
-  const newProps = omit(rest, 'client');
+  const commentsData = get(data, 'post.comments.nodes');
+  const newProps = omit(rest, 'userId', 'client');
 
   return {
     postId,

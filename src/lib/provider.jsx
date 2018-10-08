@@ -21,6 +21,9 @@ export const createClient = httpLink => {
     cache: new InMemoryCache({
       dataIdFromObject: object => object.id || null
     }),
+    clientState: {
+
+    }
   });
 }
 

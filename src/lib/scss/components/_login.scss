@@ -1,0 +1,38 @@
+/**
+ * LOGIN FORM
+ */
+ form.login-form {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0 auto;
+}
+
+form.login-form > * {
+  margin-right: 1em;
+}
+
+.login-form .login-form-info {
+  margin-top: 0.45em;
+  color: tomato;
+  font-size: 1.2em
+}
+
+.login-form .username-field input,
+.login-form .password-field input {
+  border-radius: 5px;
+}
+
+.login-form .username-field.error input,
+.login-form .password-field.error input {
+  border-color: Tomato;
+}
+
+.login-form .username-field .field-info,
+.login-form .password-field .field-info {
+  display: block;
+  color: gray;
+}
+
+.login-form .login-submit {
+  border-radius: 5px;
+}

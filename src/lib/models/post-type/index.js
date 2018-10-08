@@ -2,7 +2,6 @@
  * Post-type composer
  */
 import { withApollo } from 'react-apollo';
-import { get } from 'lodash';
 
 import { Error, Loading, queryComposer } from 'lib';
 import { attachment, comment, editComment, page, post, postComments } from './views';
@@ -74,18 +73,11 @@ postComments.compose = queryComposer({
   queries: [{
     query: POST_COMMENTS_QUERY,
     config: {
-      options: ({ id }) => ({ 
-        variables: { id },
-        notifyOnNetworkStatusChange: true, 
-      })
+      options: ({ id }) => ({ id }),
     }
   }],
   whileLoading: {
     view: Loading,
-    cond: props => {
-      console.log({ comments: get(props, 'data.post.comments.nodes') });
-      return !!get(props, 'data.networkStatus') && get(props, 'data.networkStatus') < 7
-    },
   },
   forError: { view: Error },
   extraHocs: [ withApollo, postCommentsStateManager ],

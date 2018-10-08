@@ -7,7 +7,7 @@ const code =
 ` 
   const App = () => (
     <div className="app">
-      <Menu location="PRIMARY" />
+      <Menu location="PRIMARY" horizontal />
     </div>
   );
 
@@ -21,7 +21,7 @@ const code =
 const gettingStarted = ({ provider: WPProvider, ...rest }) => (
   <section {...rest}>
     <h3>Getting Started</h3>
-    <ol>
+    <ul>
       <li>Run the command <code>npm install wp-graphql-composer</code> in a your React app directory.</li>
       <li>Import <code>HttpLink</code> from <code>apollo-link-http</code> and <code>WPProvider</code> from <code>wp-graphql-composer</code></li>
       <li>And wrap you root component in a <code>WPProvider</code> component like so.
@@ -35,7 +35,7 @@ const gettingStarted = ({ provider: WPProvider, ...rest }) => (
   const App = () => (
     <div className="app">
       {/* Menu is another component from the wp-graphql-composer package */}
-      <Menu location="PRIMARY" />
+      <Menu location="PRIMARY" horizontal />
     </div>
   );
 
@@ -52,7 +52,7 @@ const gettingStarted = ({ provider: WPProvider, ...rest }) => (
           <LivePreview />
         </LiveProvider>
       </li>
-    </ol>
+    </ul>
   </section>
 );
 

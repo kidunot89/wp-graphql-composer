@@ -29,4 +29,7 @@ const Error = error.compose({});
 /**
  * Exports
  */
-export { Error, error, errorMapper, Loading, loading, progressMapper };
+export {
+  Error, error, errorMapper, Loading,
+  loading, progressMapper,
+};

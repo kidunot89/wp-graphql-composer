@@ -2,54 +2,72 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { isNull } from 'lodash';
 
+import { PostCommentsContext } from '../context';
+
 const editComment = ({
-  message, onChange, onSubmit,
-  author, email, error, submitButtonText,
+  id, commentKey, update, submitButtonText,
   ...rest
 }) => (
-  <form {...rest}>
-    { !isNull(author) &&
-      <input
-        type="text"
-        name="author"
-        value={author}
-        onChange={onChange}
-        placeholder="Enter Name"
-      />
-    }
-    { !isNull(email) &&
-      (<input
-        type="text"
-        name="email"
-        value={email}
-        onChange={onChange}
-        placeholder="Enter Email"
-      />)
-    }
-    <textarea
-      name="message"
-      value={message}
-      onChange={onChange}
-      placeholder="Enter Message"
-    />
-    {error && <p>{error}</p>}
-    <button onClick={onSubmit}>{submitButtonText}</button>      
-  </form>
+  <PostCommentsContext.Consumer>
+    {({
+      workingState: { [commentKey]: { author, authorEmail, authorUrl, content, error } },
+      onChange: change, onUpdate, onCreate
+    }) => {
+      const onChange = change(commentKey);
+      const onSubmit = update ? onUpdate(commentKey, id) : onCreate(commentKey);
+
+      return (
+        <form className="comment-form" {...rest}>
+          { !isNull(author) &&
+            <input
+              type="text"
+              name="author"
+              value={author}
+              onChange={onChange}
+              placeholder="Enter Name"
+            />
+          }
+          { !isNull(authorEmail) &&
+            (<input
+              type="text"
+              name="authorEmail"
+              value={authorEmail}
+              onChange={onChange}
+              placeholder="Enter Email"
+            />)
+          }
+          { !isNull(authorUrl) &&
+            (<input
+              type="text"
+              name="authorUrl"
+              value={authorUrl}
+              onChange={onChange}
+              placeholder="Enter Website"
+            />)
+          }
+          <textarea
+            name="content"
+            value={content}
+            onChange={onChange}
+            placeholder="Enter Message"
+          />
+          {error && <p>{error}</p>}
+          <button onClick={onSubmit}>{submitButtonText}</button>      
+        </form>
+      )
+    }}
+  </PostCommentsContext.Consumer>
 );
 
 editComment.propTypes = {
-  message: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  author: PropTypes.string,
-  email: PropTypes.string,
-  error: PropTypes.string,
+  commentKey: PropTypes.string.isRequired,
+  id: PropTypes.string,
   submitButtonText: PropTypes.string,
+  update: PropTypes.bool,
 };
 
 editComment.defaultProps = {
-  author: undefined,
-  email: undefined,
-  error: undefined,
+  update: false,
   submitButtonText: 'Leave Comment',
 };
 

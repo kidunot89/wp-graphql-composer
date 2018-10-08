@@ -111,13 +111,43 @@ export const menu = `
 `;
 
 export const page = `
+  const App = () => (
+    <div style={{ width: '100%', margin: '0 2em' }}>
+      <Page id="cGFnZTo3MzM=" />
+    </div>
+  );
 
+  render(
+    <Provider>
+      <App />
+    </Provider>
+  );
 `;
 
 export const post = `
+  const App = () => (
+    <div style={{ width: '100%', margin: '0 2em' }}>
+      <Post id="cG9zdDoxMDEx" />
+    </div>
+  );
 
+  render(
+    <Provider>
+      <App />
+    </Provider>
+  );
 `;
 
 export const postComments = `
+  const App = () => (
+    <div style={{ width: '100%', margin: '0 2em' }}>
+      <PostComments id="cG9zdDoxMTQ4" />
+    </div>
+  );
 
+  render(
+    <Provider>
+      <App />
+    </Provider>
+  );
 `;

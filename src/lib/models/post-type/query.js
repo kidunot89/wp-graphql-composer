@@ -54,12 +54,6 @@ export const PAGE_BY_QUERY = gql`
 
 export const POST_COMMENTS_QUERY = gql`
   query PostCommentsQuery($id: ID!) {
-    viewer {
-      id
-      userId
-      nicename
-      firstName
-    }
     post(id: $id) {
       id
       postId
@@ -179,21 +173,7 @@ export const DELETE_COMMENT_MUTATION = gql`
     deleteComment(input: { id: $id, clientMutationId: $clientId }) {
       clientMutationId
       comment {
-        id,
-        commentId,
-        type,
-        content,
-        date
-        author {
-          ... on CommentAuthor {
-            id
-            name
-          },
-          ... on User {
-            id
-            nicename
-          }
-        }
+        id
       }
     }
   }
@@ -201,11 +181,8 @@ export const DELETE_COMMENT_MUTATION = gql`
 
 export const NEW_COMMENT_MUTATION = gql`
   mutation NewCommentMutation(
-    $agent: String,
-    $approved: String,
     $author: String,
     $authorEmail: String,
-    $authorIp: String,
     $authorUrl: String,
     $type: String,
     $userId: Int,
@@ -216,11 +193,8 @@ export const NEW_COMMENT_MUTATION = gql`
     $clientId: String!,
   ) {
     createComment(input: {
-      agent: $agent,
-      approved: $approved,
       author: $author,
       authorEmail: $authorEmail,
-      authorIp: $authorIp,
       authorUrl: $authorUrl,
       type: $type,
       userId: $userId,
@@ -254,32 +228,14 @@ export const NEW_COMMENT_MUTATION = gql`
 
 export const UPDATE_COMMENT_MUTATION = gql`
   mutation UpdateCommentMutation(
-    $agent: String,
-    $approved: String,
-    $author: String,
-    $authorEmail: String,
-    $authorIp: String,
-    $authorUrl: String,
     $type: String,
-    $userId: Int,
-    $parent: String,
-    $postId: Int,
     $id: ID!,
     $content: String!,
     $date: String!,
     $clientId: String!,
   ) {
     updateComment(input: {
-      agent: $agent,
-      approved: $approved,
-      author: $author,
-      authorEmail: $authorEmail,
-      authorIp: $authorIp,
-      authorUrl: $authorUrl,
       type: $type,
-      userId: $userId,
-      parent: $parent,
-      postId: $postId,
       id: $id,
       content: $content,
       date: $date,

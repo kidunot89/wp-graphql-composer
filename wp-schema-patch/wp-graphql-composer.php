@@ -8,6 +8,8 @@
     Plugin URI: https://axistaylor.com
     Text Domain: wp-graphql-composer
   */
+  namespace WPGraphQL\Composer;
+
   new WPGraphQLComposerDemo();
   class WPGraphQLComposerDemo {
     public function __construct() {

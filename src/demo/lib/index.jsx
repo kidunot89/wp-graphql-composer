@@ -57,15 +57,15 @@ const library = () => {
       </section>
       <section id="page" className="live-section">
         <h3>Page</h3>
-        <Live scope={{ page: Lib.page }} code={codes.page} />
+        <Live scope={{ page: Lib.page, Page: Lib.Page }} code={codes.page} />
       </section>
       <section id="post" className="live-section">
         <h3>Post</h3>
-        <Live scope={{ post: Lib.post }} code={codes.post} />
+        <Live scope={{ post: Lib.post, Post: Lib.Post }} code={codes.post} />
       </section>
       <section id="post" className="live-section">
         <h3>PostComments</h3>
-        <Live scope={{ postComments: Lib.postComments }} code={codes.postComments} />
+        <Live scope={{ postComments: Lib.postComments, PostComments: Lib.PostComments }} code={codes.postComments} />
       </section>
       <section id="sidebar" className="live-section">
         <h3>Sidebar</h3>

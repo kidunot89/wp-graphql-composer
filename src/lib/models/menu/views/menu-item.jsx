@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash';
 const menuItem = ({ url, label, items, subMenuView: SubMenu, ...rest }) => (
   <React.Fragment>
     <a href={url} {...rest}>{label}</a>
-    {!isEmpty(items) && (<SubMenu className="sub-menu" items={items} />)}
+    {!isEmpty(items) && (<SubMenu className="composer-submenu" items={items} />)}
   </React.Fragment>
 );
 

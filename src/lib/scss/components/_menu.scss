@@ -1,0 +1,210 @@
+/**
+ * MENU
+ */
+.composer-menu ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+
+  .composer-menu-item {
+    border-bottom: 0.07em #292929 solid;
+    
+    a {
+      text-decoration: none;
+      padding: 0.4em 0.5em;
+
+      &:hover {
+
+      }
+
+      &.active,
+      &:active,
+      &:visited {
+
+      }
+    }
+    .composer-submenu {
+
+      .composer-menu-item {
+        
+        a {
+      
+          &:hover {
+    
+          }
+    
+          &.active,
+          &:active,
+          &:visited {
+    
+          }
+        }
+      }
+
+    }
+  }
+}
+
+/* Small */
+@media (min-width: 576px) {
+  .composer-menu {
+
+    .composer-menu-item {
+  
+      a {
+        
+        &:hover {
+  
+        }
+  
+        &.active,
+        &:active,
+        &:visited {
+  
+        }
+      }
+      .composer-submenu {
+  
+        .composer-menu-item {
+          
+          a {
+        
+            &:hover {
+      
+            }
+      
+            &.active,
+            &:active,
+            &:visited {
+      
+            }
+          }
+        }
+        
+      }
+    }
+  }
+}
+
+/* Medium */
+@media (min-width: 768px) {
+  .composer-menu {
+
+    .composer-menu-item {
+  
+      a {
+        
+        &:hover {
+  
+        }
+  
+        &.active,
+        &:active,
+        &:visited {
+  
+        }
+      }
+      .composer-submenu {
+  
+        .composer-menu-item {
+          
+          a {
+        
+            &:hover {
+      
+            }
+      
+            &.active,
+            &:active,
+            &:visited {
+      
+            }
+          }
+        }
+        
+      }
+    }
+  }
+}
+
+/* Large */
+@media (min-width: 992px) {
+  .composer-menu {
+
+    .composer-menu-item {
+  
+      a {
+        
+        &:hover {
+  
+        }
+  
+        &.active,
+        &:active,
+        &:visited {
+  
+        }
+      }
+      .composer-submenu {
+  
+        .composer-menu-item {
+          
+          a {
+        
+            &:hover {
+      
+            }
+      
+            &.active,
+            &:active,
+            &:visited {
+      
+            }
+          }
+        }
+        
+      }
+    }
+  }
+}
+
+/* Extra Large */
+@media (min-width: 1200px) {
+  .composer-menu {
+
+    .composer-menu-item {
+  
+      a {
+        
+        &:hover {
+  
+        }
+  
+        &.active,
+        &:active,
+        &:visited {
+  
+        }
+      }
+      .composer-submenu {
+  
+        .composer-menu-item {
+          
+          a {
+        
+            &:hover {
+      
+            }
+      
+            &.active,
+            &:active,
+            &:visited {
+      
+            }
+          }
+        }
+        
+      }
+    }
+  }
+}
