@@ -6,7 +6,9 @@ import {
   LivePreview
 } from 'react-live';
 
-import { Header, Menu, Login } from 'lib';
+import { Header } from 'header';
+import { Login } from 'user';
+import { Menu } from 'menu';
 
 const code = `
   const App = () => (

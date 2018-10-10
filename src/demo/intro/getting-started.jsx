@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Menu } from 'lib';
+import { Menu } from 'menu';
 import { LiveProvider, LivePreview } from 'react-live';
 
 const code = 

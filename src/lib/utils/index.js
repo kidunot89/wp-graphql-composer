@@ -1,10 +1,10 @@
-import { utilComposer } from 'lib/composers';
+import { utilComposer } from '../composers';
 
-import loading from './views/loading';
-import progressMapper from './controllers/process-loading';
+import loading from './loading';
+import progressMapper from './process-loading';
 
-import error from './views/error';
-import errorMapper from './controllers/process-errors';
+import error from './error';
+import errorMapper from './process-errors';
 
 /**
  * Creates composer for loading component

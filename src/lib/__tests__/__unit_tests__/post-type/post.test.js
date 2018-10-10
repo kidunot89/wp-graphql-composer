@@ -4,7 +4,7 @@ import { Parser as ReactParser } from 'html-to-react';
 import { render, cleanup, waitForElement } from 'react-testing-library';
 import { MockedProvider } from 'react-apollo/test-utils';
 
-import { POST_QUERY, POST_BY_QUERY, Post, post } from 'lib';
+import { POST_QUERY, POST_BY_QUERY, Post, post } from 'post-type';
 
 afterEach(cleanup);
 
@@ -207,8 +207,9 @@ it(`renders a post by uri with a custom view component`, async () => {
   };
 
   const CustomPost = post.compose({
-    view: ({ featured, postId, title, content, details, DetailsComponent, ...rest }) => (
+    view: ({ featured, postId, title, content, details, Attachment, DetailsComponent, ...rest }) => (
       <article id={`post-${postId}`} {...rest}>
+        <Attachment mediaItemId={featured} fallback />
         <div data-testid="post-content">
           {parser.parse(content)}
         </div>

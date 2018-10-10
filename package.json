@@ -1,6 +1,6 @@
 {
   "name": "wp-graphql-composer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A library of customizable WordPress React-Apollo components",
   "keywords": [
     "wp-graphql",
@@ -53,6 +53,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.3.1",
     "@fortawesome/react-fontawesome": "^0.1.3",
     "apollo-boost": "^0.1.16",
+    "dotenv": "^6.1.0",
     "graphql": "^14.0.2",
     "html-to-react": "^1.3.3",
     "moment": "^2.22.2",

@@ -5,11 +5,11 @@ import { MockedProvider } from 'react-apollo/test-utils';
 import { MemoryRouter as Router } from 'react-router-dom';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 
-import introspectionQueryResultData from 'lib/fragmentTypes.json';
+import introspectionQueryResultData from 'fragmentTypes.json';
 import {
   MENU_QUERY, MENU_WHERE_QUERY, MENU_ITEM_QUERY, Menu,
   menu, menuItem, subMenu, Link,
-} from 'lib';
+} from 'menu';
 
 afterEach(cleanup);
 

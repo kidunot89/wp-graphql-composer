@@ -8,7 +8,7 @@ import {
   LivePreview
 } from 'react-live';
 
-import * as Lib from 'lib';
+import * as Lib from 'index';
 import * as codes from './sample-codes';
 
 const link = new HttpLink({ uri: '/graphql', credentials: 'same-origin' });

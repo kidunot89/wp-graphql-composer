@@ -6,8 +6,8 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { mapProps, compose } from 'recompose';
 
-import { whileLoading, forError, composeQuery, queryComposer } from 'lib/composers';
-import { loading, error, progressMapper, errorMapper } from 'lib/utils';
+import { whileLoading, forError, composeQuery, queryComposer } from 'composers';
+import { loading, error, progressMapper, errorMapper } from 'utils';
 
 afterEach(cleanup);
 

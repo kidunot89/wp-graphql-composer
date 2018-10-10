@@ -6,7 +6,7 @@ import Examples from './examples'
 import Library from './lib';
 import Intro from './intro';
 import PageNav from './page-nav';
-import 'lib/style.css';
+import 'style.css';
 import './main.css';
 
 class Demo extends React.Component {

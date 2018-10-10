@@ -2,7 +2,7 @@ import React from 'react';
 import { render, cleanup, waitForElement, wait } from 'react-testing-library';
 import { MockedProvider } from 'react-apollo/test-utils';
 
-import { ATTACHMENT_QUERY, Attachment, attachment } from 'lib';
+import { ATTACHMENT_QUERY, Attachment, attachment } from 'post-type';
 
 afterEach(cleanup);
 

@@ -4,7 +4,7 @@ import { render, cleanup, waitForElement, fireEvent } from 'react-testing-librar
 import { MockedProvider } from 'react-apollo/test-utils';
 import v3 from 'uuid/v3';
 
-import { Login, login, UserControls, userControls, LOGIN_MUTATION, VIEWER_QUERY } from 'lib';
+import { Login, login, UserControls, userControls, LOGIN_MUTATION, VIEWER_QUERY } from 'user';
 
 afterEach(() => {
   localStorage.clear();

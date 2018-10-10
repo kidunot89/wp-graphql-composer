@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { render, cleanup } from 'react-testing-library';
 
-import { Loading } from 'lib';
+import { Loading } from 'utils';
 
 library.add(fas);
 

@@ -4,11 +4,10 @@ import { MockedProvider } from 'react-apollo/test-utils';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { MemoryRouter } from 'react-router-dom';
 
-import introspectionQueryResultData from 'lib/fragmentTypes.json';
-import {
-  Main, main, LOOP_QUERY,
-  PAGE_BY_QUERY, POST_BY_QUERY, ARCHIVE_QUERY 
-} from 'lib';
+import introspectionQueryResultData from 'fragmentTypes.json';
+import { Main, main, LOOP_QUERY } from 'main';
+import { PAGE_BY_QUERY, POST_BY_QUERY } from 'post-type';
+import { ARCHIVE_QUERY } from 'archives';
 
 afterEach(cleanup);
 
@@ -882,7 +881,7 @@ it(`navigates to a post`, async () => {
   expect(mainElement).toBeTruthy();
 
   // Confirms Content
-  const content = getByText(/Hello World/);
+  const content = await waitForElement(() => getByText(/Hello World/));
   expect(content).toBeTruthy();
 });
 

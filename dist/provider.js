@@ -27,7 +27,7 @@ export var createClient = function createClient(httpLink) {
   });
 };
 
-export default (function (_ref) {
+export var WPProvider = function WPProvider(_ref) {
   var link = _ref.link,
       children = _ref.children;
 
@@ -37,4 +37,4 @@ export default (function (_ref) {
     { client: client },
     children
   );
-});
+};

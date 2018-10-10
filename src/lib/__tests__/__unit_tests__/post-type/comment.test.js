@@ -6,13 +6,14 @@ import {
 } from 'react-testing-library';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
+import { MemoryRouter } from 'react-router-dom';
 
 import { 
   POST_COMMENTS_QUERY, DELETE_COMMENT_MUTATION,
   NEW_COMMENT_MUTATION, UPDATE_COMMENT_MUTATION,
   PostComments, postComments,
-} from 'lib';
-import introspectionQueryResultData from 'lib/fragmentTypes.json';
+} from 'post-type';
+import introspectionQueryResultData from 'fragmentTypes.json';
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData
@@ -39,6 +40,7 @@ const mocks = [
         post: {
           id: "xTWinK3L",
           postId: 1,
+          title: 'This @%#* just got real',
           commentStatus: "open",
           comments: {
             nodes: [
@@ -48,6 +50,7 @@ const mocks = [
                 type: "",
                 content: "<p>Welcome to the Danger Zone</p>\n",
                 date: "2018-09-12 23:02:46",
+                modified: "2018-09-12 23:02:46",
                 author: {
                   id: "Y29tbWVudEF1dGhvcjp3YXB1dUB3b3JkcHJlc3MuZXhhbXBsZQ==",
                   name: "A WordPress Commenter",
@@ -60,10 +63,12 @@ const mocks = [
                 type: "",
                 content: "<p>No, welcome to the Deez Nutz</p>\n",
                 date: "2018-09-12 23:02:46",
+                modified: "2018-09-16 23:06:53",
                 author: {
                   id: "DxjoniDx",
                   userId: 3,
                   nicename: "JebusDaMan",
+                  avatar: null,
                   __typename: "User",
                 },
                 __typename: 'Comment',
@@ -101,6 +106,7 @@ const mocks = [
             type: "",
             content: message,
             date: `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`,
+            modified: `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`,
             author: {
               id: "Y29tbWVudEF1dGhvcjp3YXB1dUB3b3JkcHJlc3MuZXhhbXBsZJ==",
               name: "Jim Bean",
@@ -132,11 +138,13 @@ const mocks = [
             commentId: 2,
             type: "",
             content: messageTwo,
-            date: `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`,
+            date: '2018-09-12 23:02:46',
+            modified: `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`,
             author: {
               id: "DxjoniDx",
               userId: 3,
               nicename: "JebusDaMan",
+              avatar: null,
               __typename: 'User'
             },
             __typename: 'Comment'
@@ -162,11 +170,13 @@ const mocks = [
             commentId: 2,
             type: "",
             content: messageTwo,
-            date: `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`,
+            date: '2018-09-12 23:02:46',
+            modified: `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`,
             author: {
               id: "DxjoniDx",
               userId: 3,
               nicename: "JebusDaMan",
+              avatar: null,
               __typename: 'User'
             },
             __typename: 'Comment'
@@ -182,14 +192,16 @@ const mocks = [
 it(`renders post comments`, async () => {
   const { getByTestId } = render(
     <MockedProvider mocks={mocks} cache={cache} addTypename>
-      <PostComments id="xTWinK3L" data-testid="test-comments" />
+      <MemoryRouter>
+        <PostComments id="xTWinK3L" data-testid="test-comments" />
+      </MemoryRouter>
     </MockedProvider>
   );
 
   const comments = await waitForElement(() => getByTestId(/test-comments/));
   expect(comments).toBeTruthy();
 
-  const count = comments.querySelectorAll('.comment').length;
+  const count = comments.querySelectorAll('ol>li.comment').length;
   expect(count).toBe(2);
 });
 
@@ -262,7 +274,9 @@ it(`render post comments with a custom view component`, async () => {
 
   const { getByTestId } = render(
     <MockedProvider mocks={mocks} addTypename cache={cache}>
-      <CustomPostComments id="xTWinK3L" data-testid="test-comments" />
+      <MemoryRouter>
+        <CustomPostComments id="xTWinK3L" data-testid="test-comments" />
+      </MemoryRouter>
     </MockedProvider>
   );
 
@@ -277,14 +291,16 @@ it(`render post comments with a custom view component`, async () => {
 it(`create a new post comment`, async () => {  
   const { getByPlaceholderText, getByTestId, getByText } = render(
     <MockedProvider mocks={mocks} addTypename cache={cache}>
-      <PostComments id="xTWinK3L" data-testid="test-comments" />
+      <MemoryRouter>
+        <PostComments id="xTWinK3L" data-testid="test-comments" />
+      </MemoryRouter>
     </MockedProvider>
   );
 
   const comments = await waitForElement(() => getByTestId(/test-comments/));
   expect(comments).toBeTruthy();
 
-  let list = comments.querySelectorAll('.comment');
+  let list = comments.querySelectorAll('ol>li.comment');
   expect(list.length).toBe(2);
 
   // Fire add event
@@ -317,7 +333,9 @@ it(`create a new post comment`, async () => {
 it(`updates an existing post comment`, async () => {
   const { getByTestId, getByText } = render(
     <MockedProvider mocks={mocks} addTypename cache={cache}>
-      <PostComments  id="xTWinK3L" userId={3} data-testid="test-comments" />
+      <MemoryRouter>
+        <PostComments  id="xTWinK3L" userId={3} data-testid="test-comments" />
+      </MemoryRouter>
     </MockedProvider>
   );
 
@@ -339,7 +357,7 @@ it(`updates an existing post comment`, async () => {
   // Fire update event
   fireEvent.click(getByText(/Save Changes/));
 
-  const updatedComment = await waitForElement(() => comments.querySelector('#comment-2 .comment-body'));
+  const updatedComment = await waitForElement(() => comments.querySelector('#comment-2 .comment-content'));
   expect(updatedComment.innerHTML).toEqual(messageTwo);
 });
 
@@ -347,7 +365,9 @@ it(`updates an existing post comment`, async () => {
 it(`deletes an existing post comment`, async () => {
   const { getByText, getByTestId } = render(
     <MockedProvider mocks={mocks} addTypename cache={cache}>
-      <PostComments id="xTWinK3L" userId={3} data-testid="test-comments" />
+      <MemoryRouter>
+        <PostComments id="xTWinK3L" userId={3} data-testid="test-comments" />
+      </MemoryRouter>
     </MockedProvider>
   );
 

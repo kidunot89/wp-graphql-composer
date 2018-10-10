@@ -4,8 +4,9 @@ import { MockedProvider } from 'react-apollo/test-utils';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { MemoryRouter } from 'react-router-dom';
 
-import introspectionQueryResultData from 'lib/fragmentTypes.json';
-import { HEADER_QUERY, Header, header, ATTACHMENT_QUERY } from 'lib';
+import introspectionQueryResultData from 'fragmentTypes.json';
+import { HEADER_QUERY, Header, header } from 'header';
+import { ATTACHMENT_QUERY } from 'post-type';
 
 afterEach(cleanup);
 

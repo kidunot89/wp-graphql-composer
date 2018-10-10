@@ -8,7 +8,7 @@ import {
   LivePreview
 } from 'react-live';
 
-import { Menu, menu, menuItem, subMenu, Link as MenuLink } from 'lib/models/menu';
+import { Menu, menu, menuItem, subMenu, Link as MenuLink } from 'menu';
 
 const scope = {
   _, Menu, menu, menuItem,

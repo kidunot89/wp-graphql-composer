@@ -27,7 +27,7 @@ export const createClient = httpLink => {
   });
 }
 
-export default ({ link, children }) => {
+export const WPProvider = ({ link, children }) => {
   const client = createClient(link);
   return (
     <ApolloProvider client={client}>

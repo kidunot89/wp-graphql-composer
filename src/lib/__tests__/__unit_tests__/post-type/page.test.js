@@ -3,7 +3,7 @@ import { Parser as ReactParser } from 'html-to-react';
 import { render, cleanup, waitForElement } from 'react-testing-library';
 import { MockedProvider } from 'react-apollo/test-utils';
 
-import { PAGE_QUERY, PAGE_BY_QUERY, Page, page } from 'lib';
+import { PAGE_QUERY, PAGE_BY_QUERY, Page, page } from 'post-type';
 
 afterEach(cleanup);
 

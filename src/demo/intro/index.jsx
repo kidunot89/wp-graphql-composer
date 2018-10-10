@@ -1,7 +1,7 @@
 import React from 'react';
 import { HttpLink } from 'apollo-link-http';
 
-import { WPProvider } from 'lib';
+import { WPProvider } from 'provider';
 import GettingStarted from './getting-started';
 import Usage from './usage';
 import ModComponents from './modifying-components';

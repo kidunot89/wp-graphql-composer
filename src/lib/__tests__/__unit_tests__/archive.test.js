@@ -6,8 +6,8 @@ import {
 import { MockedProvider } from 'react-apollo/test-utils';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 
-import { Archive, archive, ARCHIVE_QUERY } from 'lib';
-import introspectionQueryResultData from 'lib/fragmentTypes.json';
+import { Archive, archive, ARCHIVE_QUERY } from 'archives';
+import introspectionQueryResultData from 'fragmentTypes.json';
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData
