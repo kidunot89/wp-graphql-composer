@@ -5,12 +5,11 @@ import { Error, Loading } from 'lib/utils';
 
 import { MENU_WHERE_QUERY, MENU_QUERY, MENU_ITEM_QUERY } from './query';
 import menu from './views/menu';
-import menuItem from './views/menu-item';
+import menuItem, { Link } from './views/menu-item';
 import subMenu from './views/sub-menu'
 
 subMenu.compose = baseComposer({
   view: subMenu,
-  itemView: menuItem,
   whileLoading: { view: Loading },
   forError: { view: Error },
   mapper: props => props,
@@ -20,7 +19,6 @@ const SubMenu = subMenu.compose({});
 
 menuItem.compose = queryComposer({
   view: menuItem,
-  subMenuView: SubMenu,
   whileLoading: { view: Loading },
   forError: { view: Error },
   queries: [{
@@ -40,7 +38,8 @@ const MenuItem = menuItem.compose({});
 
 menu.compose = queryComposer({
   view: menu,
-  itemView: MenuItem,
+  MenuItem,
+  SubMenu,
   whileLoading: { view: Loading },
   forError: { view: Error },
   queries: [{
@@ -71,7 +70,7 @@ const Menu = menu.compose({});
 
 export {
   Menu, menu, MenuItem, menuItem,
-  SubMenu, subMenu, MENU_WHERE_QUERY, MENU_QUERY,
-  MENU_ITEM_QUERY,
+  SubMenu, subMenu, Link,
+  MENU_WHERE_QUERY, MENU_QUERY, MENU_ITEM_QUERY,
 };
 

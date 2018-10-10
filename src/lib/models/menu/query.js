@@ -11,8 +11,11 @@ export const MENU_QUERY = gql`
       menuItems{
 				nodes {
           id
+          menuItemId
           url
           label
+          cssClasses
+          description
         }
       }
     }
@@ -32,8 +35,11 @@ export const MENU_WHERE_QUERY = gql`
         menuItems{
           nodes {
             id
+            menuItemId
             url
             label
+            cssClasses
+            description
           }
         }
       }
@@ -47,8 +53,11 @@ export const MENU_ITEM_QUERY = gql`
       childItems{
         nodes{
           id
+          menuItemId
           url
           label
+          cssClasses
+          description
         }
       }
     }

@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+
 import { Attachment } from 'lib/models';
 
 const header = ({ url, title, description, logo, children, ...rest }) => {
   return (
-    <div className="app-header" {...rest}>
+    <div className="site-header" role="banner" {...rest}>
       <div id="masthead" className="site-branding">
         <Attachment
           mediaItemId={logo}
-          className="site-logo"
-          alt="site logo"
+          className="custom-logo"
+          alt={title}
           fallback
           style={{
             width: '256px',
@@ -17,7 +19,7 @@ const header = ({ url, title, description, logo, children, ...rest }) => {
             
           }}
         />
-        <a href={url} data-testid="home-link"><h1 className="site-title">{title}</h1></a>
+        <Link to="/" data-testid="home-link"><h1 className="site-title">{title}</h1></Link>
         <h1 className="site-description"><small>{description}</small></h1>
       </div>
       <div id="main-navigation" className="app-navigation">

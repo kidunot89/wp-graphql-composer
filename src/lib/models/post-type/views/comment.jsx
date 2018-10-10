@@ -1,14 +1,79 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import { Link } from 'react-router-dom';
+import { Parser as ReactParser } from 'html-to-react';
+
+import { Attachment } from 'lib/models/post-type';
 import { PostCommentsContext } from '../context';
+
+const parser = new ReactParser();
+
+// Comment Author V Card
+const AuthorVCard = ({ userId, nicename, name, avatar }) => (
+  <div className="comment-author vcard">
+    { avatar ? 
+      <Attachment
+        className={`avatar avatar-${userId} photo`}
+        src={avatar.url}
+        fallback
+      /> :
+      <Attachment
+        className={`avatar photo`}
+        src="https://secure.gravatar.com/avatar/"
+        fallback
+      />
+    }
+    <strong className="fn">
+      { nicename ? 
+        (<Link to={`/author/${nicename}`}>{nicename}</Link>) :
+        name
+      }
+    </strong>
+    <span className="says"> says:</span>
+  </div>
+);
+
+// Comment Metadata
+const Metadata = ({ date, modified, editable, onEdit, onDelete }) => {
+  return (
+    <div className="comment-metadata">
+      <time dateTime={date}>
+        {moment(date).format('MMMM Do YYYY [at] h:mm a')}
+      </time>
+      { modified && (
+        <time dateTime={modified}>
+          {moment(modified).format('MMMM Do YYYY [at] h:mm a')}
+        </time>
+      )}
+      {/* if logged in user is the comment author add update and delete buttons */}
+      {editable && (
+        <React.Fragment>
+          <span className="edit-link">
+            <button onClick={onEdit}>Edit</button>
+          </span>
+          <span className="delete-link">
+            <button onClick={onDelete}>Delete</button>
+          </span>
+        </React.Fragment>
+      )}
+    </div>
+  );
+};
+
+// Comment Content
+const Content = ({ content }) => (
+  <div className="comment-content">{parser.parse(content)}</div>
+);
 
 /**
  * Comment View Layer Component
  * @param {*} param0 
  */
 const comment = ({
-  id, commentId, type, content, date, 
-  author, EditCommentView, ...rest
+  id, commentId, type, content,
+  date, modified, author, EditCommentView,
+  ...rest
 }) => {
   const newCommentKey = `comment-${commentId}-reply`;
   const updateCommentKey = `comment-${commentId}-edit`;
@@ -33,18 +98,21 @@ const comment = ({
 
         // else render comment
         return (
-          <div id={`comment-${commentId}`} {...rest}>
-            {/* if logged in user is the comment author add update and delete buttons */}
-            {author.userId === userId &&
-              (
-                <React.Fragment>
-                  <button className="edit-button" onClick={onEdit}>Edit</button>
-                  <button className="delete-button" onClick={onDelete}>Delete</button>
-                </React.Fragment>
-              )
-            }
-            <div className="comment-body">{content}</div>
-          </div>
+          <li id={`comment-${commentId}`} className="comment">
+            <article id={`div-comment-${commentId}`} className="comment-body" {...rest}>
+              <footer className="comment-meta">
+                <AuthorVCard {...author} />
+                <Metadata
+                  date={date}
+                  modified={modified}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  editable={author.userId === userId}
+                />
+              </footer>
+              <Content content={content} />
+            </article>
+          </li>
         );
 
       }}

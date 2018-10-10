@@ -9,12 +9,6 @@ const monthNames = [
 
 const thisYear = new Date().getFullYear();
 
-const getAuthorName = (userId, results) =>
-{
-  const post = find(results, ({ author }) => author.userId === userId);
-  return post.author.nicename;
-}
-
 function jsUcfirst(string) 
 {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -47,7 +41,7 @@ const getHeader = ({ category, tag, month, year, author, search }, results) => {
           `Posts made in ${year}`;
 
     case !!author:
-      return `Posts made by ${getAuthorName(author, results)}`;
+      return `Posts made by ${author}`;
 
     case !!search:
       return `Searching ${search}`;
@@ -59,6 +53,7 @@ const getHeader = ({ category, tag, month, year, author, search }, results) => {
 
 export const archiveMapper = ({ data, ...rest }) => {
   const resultsData = get(data, 'posts.nodes');
+  console.log(data);
   const header = getHeader(data.variables, resultsData);  
 
   return { header, resultsData, ...rest };

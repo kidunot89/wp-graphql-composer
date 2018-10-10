@@ -2,7 +2,7 @@ import { get, omit } from 'lodash';
 
 export default ({ data, ...rest }) => {
   const post = get(data, 'post') || get(data, 'postBy');
-  const featured = get(post, 'featuredImage.id');
+  const featured = get(post, 'featuredImage.mediaItemId');
   const details = {
     author: get(post, 'author'),
     categories: get(post, 'tags.categories'),

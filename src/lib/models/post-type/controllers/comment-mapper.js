@@ -276,9 +276,11 @@ export const commentsMapper = ({ data, ...rest }) => {
   const commentStatus = get(data, 'post.commentStatus');
   const commentsData = get(data, 'post.comments.nodes');
   const newProps = omit(rest, 'userId', 'client');
+  const title = get(data, 'post.title');
 
   return {
     postId,
+    title,
     commentsData,
     open: commentStatus === 'open',
     ...newProps

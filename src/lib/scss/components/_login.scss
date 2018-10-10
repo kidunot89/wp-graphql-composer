@@ -1,38 +1,66 @@
-/**
- * LOGIN FORM
- */
- form.login-form {
+/* Extra Small */
+form.login-form {
+  max-width: 400px;
   display: flex;
-  flex-wrap: nowrap;
+  flex-direction: column;
   margin: 0 auto;
+
+  .login-form-info {
+    margin: 0.45em auto;
+    color: tomato;
+    font-size: 1.2em
+  }
+
+  .username-field,
+  .password-field {
+    margin: 0.3em;
+
+    &.error {
+      input {
+        border-color: Tomato;
+      }
+    }
+
+    input {
+      width: 100%;
+      border-width: 0.07em;
+      border-radius: 0.2em;
+    }
+
+    .field-info {
+      display: block;
+      color: gray;
+    }
+  }
+
+  .login-submit {
+    margin: 0.3em;
+    border-width: 0.07em;
+    border-radius: 0.2em;
+    box-shadow: none;
+
+    font-size: 0.9em;
+    color: #fff;
+    background-color: #005F4C;
+  }
 }
 
-form.login-form > * {
-  margin-right: 1em;
+/* Small */
+@media (min-width: 576px) {
+  
 }
 
-.login-form .login-form-info {
-  margin-top: 0.45em;
-  color: tomato;
-  font-size: 1.2em
+/* Medium */
+@media (min-width: 768px) {
+  
 }
 
-.login-form .username-field input,
-.login-form .password-field input {
-  border-radius: 5px;
+/* Large */
+@media (min-width: 992px) {
+
 }
 
-.login-form .username-field.error input,
-.login-form .password-field.error input {
-  border-color: Tomato;
-}
+/* Extra Large */
+@media (min-width: 1200px) {
 
-.login-form .username-field .field-info,
-.login-form .password-field .field-info {
-  display: block;
-  color: gray;
-}
-
-.login-form .login-submit {
-  border-radius: 5px;
 }

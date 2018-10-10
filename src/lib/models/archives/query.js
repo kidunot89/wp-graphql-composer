@@ -10,7 +10,7 @@ export const ARCHIVE_QUERY = gql`
       $tag: String,
       $month: Int,
       $year: Int,
-      $author: Int,
+      $author: String,
       $search: String
     ) {
     posts(
@@ -18,7 +18,7 @@ export const ARCHIVE_QUERY = gql`
       where: {
         categoryName: $category,
         tag: $tag,
-        author: $author,
+        authorName: $author,
         dateQuery: { month: $month, year: $year },
         search: $search
       }

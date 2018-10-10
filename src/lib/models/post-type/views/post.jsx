@@ -2,9 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { Parser as ReactParser } from 'html-to-react';
 
+import { Attachment } from 'lib/models/post-type';
+
 const parser = new ReactParser();
 const post = ({ featured, postId, title, content, details, DetailsComponent, ...rest }) => (
   <article id={`post-${postId}`} {...rest}>
+    {featured && 
+      <Attachment
+        mediaItemId={featured}
+        data-attachment-id={featured}
+        className={`wp-post-image`}
+      />
+    }
     {parser.parse(content)}
   </article>
 );

@@ -1,23 +1,32 @@
 import React from 'react';
 import { render, cleanup, waitForElement } from 'react-testing-library';
 import { MockedProvider } from 'react-apollo/test-utils';
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
+import { MemoryRouter } from 'react-router-dom';
 
+import introspectionQueryResultData from 'lib/fragmentTypes.json';
 import { HEADER_QUERY, Header, header, ATTACHMENT_QUERY } from 'lib';
 
 afterEach(cleanup);
 
-it(`renders a header component with a logo, title, and description loaded with mock data`, async () => {
-  const mocks = [{
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData
+});
+
+const mocks = [
+  {
     request: { query: HEADER_QUERY, },
     result: {
       data: {
         allSettings: {
           generalSettingsTitle: 'ChumBucket',
           generalSettingsDescription: 'Eat here, dammit!!',
-          homeUrl: 'https://buccogrease.net'
+          homeUrl: 'https://buccogrease.net',
+          __typename: 'Settings'
         },
         themeMods: {
           customLogo: 1,
+          __typename: 'ThemeMods',
         }
       }
     }
@@ -37,29 +46,43 @@ it(`renders a header component with a logo, title, and description loaded with m
             sizes: [{
               width: "150",
               height: "150",
-              sourceUrl: "https://source.unsplash.com/150x150"
+              sourceUrl: "https://source.unsplash.com/150x150",
+              __typename: 'MediaSizes',
             }, {
               width: "300",
               height: "200",
-              sourceUrl: "https://source.unsplash.com/300x200"
+              sourceUrl: "https://source.unsplash.com/300x200",
+              __typename: 'MediaSizes',
             }, {
               width: "768",
               height: "512",
-              sourceUrl: "https://source.unsplash.com/768x512"
+              sourceUrl: "https://source.unsplash.com/768x512",
+              __typename: 'MediaSizes',
             }, {
               width: "1024",
               height: "682",
-              sourceUrl: "https://source.unsplash.com/1024x682"
-            }]
-          }
+              sourceUrl: "https://source.unsplash.com/1024x682",
+              __typename: 'MediaSizes',
+            }],
+            __typename: 'MediaDetails'
+          },
+          __typename: 'MediaItem',
         }
       }
     },
-  }];
+  }
+];
+
+const cache = new InMemoryCache({ fragmentMatcher });
+
+it(`renders a header component with a logo, title, and description loaded with mock data`, async () => {
+  
 
   const { getByText, getByTestId, getByAltText } = render(
-    <MockedProvider mocks={mocks} addTypename={false}>
-      <Header />
+    <MockedProvider mocks={mocks} cache={cache} addTypename>
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>
     </MockedProvider>,
   );
 
@@ -68,9 +91,9 @@ it(`renders a header component with a logo, title, and description loaded with m
   expect(getByText('Eat here, dammit!!')).toBeTruthy();
   expect(getByTestId('home-link')).toBeTruthy();
 
-  const image = await waitForElement(() => getByAltText(/site logo/));
+  const image = await waitForElement(() => getByAltText(/ChumBucket/));
   expect(image).toBeTruthy();
-  expect(image.getAttribute('class')).toEqual('site-logo');
+  expect(image.getAttribute('class')).toEqual('custom-logo');
   expect(image.getAttribute('srcSet'))
     .toEqual('https://source.unsplash.com/150x150 150w, https://source.unsplash.com/300x200 300w, https://source.unsplash.com/768x512 768w, https://source.unsplash.com/1024x682 1024w');
 
@@ -78,23 +101,7 @@ it(`renders a header component with a logo, title, and description loaded with m
     .toEqual('(max-width: 768px) 768px, (max-width: 1200px) 1024px');
 });
 
-it(`render a header component with a custom template`, async () => {
-  const mocks = [{
-    request: { query: HEADER_QUERY, },
-    result: {
-      data: {
-        allSettings: {
-          generalSettingsTitle: 'ChumBucket',
-          generalSettingsDescription: 'Eat here, dammit!!',
-          homeUrl: 'https://buccogrease.net'
-        },
-        themeMods: {
-          customLogo: 1,
-        }
-      }
-    }
-  }];
-
+it(`render a header component with a custom view layer`, async () => {
   const view = ({title, description, url}) => (
     <div>
       <h1 data-testid="header-title">{title}</h1>
@@ -102,11 +109,13 @@ it(`render a header component with a custom template`, async () => {
     </div>
   )
 
-  const NewHeader = header.compose({ view });
+  const CustomHeader = header.compose({ view });
   
   const { getByTestId } = render(
-    <MockedProvider mocks={mocks} addTypename={false}>
-      <NewHeader />
+    <MockedProvider mocks={mocks} cache={cache} addTypename>
+      <MemoryRouter>
+        <CustomHeader />
+      </MemoryRouter>
     </MockedProvider>,
   );
 
@@ -122,7 +131,9 @@ it(`render a header component with a custom template`, async () => {
 it(`renders loading state initially`, () => {
   const { getByText, getByTestId } = render(
     <MockedProvider mocks={[]} addTypename={false}>
-      <Header />
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>
     </MockedProvider>,
   );
 
@@ -133,7 +144,7 @@ it(`renders loading state initially`, () => {
 });
 
 it(`renders error state`, async () => {
-  const mocks = [{
+  const errorMocks = [{
     request: {
       query: HEADER_QUERY,
     },
@@ -141,8 +152,10 @@ it(`renders error state`, async () => {
   }];
 
   const { getByTestId } = render(
-    <MockedProvider mocks={mocks} addTypename={false}>
-      <Header />
+    <MockedProvider mocks={errorMocks} addTypename={false}>
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>
     </MockedProvider>,
   );
 

@@ -8,31 +8,61 @@ import {
   LivePreview
 } from 'react-live';
 
-import { Menu, menu, menuItem, subMenu } from 'lib';
+import { Menu, menu, menuItem, subMenu, Link as MenuLink } from 'lib/models/menu';
+
+const scope = {
+  _, Menu, menu, menuItem,
+  subMenu, Link: MenuLink,
+};
 
 const code = `
-  const customSubMenu = ({ itemView: Item, items, ...rest }) => (
-    <ol {...rest}>
-      {_.map(items, ({ id, ...rest }) => (<li key={id}><Item id={id} {...rest} /></li>))}
+  const subMenuView = ({ MenuItem, SubMenu, items, ...rest }) => (
+    <ol data-testid="custom-submenu" {...rest}>
+      {_.map(items, ({ id, menuItemId, cssClasses, ...r}) => (
+        <li key={id}>
+          <MenuItem
+            className={\`menuItem \${cssClasses.join(' ')}\`}
+            id={id}
+            {...{ ...r, MenuItem, SubMenu }}
+          />
+        </li>
+      ))}
     </ol>
-  );
+  )
 
-  const customMenuItem = ({ url, label, items, subMenuView: SubMenu, ...rest }) => (
+  const menuItemView = ({ url, label, items, SubMenu, MenuItem, description, ...rest }) => (
     <React.Fragment>
-      <a href={url} {...rest} style={{ padding: "1.4em 2em", color: "#595959" }}>{label}</a>
-      {!_.isEmpty(items) && (<SubMenu className="sub-menu" items={items} />)}
+      <Link {...{ ...rest, url }}>{label}</Link>
+      {!_.isEmpty(items) && (
+        <SubMenu
+          className="sub-menu"
+          {...{ items, SubMenu, MenuItem}}
+        />
+      )}
     </React.Fragment>
-  );
+  )
 
-  const customMenu = ({ slug, items, itemView: MenuItem, ...rest }) => (
-    <div className="custom-menu" {...rest}>
-      {_.map(items, ({ id, ...r}) => (<MenuItem key={id} id={id} {...r} />))}
+  const customMenuView = ({ slug, className, items, MenuItem, SubMenu, ...rest }) => (
+    <div id={\`menu-\${slug}\`} className={className} {...rest}>
+      {_.map(items, ({ id, menuItemId, cssClasses, ...r}) => (
+        <div key={id} className="menu-item">
+          <MenuItem
+            className={\`menuItem \${cssClasses.join(' ')}\`}
+            id={id}
+            {...{ ...r, MenuItem, SubMenu }}
+          />
+        </div>
+      ))}
     </div>
   );
 
-  const CustomSubMenu = subMenu.compose({ view: customMenu });
-  const CustomMenuItem = menuItem.compose({ view: customMenuItem, subMenuView: CustomMenu });
-  const CustomMenu = menu.compose({ view: customMenu, itemView: CustomMenuItem });
+  const SubMenu = subMenu.compose({ view: subMenuView });
+  const MenuItem = menuItem.compose({ view: menuItemView });
+  const CustomMenu = menu.compose({
+    view: customMenuView,
+    MenuItem,
+    SubMenu
+  });
 
   const App = () => (
     <div className="app">
@@ -66,22 +96,43 @@ const modComponents = ({ provider: WPProvider, ...rest }) => {
           <pre>
             <code>
               {`
-  const customSubMenu = ({ Item, items, ...rest }) => (
-    <ol {...rest}>
-      {_.map(items, ({ id, ...rest }) => (<li key={id}><Item id={id} {...rest} /></li>))}
+  const subMenuView = ({ MenuItem, SubMenu, items, ...rest }) => (
+    <ol data-testid="custom-submenu" {...rest}>
+      {_.map(items, ({ id, menuItemId, cssClasses, ...r}) => (
+        <li key={id}>
+          <MenuItem
+            className={\`menuItem \${cssClasses.join(' ')}\`}
+            id={id}
+            {...{ ...r, MenuItem, SubMenu }}
+          />
+        </li>
+      ))}
     </ol>
-  );
+  )
 
-  const customMenuItem = ({ url, label, items, SubMenu, ...rest }) => (
+  const menuItemView = ({ url, label, items, SubMenu, MenuItem, description, ...rest }) => (
     <React.Fragment>
-      <a href={url} {...rest}>{label}</a>
-      {!_.isEmpty(items) && (<SubMenu className="sub-menu" items={items} />)}
+      <Link {...{ ...rest, url }}>{label}</Link>
+      {!_.isEmpty(items) && (
+        <SubMenu
+          className="sub-menu"
+          {...{ items, SubMenu, MenuItem}}
+        />
+      )}
     </React.Fragment>
-  );
+  )
 
-  const customMenu = ({ slug, className, 'data-testid': dataTestId, items, MenuItem }) => (
-    <div id={\`menu-\${slug}\`} className={className} data-testid={dataTestId}>
-      {_.map(items, ({ id, ...r}) => (<MenuItem key={id} id={id} {...r} />))}
+  const customMenuView = ({ slug, className, items, MenuItem, SubMenu, ...rest }) => (
+    <div id={\`menu-\${slug}\`} className={className} {...rest}>
+      {_.map(items, ({ id, menuItemId, cssClasses, ...r}) => (
+        <div key={id} className="menu-item">
+          <MenuItem
+            className={\`menuItem \${cssClasses.join(' ')}\`}
+            id={id}
+            {...{ ...r, MenuItem, SubMenu }}
+          />
+        </div>
+      ))}
     </div>
   );
               `}
@@ -90,15 +141,15 @@ const modComponents = ({ provider: WPProvider, ...rest }) => {
         </li>
         <li>Last lastly use the <code>compose</code> function on each of the imported components to
           compose a new <code>CustomMenu</code> Component.
-          <LiveProvider scope={{ _, Menu, menu, menuItem, subMenu, WPProvider }} code={code} noInline={true}>
+          <LiveProvider scope={{ ...scope, WPProvider }} code={code} noInline={true}>
             <LiveEditor />
             <LiveError />
             <LivePreview />
           </LiveProvider>
         </li>
       </ul>
-      <p>You can learn more about the <Link to="/components#menu">Menu</Link> component and the rest of the 
-      library in the <Link to="/components">Components</Link> and <Link to="/docs">Documentation</Link> sections. </p>
+      <p>You can learn more about the <Link to="/lib#menu">Menu</Link> component and the rest of the 
+      library in the <Link to="/lib">Components</Link> and <Link to="/docs">Documentation</Link> sections. </p>
     </section>
   )
 }

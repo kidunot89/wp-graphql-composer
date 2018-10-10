@@ -4,13 +4,21 @@ import { isEmpty, map, omit } from 'lodash';
 
 import { compileClassName } from 'lib/helpers';
 
-const menu = ({ slug, items, itemView: MenuItem, ...rest }) => {
-  const className = compileClassName(rest, 'composer-menu', 'horizontal');
+const menu = ({ slug, items, SubMenu, MenuItem, ...rest }) => {
+  const className = compileClassName(rest, 'menu-container', 'horizontal');
   return (
     <div id={`menu-${slug}`} {...omit(rest, 'horizontal')} className={className}>
-      <ul>
+      <ul className="nav-menu">
         { !isEmpty(items) &&
-          map(items, ({ id, ...r }) => (<li className="composer-menu-item" key={`menu-item-${id}`}><MenuItem id={id} {...r} /></li>))
+          map(items, ({ id, menuItemId, ...r }) => (
+            <li
+              id={`menu-item-${menuItemId}`}
+              className={`menu-item menu-item-${menuItemId} ${r.cssClasses.join(' ')}`}
+              key={id}
+            >
+              <MenuItem id={id} {...{...r, SubMenu, MenuItem }} />
+            </li>
+          ))
         }
       </ul>
     </div>
@@ -19,17 +27,15 @@ const menu = ({ slug, items, itemView: MenuItem, ...rest }) => {
 
 menu.propTypes = {
   slug: PropTypes.string.isRequired,
+  SubMenu: PropTypes.func.isRequired,
+  MenuItem: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.shape({})),
-  itemView: PropTypes.func,
   horizontal: PropTypes.bool,
-  className: PropTypes.string,
 }
 
 menu.defaultProps = {
   items: [],
-  itemView: () => null,
   horizontal: undefined,
-  className: undefined,
 };
 
 export default menu;

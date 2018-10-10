@@ -6,6 +6,7 @@
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
+@import url("https://fonts.googleapis.com/css?family=Basic|Caveat|EB+Garamond:600,800|Ubuntu+Mono");
 @import url("https://fonts.googleapis.com/css?family=K2D:400,700|Open+Sans:800");
 html {
   line-height: 1.15;
@@ -298,6 +299,37 @@ template {
  */
 [hidden] {
   display: none; }
+
+/**
+ * COLORS
+ */
+/**
+ * FONTS
+ */
+/**
+ * BASE
+ */
+body {
+  background-color: #dee2e6;
+  color: #495057;
+  font-family: "EB Garamond", serif; }
+  body h1, body h2, body h3, body h4, body h5, body h6 {
+    font-family: "Basic", san-serif;
+    color: #343a40; }
+    body h1 small, body h2 small, body h3 small, body h4 small, body h5 small, body h6 small {
+      font-size: 100%;
+      font-family: "EB Garamond", serif;
+      font-weight: 800;
+      letter-spacing: 0.095em; }
+  body input {
+    font-family: "Ubuntu Mono", monospace; }
+  body a {
+    font-family: "EB Garamond", serif;
+    color: #F40022; }
+  body blockquote {
+    font-family: "Caveat", cursive; }
+  body pre, body code {
+    font-family: "Ubuntu Mono", monospace; }
 
 /*
 * Skeleton V2.0.4
@@ -1827,50 +1859,151 @@ h1, h2, h3, h4, h5, h6 {
 .app-header .site-branding .site-description {
   font-size: 1.9em; }
 
-/**
- * LOGIN FORM
- */
+/* Extra Small */
 form.login-form {
+  max-width: 400px;
   display: flex;
-  flex-wrap: nowrap;
+  flex-direction: column;
   margin: 0 auto; }
+  form.login-form .login-form-info {
+    margin: 0.45em auto;
+    color: tomato;
+    font-size: 1.2em; }
+  form.login-form .username-field,
+  form.login-form .password-field {
+    margin: 0.3em; }
+    form.login-form .username-field.error input,
+    form.login-form .password-field.error input {
+      border-color: Tomato; }
+    form.login-form .username-field input,
+    form.login-form .password-field input {
+      width: 100%;
+      border-width: 0.07em;
+      border-radius: 0.2em; }
+    form.login-form .username-field .field-info,
+    form.login-form .password-field .field-info {
+      display: block;
+      color: gray; }
+  form.login-form .login-submit {
+    margin: 0.3em;
+    border-width: 0.07em;
+    border-radius: 0.2em;
+    box-shadow: none;
+    font-size: 0.9em;
+    color: #fff;
+    background-color: #005F4C; }
 
-form.login-form > * {
-  margin-right: 1em; }
-
-.login-form .login-form-info {
-  margin-top: 0.45em;
-  color: tomato;
-  font-size: 1.2em; }
-
-.login-form .username-field input,
-.login-form .password-field input {
-  border-radius: 5px; }
-
-.login-form .username-field.error input,
-.login-form .password-field.error input {
-  border-color: Tomato; }
-
-.login-form .username-field .field-info,
-.login-form .password-field .field-info {
-  display: block;
-  color: gray; }
-
-.login-form .login-submit {
-  border-radius: 5px; }
-
-/**
- * MENU
- */
-.composer-menu ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column; }
-  .composer-menu ul .composer-menu-item {
-    border-bottom: 0.07em #292929 solid; }
-    .composer-menu ul .composer-menu-item a {
-      text-decoration: none;
-      padding: 0.4em 0.5em; }
+/* Small */
+/* Medium */
+/* Large */
+/* Extra Large */
+/* Extra Small */
+.menu-container {
+  position: relative;
+  width: 100%;
+  margin: 0.4em 0 0 0;
+  font-size: 1.3em; }
+  .menu-container ul.nav-menu,
+  .menu-container ul.sub-menu {
+    position: relative;
+    margin: 0 auto;
+    padding: 0.4em 0.8em;
+    max-width: 100%;
+    list-style: none;
+    display: flex;
+    flex-direction: column; }
+    .menu-container ul.nav-menu li, .menu-container ul.nav-menu li a,
+    .menu-container ul.sub-menu li,
+    .menu-container ul.sub-menu li a {
+      font-size: 1em !important; }
+      .menu-container ul.nav-menu li li, .menu-container ul.nav-menu li li a, .menu-container ul.nav-menu li a li, .menu-container ul.nav-menu li a li a,
+      .menu-container ul.sub-menu li li,
+      .menu-container ul.sub-menu li li a,
+      .menu-container ul.sub-menu li a li,
+      .menu-container ul.sub-menu li a li a {
+        font-size: 1em !important; }
+        .menu-container ul.nav-menu li li li, .menu-container ul.nav-menu li li li a, .menu-container ul.nav-menu li li a li, .menu-container ul.nav-menu li li a li a, .menu-container ul.nav-menu li a li li, .menu-container ul.nav-menu li a li li a, .menu-container ul.nav-menu li a li a li, .menu-container ul.nav-menu li a li a li a,
+        .menu-container ul.sub-menu li li li,
+        .menu-container ul.sub-menu li li li a,
+        .menu-container ul.sub-menu li li a li,
+        .menu-container ul.sub-menu li li a li a,
+        .menu-container ul.sub-menu li a li li,
+        .menu-container ul.sub-menu li a li li a,
+        .menu-container ul.sub-menu li a li a li,
+        .menu-container ul.sub-menu li a li a li a {
+          font-size: 1em !important; }
+    .menu-container ul.nav-menu li.menu-item,
+    .menu-container ul.sub-menu li.menu-item {
+      display: inline-flex;
+      flex-flow: row wrap;
+      align-content: space-between;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0;
+      margin: 0; }
+      .menu-container ul.nav-menu li.menu-item:after,
+      .menu-container ul.sub-menu li.menu-item:after {
+        content: "";
+        display: table;
+        clear: both; }
+      .menu-container ul.nav-menu li.menu-item a,
+      .menu-container ul.sub-menu li.menu-item a {
+        order: 0;
+        padding: 1.5em 1em;
+        text-decoration: none;
+        color: #678D00;
+        transition: color 250ms ease-out, background-color 320ms ease-in; }
+        .menu-container ul.nav-menu li.menu-item a:active, .menu-container ul.nav-menu li.menu-item a.active,
+        .menu-container ul.sub-menu li.menu-item a:active,
+        .menu-container ul.sub-menu li.menu-item a.active {
+          background-color: #005F4C;
+          color: #fff; }
+      .menu-container ul.nav-menu li.menu-item button.dropdown-toggle,
+      .menu-container ul.sub-menu li.menu-item button.dropdown-toggle {
+        order: 1;
+        position: relative;
+        width: 3em;
+        height: 3em;
+        background: transparent;
+        border: none;
+        margin: 1.5em 1em; }
+        .menu-container ul.nav-menu li.menu-item button.dropdown-toggle::before,
+        .menu-container ul.sub-menu li.menu-item button.dropdown-toggle::before {
+          position: absolute;
+          font-family: "Metrize-Icons";
+          font-size: 2.5em;
+          content: "\e11c";
+          left: 50%;
+          top: 50%;
+          padding: 1.5em 0;
+          color: #6c757d;
+          transform: translate(-50%, -50%) rotate(180deg);
+          transition: transform 550ms ease-out, color 475ms ease-out; }
+        .menu-container ul.nav-menu li.menu-item button.dropdown-toggle.toggle-on::before,
+        .menu-container ul.sub-menu li.menu-item button.dropdown-toggle.toggle-on::before {
+          color: #678D00;
+          transform: translate(-50%, -50%) rotate(0deg);
+          transition: transform 350ms ease-in, color 300ms ease-in; }
+      .menu-container ul.nav-menu li.menu-item .sub-menu,
+      .menu-container ul.sub-menu li.menu-item .sub-menu {
+        margin-left: 0.8em;
+        padding: 0;
+        flex-basis: 100%;
+        order: 2;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 550ms ease-out; }
+        .menu-container ul.nav-menu li.menu-item .sub-menu.toggle-on,
+        .menu-container ul.sub-menu li.menu-item .sub-menu.toggle-on {
+          transition: max-height 3s ease-out;
+          max-height: 100vh; }
+  .menu-container .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu:before {
+    content: "";
+    display: table;
+    clear: both; }
+  .menu-container .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .menu-item .sub-menu {
+    margin: 0 auto;
+    width: 100%; }
 
 /* Small */
 /* Medium */

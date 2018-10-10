@@ -57,6 +57,7 @@ export const POST_COMMENTS_QUERY = gql`
     post(id: $id) {
       id
       postId
+      title
       commentStatus
       comments{
         nodes {
@@ -70,6 +71,9 @@ export const POST_COMMENTS_QUERY = gql`
               id
               userId
               nicename
+              avatar {
+                url
+              }
             }
             ... on CommentAuthor {
               id

@@ -6,7 +6,7 @@ import { PostCommentsContext } from '../context';
 
 const postComments = ({
   commentsData, commentView: CommentView, editCommentView: EditCommentView,
-  open, postId, ...rest
+  title, open, postId, ...rest
 }) => (
   <PostCommentsContext.Consumer>
     {({ editing, onEdit: edit }) => {
@@ -15,19 +15,27 @@ const postComments = ({
       const isEditing = editing[newCommentKey];
 
       return (
-        <section id={`post-${postId}-comments`} {...rest}>
-          {map(
-            commentsData, 
-            comment => (
-              <CommentView
-                {...comment}
-                EditCommentView={EditCommentView}
-                className="comment"
-                key={comment.id}
-              />
-            )
-          )}
-          
+        <div id={`post-${postId}-comments`} className="comments-area" {...rest}>
+          {commentsData.length && 
+            <React.Fragment>
+              <h2 className="comments-title">
+                {`${commentsData.length} thoughts on ${title}`}
+              </h2>
+              <ol className="comment-list">
+                {map(
+                  commentsData, 
+                  comment => (
+                    <CommentView
+                      {...comment}
+                      EditCommentView={EditCommentView}
+                      className="comment"
+                      key={comment.id}
+                    />
+                  )
+                )}
+              </ol>
+            </React.Fragment>
+          }
           <footer className="post-comments-footer">
             {!!open && isEditing ? 
               <EditCommentView commentKey={newCommentKey} /> :
@@ -39,7 +47,7 @@ const postComments = ({
               </button>
             }
           </footer>
-        </section>
+        </div>
       );
 
     }}

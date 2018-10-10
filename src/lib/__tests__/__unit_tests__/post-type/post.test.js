@@ -51,8 +51,8 @@ it(`renders a post`, async () => {
               }
             ]
           },
-          "tags": {
-            "nodes": [
+          tags: {
+            nodes: [
               {
                 id: "cG9zdF90YWc6OQ==",
                 name: "Forsha"

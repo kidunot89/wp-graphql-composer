@@ -1,10 +1,10 @@
 # What is WP-GraphQL Composer?
-WP-GraphQL Composer is a library of [React]() components that does most of the the legwork for creating a [React-Apollo]() Wordpress theme.
+WP-GraphQL Composer is a library of [React](https://reactjs.org) components that does most of the the legwork for creating a [React-Apollo](https://www.apollographql.com/docs/react/) Wordpress theme.
 
-The components within this library are make up of reusable [Higher-Order-Components]() that are wrapped around a [React Stateless Component]() using Andrew Clark's Recompose library. This library was created to be an extension of the [WPGraphQL]() plugin, and component and their queries won't work without a [GraphQL]() server serving a Schema not identical to the created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed to my knowledge
+The components within this library are make up of reusable [Higher-Order-Components](https://reactjs.org/docs/higher-order-components.html) that are wrapped around a [React Stateless Component](https://reactjs.org/docs/components-and-props.html) using Andrew Clark's [Recompose](https://recompose.docsforhumans.com/) library. This library was created to be an extension of the [WPGraphQL](https://wpgraphql.com/) plugin, and component and their queries won't work without a [GraphQL](https://graphql.org/) server serving a Schema not identical to the created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed to my knowledge
 
 ## What Does It Offer?
-An easy solution to quickly creating a React app served by [WordPress]()
+An easy solution to quickly creating a React app served by [WordPress](https://wordpress.org)
 
 ## Getting Started
 Run the command npm install wp-graphql-composer in a your React app directory.
@@ -56,37 +56,58 @@ Simply import a component and pass the required props.
 `import { menu, menuItem, subItem } from 'wp-graphql-composer';`
 2. Next create new components to be the new view layers for the menu, menu item, and sub menu components. You don't have to change all three for but I am just to show how its done. I'm also using the `map` and `isEmpty` functions from the `lodash` package to help map the items.
 ```
-  const customSubMenu = ({ Item, items, ...rest }) => (
-    <ol {...rest}>
-      {_.map(items, ({ id, ...rest }) => (<li key={id}><Item id={id} {...rest} /></li>))}
+  const subMenuView = ({ MenuItem, SubMenu, items, ...rest }) => (
+    <ol data-testid="custom-submenu" {...rest}>
+      {_.map(items, ({ id, menuItemId, cssClasses, ...r}) => (
+        <li key={id}>
+          <MenuItem
+            className={\`menuItem \${cssClasses.join(' ')}\`}
+            id={id}
+            {...{ ...r, MenuItem, SubMenu }}
+          />
+        </li>
+      ))}
     </ol>
   );
 
-  const customMenuItem = ({ url, label, items, SubMenu, ...rest }) => (
+  const menuItemView = ({ url, label, items, SubMenu, MenuItem, description, ...rest }) => (
     <React.Fragment>
-      <a href={url} {...rest}>{label}</a>
-      {!_.isEmpty(items) && (<SubMenu className="sub-menu" items={items} />)}
+      <Link {...{ ...rest, url }}>{label}</Link>
+      {!_.isEmpty(items) && (
+        <SubMenu
+          className="sub-menu"
+          {...{ items, SubMenu, MenuItem}}
+        />
+      )}
     </React.Fragment>
   );
 
-  const customMenu = ({ slug, className, 'data-testid': dataTestId, items, MenuItem }) => (
-    <div id={`menu-${slug}`} className={className} data-testid={dataTestId}>
-      {_.map(items, ({ id, ...r}) => (<MenuItem key={id} id={id} {...r} />))}
+  const customMenuView = ({ slug, className, items, MenuItem, SubMenu, ...rest }) => (
+    <div id={\`menu-\${slug}\`} className={className} {...rest}>
+      {_.map(items, ({ id, menuItemId, cssClasses, ...r}) => (
+        <div key={id} className="menu-item">
+          <MenuItem
+            className={\`menuItem \${cssClasses.join(' ')}\`}
+            id={id}
+            {...{ ...r, MenuItem, SubMenu }}
+          />
+        </div>
+      ))}
     </div>
   );
 ```
 3. Last lastly use the `compose` function on each of the imported components to compose a new `CustomMenu` Component.
 ```
-  const CustomSubMenu = subMenu.compose({ view: customMenu });
-  const CustomMenuItem = menuItem.compose({ view: customMenuItem, subMenuView: CustomMenu });
-  const CustomMenu = menu.compose({ view: customMenu, itemView: CustomMenuItem });
+  const SubMenu = subMenu.compose({ view: subMenuView });
+  const MenuItem = menuItem.compose({ view: menuItemView });
+  const CustomMenu = menu.compose({
+    view: customMenuView,
+    MenuItem,
+    SubMenu
+  });
 
   const App = () => (
     <div className="app">
-      <strong>Default Menu</strong>
-      <Menu location="SOCIAL" />
-
-      <strong>Custom Menu</strong>
       <CustomMenu location="SOCIAL" />
     </div>
   );
@@ -97,7 +118,7 @@ Simply import a component and pass the required props.
     </WPProvider>
   );
 ```
-You can learn more about the [Menu]() component and the rest of the library in the [Components]() and [Documentation]() sections.
+You can learn more about the [Menu](https://api.axistaylor.com/composer/lib#menu) component and the rest of the library in the [Components](https://api.axistaylor.com/composer/lib) and [Documentation](https://api.axistaylor.com/composer/docs) sections.
 
 ## Creating New Composers
 You can create a completely new composer function using the helper composer functions in `lib/composers`. There are two primary functions made `baseComposer` and `queryComposer`. They are similar but their uses are little different.
@@ -111,6 +132,7 @@ const composer = baseComposer({
   error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' }, // default properties passed to error handler,
   extraHocs: [], // default HOCs wrapped around the mapper and view layer component
   mapper: props => props, // default mapper function
+  ...extraDefaults, // all of elements are pass to the view component as a prop.
 })
 
 const ComposedComponent = composer({ view, loading, error, extraHocs, mapper }) // all default values can be overwritten in composed instances
@@ -125,6 +147,7 @@ const composer = queryComposer({
   error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' }, // default properties passed to error handler,
   extraHocs: [], // default HOCs wrapped around the mapper and view layer component
   sharedMapper: props => props, // default mapper function
+  ...extraDefaults, // all of elements are pass to the view component as a prop.
 })
 
 const ComposedComponent = composer({ view, queries, loading, error, extraHocs, mapper }) // all default values can be overwritten in composed instances

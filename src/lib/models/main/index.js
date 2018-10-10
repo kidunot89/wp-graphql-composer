@@ -1,27 +1,24 @@
-import { compose, mapProps } from 'recompose';
-import { graphql } from 'react-apollo';
+import { queryComposer } from 'lib/composers';
+import { Loading, Error } from 'lib/utils';
+import { Archive } from 'lib/models/archives';
+import { Page, Post } from 'lib/models/post-type';
 
-
-import { whileLoading, forError, Loading, Error } from 'lib';
 import main from './views/main';
-import processRoutes from './controllers/route_builder' 
+import { mapLoopProps, defaultRoutes, routesProcessor } from './controllers/router' 
 import { LOOP_QUERY } from './query';
 
-main.compose = (template = main, error = Error, loading = Loading) =>
-  compose(
-    graphql(LOOP_QUERY),
-    whileLoading(loading),
-    forError(error),
-    mapProps(
-      ({ data, ...rest}) => {
+main.compose = queryComposer({
+  view: main,
+  Archive,
+  Page,
+  Post,
+  queries: [{ query: LOOP_QUERY, mapper: mapLoopProps }],
+  whileLoading: { view: Loading },
+  forError: { view: Error },
+  extraHocs: [routesProcessor(defaultRoutes)],
+});
 
-        return { ...rest };
-      },
-    ),
-    processRoutes(),
-  )(template);
-
-const Main = main.compose();
+const Main = main.compose({});
 
 export { Main, main, LOOP_QUERY };
 
