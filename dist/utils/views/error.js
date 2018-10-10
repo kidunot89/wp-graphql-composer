@@ -1,13 +1,18 @@
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 var error = function error(_ref) {
   var icon = _ref.icon,
-      message = _ref.message;
+      message = _ref.message,
+      type = _ref.type,
+      rest = _objectWithoutProperties(_ref, ['icon', 'message', 'type']);
+
   return React.createElement(
     'div',
-    { className: 'error' },
+    Object.assign({ className: type + '-error' }, rest),
     React.createElement(
       'div',
       { className: 'error-icon', 'data-testid': 'error-icon' },

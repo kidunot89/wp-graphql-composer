@@ -25,7 +25,7 @@ var login = function login(_ref) {
     ),
     React.createElement(
       'div',
-      { className: 'login-username' + (userFieldError ? ' error' : '') },
+      { className: 'username-field' + (userFieldError ? ' error' : '') },
       React.createElement('input', {
         type: 'text',
         name: 'username',
@@ -35,13 +35,13 @@ var login = function login(_ref) {
       }),
       userFieldError && React.createElement(
         'small',
-        { className: 'login-username-info' },
+        { className: 'field-info' },
         userFieldError
       )
     ),
     React.createElement(
       'div',
-      { className: 'login-password' + (passFieldError ? ' error' : '') },
+      { className: 'password-field' + (passFieldError ? ' error' : '') },
       React.createElement('input', {
         type: 'password',
         name: 'password',
@@ -51,13 +51,13 @@ var login = function login(_ref) {
       }),
       passFieldError && React.createElement(
         'small',
-        { className: 'login-password-info' },
+        { className: 'field-info' },
         passFieldError
       )
     ),
     React.createElement(
       'button',
-      { type: 'submit' },
+      { className: 'login-submit', type: 'submit' },
       'Sign In'
     )
   );

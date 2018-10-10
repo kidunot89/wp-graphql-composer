@@ -1,24 +1,23 @@
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+import { queryComposer } from 'lib/composers';
+import { Loading, Error } from 'lib/utils';
+import { Archive } from 'lib/models/archives';
+import { Page, Post } from 'lib/models/post-type';
 
-import { compose, mapProps } from 'recompose';
-import { graphql } from 'react-apollo';
-
-import { whileLoading, forError, Loading, Error } from 'lib';
 import main from './views/main';
+import { mapLoopProps, defaultRoutes, routesProcessor } from './controllers/router';
 import { LOOP_QUERY } from './query';
 
-main.compose = function () {
-  var template = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : main;
-  var error = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Error;
-  var loading = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Loading;
-  return compose(graphql(LOOP_QUERY), whileLoading(loading), forError(error), mapProps(function (_ref) {
-    var data = _ref.data,
-        rest = _objectWithoutProperties(_ref, ['data']);
+main.compose = queryComposer({
+  view: main,
+  Archive: Archive,
+  Page: Page,
+  Post: Post,
+  queries: [{ query: LOOP_QUERY, mapper: mapLoopProps }],
+  whileLoading: { view: Loading },
+  forError: { view: Error },
+  extraHocs: [routesProcessor(defaultRoutes)]
+});
 
-    return rest;
-  }))(template);
-};
-
-var Main = main.compose();
+var Main = main.compose({});
 
 export { Main, main, LOOP_QUERY };

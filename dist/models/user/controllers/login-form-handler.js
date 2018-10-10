@@ -55,6 +55,7 @@ export default (function () {
             return false;
           };
 
+          this.setState({ form: { username: username, password: password } });
           return true;
         }
       }, {
@@ -63,10 +64,10 @@ export default (function () {
           var user = _ref.user,
               pass = _ref.pass;
 
-          var formError = user && pass ? 'You must enter a username and password' : undefined;
+          var formError = undefined;
           var userFieldError = user ? 'You must enter a username' : undefined;
           var passFieldError = pass ? 'You must enter a password' : undefined;
-          return Object.assign({ formError: formError, userFieldError: userFieldError, passFieldError: passFieldError }, this.state.form);
+          return Object.assign(this.state.form, { formError: formError, userFieldError: userFieldError, passFieldError: passFieldError });
         }
       }, {
         key: 'processResults',

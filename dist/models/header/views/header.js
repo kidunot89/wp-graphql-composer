@@ -2,6 +2,8 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+
 import { Attachment } from 'lib/models';
 
 var header = function header(_ref) {
@@ -14,14 +16,14 @@ var header = function header(_ref) {
 
   return React.createElement(
     'div',
-    Object.assign({ className: 'app-header' }, rest),
+    Object.assign({ className: 'site-header', role: 'banner' }, rest),
     React.createElement(
       'div',
       { id: 'masthead', className: 'site-branding' },
       React.createElement(Attachment, {
         mediaItemId: logo,
-        className: 'site-logo',
-        alt: 'site logo',
+        className: 'custom-logo',
+        alt: title,
         fallback: true,
         style: {
           width: '256px',
@@ -30,8 +32,8 @@ var header = function header(_ref) {
         }
       }),
       React.createElement(
-        'a',
-        { href: url, 'data-testid': 'home-link' },
+        Link,
+        { to: '/', 'data-testid': 'home-link' },
         React.createElement(
           'h1',
           { className: 'site-title' },

@@ -4,22 +4,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 var main = function main(_ref) {
-  var className = _ref.className,
-      routes = _ref.routes,
+  var Archive = _ref.Archive,
       children = _ref.children,
-      rest = _objectWithoutProperties(_ref, ['className', 'routes', 'children']);
+      className = _ref.className,
+      Page = _ref.Page,
+      Post = _ref.Post,
+      Routes = _ref.Routes,
+      rest = _objectWithoutProperties(_ref, ['Archive', 'children', 'className', 'Page', 'Post', 'Routes']);
 
   return React.createElement(
     'div',
     Object.assign({ className: 'main' + (className ? ' ' + className : '') }, rest),
-    routes,
+    React.createElement(Routes, { Archive: Archive, Page: Page, Post: Post }),
     children
   );
 };
 
 main.propTypes = {
-  className: PropTypes.string,
-  routes: PropTypes.shape({}).isRequired
+  Archive: PropTypes.func.isRequired,
+  Page: PropTypes.func.isRequired,
+  Post: PropTypes.func.isRequired,
+  Routes: PropTypes.func.isRequired,
+  className: PropTypes.string
 };
 
 main.defaultProps = {

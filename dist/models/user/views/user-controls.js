@@ -36,10 +36,7 @@ var userControls = function userControls(_ref) {
       { className: 'logout' },
       React.createElement(
         'button',
-        {
-          className: 'logout-button',
-          onClick: logout
-        },
+        { onClick: logout },
         'Logout'
       )
     )

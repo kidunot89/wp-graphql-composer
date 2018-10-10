@@ -22,7 +22,8 @@ export var createClient = function createClient(httpLink) {
       dataIdFromObject: function dataIdFromObject(object) {
         return object.id || null;
       }
-    })
+    }),
+    clientState: {}
   });
 };
 

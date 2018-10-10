@@ -19,30 +19,49 @@ export default (function (_ref) {
       message = _ref.message,
       rest = _objectWithoutProperties(_ref, ['type', 'message']);
 
-  switch (type) {
-    case '404':
-    case '404-image':
+  var notFound = /^404(?:-(.*))?$/;
+  var notAuthorized = /^403(?:-(.*))?$/;
+  var queryError = /^query(?:-(.*))?$/;
+  var systemError = /^component(?:-(.*))?$/;
+  var typename = void 0;
+  switch (true) {
+    case notFound.test(type):
+      typename = type.replace(notFound, '$1') !== '' ? type.replace(notFound, '$1') : 'content';
       return Object.assign({
-        message: processMessage('Sorry, we can\'t locate the ' + (type === '404-image' ? 'image' : 'page') + ' you\'re looking for. Please, try again later.', message),
-        icon: React.createElement(FontAwesomeIcon, { color: 'Tomato', size: '2x', icon: ['fas', 'times'], mask: ['fas', 'circle'] })
+        message: processMessage('Sorry, we can\'t locate the ' + typename + ' you\'re looking for. Please, try again later.', message),
+        icon: React.createElement(FontAwesomeIcon, { color: 'Tomato', size: '2x', icon: ['fas', 'times'], mask: ['fas', 'circle'] }),
+        type: type
       }, rest);
 
-    case '403':
+    case notAuthorized.test(type):
+      typename = type.replace(notAuthorized, '$1') !== '' ? type.replace(notAuthorized, '$1') : 'content';
       return Object.assign({
-        message: processMessage('Sorry, you aren\'t authorized to view this content.', message),
-        icon: React.createElement(FontAwesomeIcon, { color: 'Tomato', size: '2x', icon: ['fas', 'ban'] })
+        message: processMessage('Sorry, you aren\'t authorized to view this ' + typename + '.', message),
+        icon: React.createElement(FontAwesomeIcon, { color: 'Tomato', size: '2x', icon: ['fas', 'ban'] }),
+        type: type
       }, rest);
 
-    case 'query':
+    case queryError.test(type):
+      typename = type.replace(queryError, '$1') !== '' ? type.replace(queryError, '$1') : 'content';
       return Object.assign({
-        message: processMessage('Sorry, there was a problem loading the content you are trying to access. Please, try again later.', message),
-        icon: React.createElement(FontAwesomeIcon, { color: 'Tomato', size: '2x', icon: ['fas', 'exclamation-circle'] })
+        message: processMessage('Sorry, there was a problem loading the ' + typename + ' you are trying to access. Please, try again later.', message),
+        icon: React.createElement(FontAwesomeIcon, { color: 'Tomato', size: '2x', icon: ['fas', 'exclamation-circle'] }),
+        type: type
+      }, rest);
+
+    case systemError.test(type):
+      typename = type.replace(systemError, '$1') !== '' ? type.replace(systemError, '$1') : 'content';
+      return Object.assign({
+        message: processMessage('Sorry, there was a system error while loading the ' + typename + ' you request. Please, try again later or report this to us.', message),
+        icon: React.createElement(FontAwesomeIcon, { color: 'Tomato', size: '2x', icon: ['fas', 'exclamation-triangle'] }),
+        type: type
       }, rest);
 
     default:
       return Object.assign({
         message: processMessage('Wow, this is embarassing! We\'re not sure what happened. Or... a lazy dev just forgot to add a message here. Sorry!.', message),
-        icon: React.createElement(FontAwesomeIcon, { size: '2x', icon: ['fas', 'grin-beam-sweat'] })
+        icon: React.createElement(FontAwesomeIcon, { size: '2x', icon: ['fas', 'grin-beam-sweat'] }),
+        type: type
       }, rest);
   }
 });

@@ -1,0 +1,17 @@
+
+@import url('https://fonts.googleapis.com/css?family=K2D:400,700|Open+Sans:800');
+
+body {
+  font-family: "K2D", sans-serif;
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Open Sans', "Raleway", Helvetica, Arial, sans-serif;
+
+  small {
+    font-family: "K2D", sans-serif;
+    font-weight: 800;
+    text-transform: capitalize;
+  }
+}
