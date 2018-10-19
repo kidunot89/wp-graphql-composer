@@ -50,7 +50,6 @@ const mocks = [
                 type: "",
                 content: "<p>Welcome to the Danger Zone</p>\n",
                 date: "2018-09-12 23:02:46",
-                modified: "2018-09-12 23:02:46",
                 author: {
                   id: "Y29tbWVudEF1dGhvcjp3YXB1dUB3b3JkcHJlc3MuZXhhbXBsZQ==",
                   name: "A WordPress Commenter",
@@ -63,7 +62,6 @@ const mocks = [
                 type: "",
                 content: "<p>No, welcome to the Deez Nutz</p>\n",
                 date: "2018-09-12 23:02:46",
-                modified: "2018-09-16 23:06:53",
                 author: {
                   id: "DxjoniDx",
                   userId: 3,
@@ -106,7 +104,6 @@ const mocks = [
             type: "",
             content: message,
             date: `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`,
-            modified: `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`,
             author: {
               id: "Y29tbWVudEF1dGhvcjp3YXB1dUB3b3JkcHJlc3MuZXhhbXBsZJ==",
               name: "Jim Bean",
@@ -125,7 +122,6 @@ const mocks = [
         type: null,
         id: "Y29tbWVudDoj",
         content: messageTwo,
-        date: `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`,
         clientId: 'd9ef8077-d37c-3d31-8a50-ee097a3d33f3',
       }
     },
@@ -139,7 +135,6 @@ const mocks = [
             type: "",
             content: messageTwo,
             date: '2018-09-12 23:02:46',
-            modified: `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`,
             author: {
               id: "DxjoniDx",
               userId: 3,
@@ -171,7 +166,6 @@ const mocks = [
             type: "",
             content: messageTwo,
             date: '2018-09-12 23:02:46',
-            modified: `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`,
             author: {
               id: "DxjoniDx",
               userId: 3,

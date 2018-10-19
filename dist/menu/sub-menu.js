@@ -46,11 +46,15 @@ var subMenu = function (_React$Component) {
       return React.createElement(
         React.Fragment,
         null,
-        React.createElement('button', {
-          className: 'dropdown-toggle' + collapse,
-          'aria-expanded': isCollapsed,
-          onClick: this.toggle
-        }),
+        React.createElement(
+          'button',
+          {
+            className: 'dropdown-toggle' + collapse,
+            'aria-expanded': isCollapsed,
+            onClick: this.toggle
+          },
+          React.createElement('span', { className: 'icon-arrow-up' })
+        ),
         React.createElement(
           'ul',
           Object.assign({ className: 'sub-menu' + collapse }, rest),

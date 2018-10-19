@@ -1,3 +1,15 @@
+export const archives = `
+  const App = () => (
+    <Archive first={5} />
+  );
+
+  render(
+    <Provider>
+      <App />
+    </Provider>
+  );
+`;
+
 export const attachment = `
   //Custom Attachment View Component
   const view = props => props.src ? (<img {...props} />) : null;
@@ -6,6 +18,21 @@ export const attachment = `
 
   const App = () => (
     <Attachment mediaItemId={1692} />
+  );
+
+  render(
+    <Provider>
+      <App />
+    </Provider>
+  );
+
+`;
+
+export const error = `
+  const App = () => (
+    <div style={{ width: '500px', height: '500px' }}>
+      <Error message="An error has occurred" />
+    </div>
   );
 
   render(
@@ -31,6 +58,21 @@ export const footer = `
 export const header = `
   const App = () => (
     <Header />
+  );
+
+  render(
+    <Provider>
+      <App />
+    </Provider>
+  );
+
+`;
+
+export const loading = `
+  const App = () => (
+    <div style={{ width: '500px', height: '500px' }}>
+      <Loading message="Loading..." />
+    </div>
   );
 
   render(
@@ -130,5 +172,24 @@ export const postComments = `
     <Provider>
       <App />
     </Provider>
+  );
+`;
+
+export const profile = `
+
+`;
+
+export const provider = `
+  const App = () => (
+    <Post slug="hello-world" />
+  );
+
+  // Enter WPGraphQL endpoint
+  const link = new HttpLink({ uri: '/' });
+
+  render(
+    <WPProvider link={link}>
+      <App />
+    </WPProvider>
   );
 `;

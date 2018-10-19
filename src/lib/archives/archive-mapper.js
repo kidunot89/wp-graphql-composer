@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get, map, find } from 'lodash';
 
 const monthNames = [
   '', 'January', 'February', 'March', 
@@ -9,9 +9,10 @@ const monthNames = [
 
 const thisYear = new Date().getFullYear();
 
-function jsUcfirst(string) 
-{
-    return string.charAt(0).toUpperCase() + string.slice(1);
+const getTermName = (term_slug, results, taxonomy = 'tags') => {
+  const allTerms = get(results, `[0].meta.${taxonomy}`);
+  const term = find(allTerms, ({ slug }) => slug === term_slug);
+  return term.name;
 }
 
 /**
@@ -19,16 +20,19 @@ function jsUcfirst(string)
  * @param {object} where  
  * @param {number} resultCount 
  */
-const getHeader = ({ category, tag, month, year, author, search }, results) => {
+const getHeader = ({ category, tag, day, month, year, author, search }, results) => {
   switch(true) {
     case results.length === 0:
       return 'No posts found';
 
     case !!category:
-      return `Posts categorized in ${category}`;
+      return `Posts categorized in ${getTermName(category, results, 'categories')}`;
     
     case !!tag:
-      return `Posts tagged in ${jsUcfirst(tag)}`;
+      return `Posts tagged in ${getTermName(tag, results)}`;
+
+    case !!year && !!month && !!day:
+      return `Posts made ${monthNames[month]} ${day}, ${year}`;
 
     case !!year && !!month:
       return `Posts made ${monthNames[month]} ${year}`;
@@ -44,15 +48,30 @@ const getHeader = ({ category, tag, month, year, author, search }, results) => {
       return `Posts made by ${author}`;
 
     case !!search:
-      return `Searching ${search}`;
+      return `Searching "${search}"`;
 
     default:
       return 'Recent Posts';
   }
 }
 
-export const archiveMapper = ({ data, ...rest }) => {
-  const resultsData = get(data, 'posts.nodes');
+export const archiveMapper = ({ data, first, ...rest }) => {
+  const rawResults = get(data, 'posts.nodes');
+  const resultsData = map(rawResults, ({ 
+    author, categories, tags, date,
+    modified, __typename, ...rest
+  }) => 
+  ({
+    ...rest,
+    meta: {
+      author,
+      categories: get(categories, 'nodes'),
+      tags: get(tags, 'nodes'),
+      date,
+      modified,
+    },
+  })
+  );
   const header = getHeader(data.variables, resultsData);  
 
   return { header, resultsData, ...rest };

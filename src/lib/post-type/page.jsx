@@ -1,13 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { Parser as ReactParser } from 'html-to-react';
-
-const parser = new ReactParser();
+import ReactHtmlParser from 'react-html-parser';
 
 const page = ({ pageId, title, content, date, modified, ...rest }) => (
-  <div id={`page-${title}`} {...rest}>
-    <div>{parser.parse(content)}</div>
-  </div>
+  <article id={`page-${title}`} className="page type-page" {...rest}>
+    <div className="entry-content">{ReactHtmlParser(content)}</div>
+  </article>
 );
 
 page.propTypes = {

@@ -1,0 +1,117 @@
+/* Extra Small */
+  .demo-aside {
+    grid-area: aside;
+    display: flex;
+    flex-direction: column;
+    
+    .demo-aside-div {
+      position: relative;
+      width: 100%;
+      
+      &::before {
+        content: "";
+        position: absolute;
+        background-color: $lime-300;
+        z-index: -1;
+        top: 0;
+        left: 0;
+
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      ul.demo-list li {
+        div.sub-list-icon-toggler.collapse {
+          button {
+            transition-delay: 550ms;
+
+            span { 
+              transform: translate(-0.55375em, -0.49375em) rotate(180deg);
+              transition:
+                transform 575ms ease-in 550ms;
+            }
+          }
+
+          &.is-collapsed button {
+            transition-delay: 650ms;
+
+            span {
+              transform: translate(-0.45375em, -0.50375em) rotate(0deg);
+              transition:
+                transform 600ms ease-in 650ms;
+            }
+          }
+        }
+
+        div.sub-list {
+          position: relative;
+    
+          &::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            background-color: $lime-500;
+          }
+
+          ul li a { color: $cyan-500; }
+          ul li a:active,
+          ul li a.active { color: #fff; }
+    
+          div.sub-list::before { background-color: $lime-500; }
+        }
+      }
+    }
+
+    .page-nav-icon-toggler {
+      position: relative;
+      // grid-area: toggle;
+
+      &.collapse {
+        button { 
+          transition-delay: 550ms;
+
+          span {
+            transform: translate(-0.55375em, -0.49375em) rotate(180deg);
+            transition:
+              transform 575ms ease-in 550ms;
+          }
+        }
+
+        &.is-collapsed button {
+          transition-delay: 650ms;
+
+          span {
+            transform: translate(-0.45375em, -0.50375em) rotate(0deg);
+            transition:
+              transform 600ms ease-out 650ms;
+          }
+        }
+      }
+    }
+  }
+
+/* Small */
+@media (min-width: 576px) {
+  
+}
+
+/* Medium */
+@media (min-width: 768px) {
+  .demo-aside {
+
+  }
+}
+
+/* Large */
+@media (min-width: 992px) {
+
+}
+
+/* Extra Large */
+@media (min-width: 1200px) {
+
+}

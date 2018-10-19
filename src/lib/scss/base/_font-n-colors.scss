@@ -86,11 +86,11 @@ $link-color: $primary;
 /**
  * FONTS
  */
-@import url('https://fonts.googleapis.com/css?family=Basic|Caveat|EB+Garamond:600,800|Ubuntu+Mono');
+ @import url('https://fonts.googleapis.com/css?family=K2D:400,700|Open+Sans:800|Ubuntu+Mono');
 
-$base-font: 'EB Garamond', serif;
+$base-font: "K2D", sans-serif;
 $mono-font: 'Ubuntu Mono', monospace;
-$header-font: 'Basic', san-serif;
+$header-font: 'Open Sans', "Raleway", Helvetica, Arial, sans-serif;
 $blockquote-font: 'Caveat', cursive;
 $link-font: $base-font;
 $input-font: $mono-font;
@@ -112,7 +112,6 @@ body {
       font-size: 100%;
       font-family: $base-font;
       font-weight: 800;
-      letter-spacing: 0.095em;
     }
   }
 

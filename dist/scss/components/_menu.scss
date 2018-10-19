@@ -52,34 +52,56 @@
         }
       }
 
+      span.menu-item-text {
+        flex-grow: 8;
+        flex-shrink: 0;
+
+        padding: 1.5em 1em;
+        font-family: "EB Garamond", serif;
+        color: $gray-700;
+
+      }
+
       button.dropdown-toggle { // Sub Menu toggle button
-        order: 1;
+        flex-basis: auto;
+        flex-grow: 1;
+        flex-shrink: 1;
+        margin: auto;
+
         position: relative;
         width: 3em;
         height: 3em;
+        padding: 1em;
         background: transparent;
         border: none;
-        margin: 1.5em 1em;
-    
-        &::before {
+
+        span {
           position: absolute;
           font-family: "Metrize-Icons";
+          color: #fff;
           font-size: 2.5em;
-          content: "\e11c";
-          left: 50%;
-          top: 50%;
-          padding: 1.5em 0;
-    
-          color: $gray-600;
-          transform: translate(-50%, -50%) rotate(180deg);
-          transition: transform 550ms ease-out, color 475ms ease-out;
-        }
-    
-        &.toggle-on::before {
-          color: $lime-700;
+          margin: 0;
+          padding: 0;
+          transform-origin: center;
+
+          color: $cyan-700;
           transform: translate(-50%, -50%) rotate(0deg);
-          transition: transform 350ms ease-in, color 300ms ease-in;
+          transition:
+            transform 350ms ease-in,
+            color 300ms ease-in;
         }
+
+        &.toggle-on {
+          span {
+            color: $lime-700;
+            transform: translate(-50%, -50%) rotate(180deg);
+            transition:
+              transform 350ms ease-in,
+              color 300ms ease-in;
+          }
+        }
+    
+        
       }
 
       .sub-menu {

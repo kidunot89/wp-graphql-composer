@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const main = ({ Archive, children, className, Page, Post, Routes, ...rest }) => (
-  <div className={`main${className ? ' '+className : ''}`} {...rest}>
+  <main role="main" className={`site-main${className ? ' '+className : ''}`} {...rest}>
     <Routes {...{ Archive, Page, Post }} />
     {children}
-  </div>
+  </main>
 );
 
 main.propTypes = {

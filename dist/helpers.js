@@ -1,7 +1,9 @@
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 /**
  * Helper functions for preparing prop/attribute values
  */
-import { each } from 'lodash';
+import { each, get } from 'lodash';
 
 /**
  * Return compiled className prop
@@ -20,7 +22,9 @@ export var compileClassName = function compileClassName(props) {
   var className = root;
 
   each(classes, function (cN) {
-    if (!!props[cN]) className = className + ' ' + cN;
+    if ((typeof cN === 'undefined' ? 'undefined' : _typeof(cN)) === 'object') {
+      if (!!get(props, cN.name)) className = className + ' ' + cN.className;
+    } else if (!!get(props, cN)) className = className + ' ' + cN;
   });
 
   if (!!props.className) className = className + ' ' + props.className;

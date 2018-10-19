@@ -4,6 +4,7 @@ import { baseComposer, queryComposer } from '../composers'
 import { Error, Loading } from '../utils';
 
 import { MENU_WHERE_QUERY, MENU_QUERY, MENU_ITEM_QUERY } from './query';
+import { menuStateManager } from './state-manager';
 import menu from './menu';
 import menuItem, { Link } from './menu-item';
 import subMenu from './sub-menu'
@@ -49,7 +50,11 @@ menu.compose = queryComposer({
       options: ({ menuId, location, slug }) => ({ menuId, location, slug }),
       skip: ({ optional, location, menuId, slug }) => !location && !menuId && !slug && optional ,
     },
-    mapper: ({ data, ...rest }) => ({ menu: get(data, 'menus.nodes[0]'), ...rest }),
+    mapper: ({ data, ...rest }) => ({ 
+      homeUrl: get(data, 'generalSettings.url'),
+      menu: get(data, 'menus.nodes[0]'),
+      ...rest
+    }),
   }, {
     cond: ({ id }) => !!id,
     query: MENU_QUERY,
@@ -57,13 +62,13 @@ menu.compose = queryComposer({
       options: ({ id }) => ({ id }),
       skip: ({ optional, id }) => !id && optional 
     },
-    mapper: ({ data, ...rest }) => ({ menu: get(data, 'menu'), ...rest }),
+    mapper: ({ data, ...rest }) => ({
+      homeUrl: get(data, 'generalSettings.url'),
+      menu: get(data, 'menu'),
+      ...rest
+    }),
   }],
-  sharedMapper: ({ menu, ...rest }) => ({
-    items: get(menu, 'menuItems.nodes'),
-    ...omit(menu, 'id', 'menuItems'),
-    ...omit(rest, 'id'),
-  }),
+  extraHocs: [menuStateManager],
 });
 
 const Menu = menu.compose({});

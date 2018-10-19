@@ -1,0 +1,17 @@
+%button-transition {
+  position: relative;
+  width: 3em;
+  height: 3em;
+
+  &::before,
+  &::after {
+    position: absolute;
+  }
+
+  &.collapse {
+
+    &.is-collapsed {
+
+    }
+  }
+}

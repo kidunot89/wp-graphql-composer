@@ -685,27 +685,27 @@ a:hover, a:active {
   overflow: hidden;
   word-wrap: normal !important;
   /* Many screen reader and browser combinations announce broken words as they would appear visually. */
-}
 
-.screen-reader-text:focus {
-  background-color: #f1f1f1;
-  border-radius: 3px;
-  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
-  clip: auto !important;
-  color: #21759b;
-  display: block;
-  font-size: 14px;
-  font-size: 0.875rem;
-  font-weight: bold;
-  height: auto;
-  left: 5px;
-  line-height: normal;
-  padding: 15px 23px 14px;
-  text-decoration: none;
-  top: 5px;
-  width: auto;
-  z-index: 100000;
-  /* Above WP toolbar. */
+  &:focus {
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+    clip: auto !important;
+    color: #21759b;
+    display: block;
+    font-size: 14px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    height: auto;
+    left: 5px;
+    line-height: normal;
+    padding: 15px 23px 14px;
+    text-decoration: none;
+    top: 5px;
+    width: auto;
+    z-index: 100000;
+    /* Above WP toolbar. */
+  }
 }
 
 /* Do not show the outline on the skip link target. */
@@ -719,35 +719,36 @@ a:hover, a:active {
 
 .alignleft,
 .alignright {
-	max-width: 636px !important;	/* Let's work to make this !important unnecessary */
+  max-width: 636px !important;	/* Let's work to make this !important unnecessary */
+  img,
+  figcaption {
+    max-width: 50%;
+    width: 50%;
+  } 
 }
 
-.alignleft img,
-.alignright img,
-.alignleft figcaption,
-.alignright figcaption {
-	max-width: 50%;
-	width: 50%;
+.alignleft {
+  figcaption {
+    clear: left;
+  }
+
+  img,
+  figcaption {
+    float: left;
+    margin-right: 1.5em;
+  }
 }
 
-.alignleft figcaption {
-	clear: left;
-}
+.alignright {
+  figcaption {
+    clear: right;
+  }
 
-.alignright figcaption {
-	clear: right;
-}
-
-.alignleft img,
-.alignleft figcaption {
-  float: left;
-  margin-right: 1.5em;
-}
-
-.alignright img,
-.alignright figcaption {
-  float: right;
-  margin-left: 1.5em;
+  img,
+  figcaption {
+    float: right;
+    margin-left: 1.5em;
+  }
 }
 
 .aligncenter {
@@ -768,10 +769,10 @@ a:hover, a:active {
 .widget {
   margin: 0 0 1.5em;
   /* Make sure select elements fit in widgets. */
-}
 
-.widget select {
-  max-width: 100%;
+  select {
+    max-width: 100%;
+  }
 }
 
 /*--------------------------------------------------------------

@@ -2,9 +2,8 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Parser as ReactParser } from 'html-to-react';
+import ReactHtmlParser from 'react-html-parser';
 
-var parser = new ReactParser();
 var post = function post(_ref) {
   var featured = _ref.featured,
       postId = _ref.postId,
@@ -17,13 +16,13 @@ var post = function post(_ref) {
 
   return React.createElement(
     'article',
-    Object.assign({ id: 'post-' + postId }, rest),
+    Object.assign({ id: 'post-' + postId, className: 'post type-post' }, rest),
     featured && React.createElement(Attachment, {
       mediaItemId: featured,
       'data-attachment-id': featured,
       className: 'wp-post-image'
     }),
-    parser.parse(content)
+    ReactHtmlParser(content)
   );
 };
 

@@ -4,12 +4,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Parser as ReactParser } from 'html-to-react';
+import ReactHtmlParser from 'react-html-parser';
 
 import { Attachment } from './';
 import { PostCommentsContext } from './context';
-
-var parser = new ReactParser();
 
 // Comment Author V Card
 var AuthorVCard = function AuthorVCard(_ref) {
@@ -49,7 +47,6 @@ var AuthorVCard = function AuthorVCard(_ref) {
 // Comment Metadata
 var Metadata = function Metadata(_ref2) {
   var date = _ref2.date,
-      modified = _ref2.modified,
       editable = _ref2.editable,
       onEdit = _ref2.onEdit,
       onDelete = _ref2.onDelete;
@@ -61,12 +58,6 @@ var Metadata = function Metadata(_ref2) {
       'time',
       { dateTime: date },
       moment(date).format('LLL')
-    ),
-    modified !== date && React.createElement(
-      'time',
-      { dateTime: modified },
-      'Last updated on: ',
-      moment(modified).format('LLL')
     ),
     editable && React.createElement(
       React.Fragment,
@@ -99,7 +90,7 @@ var Content = function Content(_ref3) {
   return React.createElement(
     'div',
     { className: 'comment-content' },
-    parser.parse(content)
+    ReactHtmlParser(content)
   );
 };
 

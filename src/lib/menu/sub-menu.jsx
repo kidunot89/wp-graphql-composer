@@ -24,7 +24,9 @@ class subMenu extends React.Component {
           className={`dropdown-toggle${collapse}`}
           aria-expanded={isCollapsed}
           onClick={this.toggle}
-        ></button>
+        >
+          <span className="icon-arrow-up" />
+        </button>
         <ul className={`sub-menu${collapse}`} {...rest}>
           {map(items, ({ id, menuItemId, ...r }) => (
             <li

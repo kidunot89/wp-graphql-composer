@@ -2,9 +2,7 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Parser as ReactParser } from 'html-to-react';
-
-var parser = new ReactParser();
+import ReactHtmlParser from 'react-html-parser';
 
 var page = function page(_ref) {
   var pageId = _ref.pageId,
@@ -15,12 +13,12 @@ var page = function page(_ref) {
       rest = _objectWithoutProperties(_ref, ['pageId', 'title', 'content', 'date', 'modified']);
 
   return React.createElement(
-    'div',
-    Object.assign({ id: 'page-' + title }, rest),
+    'article',
+    Object.assign({ id: 'page-' + title, className: 'page type-page' }, rest),
     React.createElement(
       'div',
-      null,
-      parser.parse(content)
+      { className: 'entry-content' },
+      ReactHtmlParser(content)
     )
   );
 };

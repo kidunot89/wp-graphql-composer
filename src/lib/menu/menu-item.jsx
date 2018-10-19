@@ -2,18 +2,25 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
+import { MenuContext } from './context';
 
-export const Link = ({ url, children, ...rest }) => {
-  if (url.startsWith('http')) return (
+export const Link = ({ url, children, homeUrl, ...rest }) => {
+  if (!url || url === '#') return (
+    <span className="menu-item-text">
+      {children}
+    </span>
+  );
+
+  if (url.startsWith(homeUrl)) return (
+    <NavLink exact to={`${url.substring(homeUrl.length)}`} {...rest}>
+      {children}
+    </NavLink>
+  );
+
+  return (
     <a href={url} {...rest}>
       {children}
     </a>
-  );
-
-  else return (
-    <NavLink to={`/${url}`} {...rest}>
-      {children}
-    </NavLink>
   );
 } 
 
@@ -23,14 +30,18 @@ const menuItem = ({
   ...rest
 }) => (
   <React.Fragment>
-    <Link {...{ ...rest, url }}>
-      {label}
-      {description &&
-        <div className="menu-item-description">
-          {description}
-        </div>
-      }
-    </Link>
+    <MenuContext.Consumer>
+      {({ homeUrl }) => (
+        <Link {...{ ...rest, url, homeUrl }}>
+          {label}
+          {description &&
+            <div className="menu-item-description">
+              {description}
+            </div>
+          }
+        </Link>
+      )}
+    </MenuContext.Consumer>
     {!isEmpty(items) && <SubMenu {...{ items, SubMenu, MenuItem }} />}
   </React.Fragment>
 );

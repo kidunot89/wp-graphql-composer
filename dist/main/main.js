@@ -13,8 +13,8 @@ var main = function main(_ref) {
       rest = _objectWithoutProperties(_ref, ['Archive', 'children', 'className', 'Page', 'Post', 'Routes']);
 
   return React.createElement(
-    'div',
-    Object.assign({ className: 'main' + (className ? ' ' + className : '') }, rest),
+    'main',
+    Object.assign({ role: 'main', className: 'site-main' + (className ? ' ' + className : '') }, rest),
     React.createElement(Routes, { Archive: Archive, Page: Page, Post: Post }),
     children
   );

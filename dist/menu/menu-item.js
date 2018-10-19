@@ -4,19 +4,29 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
+import { MenuContext } from './context';
 
 var Link = function Link(_ref) {
   var url = _ref.url,
       children = _ref.children,
-      rest = _objectWithoutProperties(_ref, ['url', 'children']);
+      homeUrl = _ref.homeUrl,
+      rest = _objectWithoutProperties(_ref, ['url', 'children', 'homeUrl']);
 
-  if (url.startsWith('http')) return React.createElement(
+  if (!url || url === '#') return React.createElement(
+    'span',
+    { className: 'menu-item-text' },
+    children
+  );
+
+  if (url.startsWith(homeUrl)) return React.createElement(
+    NavLink,
+    Object.assign({ exact: true, to: '' + url.substring(homeUrl.length) }, rest),
+    children
+  );
+
+  return React.createElement(
     'a',
     Object.assign({ href: url }, rest),
-    children
-  );else return React.createElement(
-    NavLink,
-    Object.assign({ to: '/' + url }, rest),
     children
   );
 };
@@ -36,14 +46,21 @@ var menuItem = function menuItem(_ref2) {
     React.Fragment,
     null,
     React.createElement(
-      Link,
-      Object.assign({}, rest, { url: url }),
-      label,
-      description && React.createElement(
-        'div',
-        { className: 'menu-item-description' },
-        description
-      )
+      MenuContext.Consumer,
+      null,
+      function (_ref3) {
+        var homeUrl = _ref3.homeUrl;
+        return React.createElement(
+          Link,
+          Object.assign({}, rest, { url: url, homeUrl: homeUrl }),
+          label,
+          description && React.createElement(
+            'div',
+            { className: 'menu-item-description' },
+            description
+          )
+        );
+      }
     ),
     !isEmpty(items) && React.createElement(SubMenu, { items: items, SubMenu: SubMenu, MenuItem: MenuItem })
   );

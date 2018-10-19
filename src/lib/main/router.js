@@ -4,16 +4,16 @@ import { setDisplayName, wrapDisplayName } from 'recompose';
 import { Switch, Route } from 'react-router-dom';
 
 export const mapLoopProps = ({ data, ...rest }) => {
-  const pageForPosts = get(data, 'allSettings.pageForPosts');
+  const pageForPostSlug = get(data, 'allSettings.pageForPosts');
   const pageOnFront = get(data, 'allSettings.pageOnFront');
   const structure = get(data, 'allSettings.permalinkStructure');
   const limit = get(data, 'allSettings.readingSettingsPostsPerPage');
   
-  return { pageForPosts, pageOnFront, structure, limit,...rest };
+  return { pageForPostSlug, pageOnFront, structure, limit,...rest };
 };
 
 export const defaultRoutes = 
-({ limit, pageOnFront, postsPath, slug }) => 
+({ limit, pageOnFront, postsPath, pageForPostSlug }) => 
   ({ Archive, Page, Post, frontChildren, children }) => (
     <Switch>
       {/* Extra Routes */}
@@ -22,9 +22,9 @@ export const defaultRoutes =
       {/* Home */}
       <Route exact path={`/`} render={() => {
         if (pageOnFront) {
-          return (<Page pageId={pageOnFront} />);
+          return (<Page id={pageOnFront} />);
         }
-        return (<Archive first={limit} />)
+        return (<Archive first={limit} noHeader showContent />)
       }} />
       
       {/* Archive by year */}
@@ -39,7 +39,20 @@ export const defaultRoutes =
           );
         }}
       />
-      
+      {/* Archive by month */}
+      <Route
+        exact
+        path={`/:year(\\d{4})/:monthnum(\\d{2})/:day(\\d{2})`}
+        render={({ match: { params } }) => {
+          const day = parseInt(params.day, 10);
+          const year = parseInt(params.year, 10);
+          const month = parseInt(params.monthnum, 10);
+          
+          return (
+            <Archive first={limit} where={{ month, year, day }} />
+          );
+        }}
+      />
       {/* Archive by month */}
       <Route
         exact
@@ -82,7 +95,6 @@ export const defaultRoutes =
       <Route
         path={`/search/:search`}
         render={({ match: { params } }) => {
-          console.log(params);
           return (
             <Archive first={limit} where={params} />
           )
@@ -90,10 +102,10 @@ export const defaultRoutes =
       />
       
       {/* Page for posts */}
-      {slug & (
+      {pageForPostSlug & (
         <Route
           exact
-          path={`/${slug}`}
+          path={`/${pageForPostSlug}`}
           render={() => (
             <Archive first={limit} />
           )} 

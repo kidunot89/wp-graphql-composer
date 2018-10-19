@@ -19,13 +19,16 @@ export const MENU_QUERY = gql`
         }
       }
     }
+    generalSettings {
+      url
+    }
   }
 `;
 
 export const MENU_WHERE_QUERY = gql`
   query MenuWhereQuery(
     $menuId: Int
-    $location: MenuLocation
+    $location: MenuLocationEnum
     $slug: String
   ){
     menus(where: { id: $menuId, location: $location, slug: $slug }) {
@@ -43,6 +46,9 @@ export const MENU_WHERE_QUERY = gql`
           }
         }
       }
+    }
+    generalSettings {
+      url
     }
   }
 `;

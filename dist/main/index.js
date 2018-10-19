@@ -20,4 +20,4 @@ main.compose = queryComposer({
 
 var Main = main.compose({});
 
-export { Main, main, LOOP_QUERY };
+export { Main, main, LOOP_QUERY, routesProcessor, defaultRoutes };

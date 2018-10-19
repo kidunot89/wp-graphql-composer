@@ -3,6 +3,7 @@
  */
 import { queryComposer } from '../composers';
 import { Error, Loading } from '../utils';
+import { Attachment } from '../post-type';
 import { archiveMapper } from './archive-mapper';
 import archive from './archive';
 import postResult from './post-result';
@@ -14,15 +15,17 @@ import { ARCHIVE_QUERY } from './query'
 const whereArgsDefaults = {
   category: null,
   tag: null,
-  month: null,
   year: null,
+  month: null,
+  day: null,
   author: null,
   search: null,
 };
 
 archive.compose = queryComposer({
   view: archive,
-  postResultView: postResult,
+  PostResult: postResult,
+  Attachment,
   queries: [{ 
     query: ARCHIVE_QUERY,
     config: {

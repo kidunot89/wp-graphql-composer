@@ -1,0 +1,15 @@
+/* Base */
+body {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  
+  background-color: $body-bg;
+  color: $body-color;
+  h1, h2, h3, h4, h5, h6 {
+    color: $headings-color;
+  }
+
+  a { color: $link-color; }
+}

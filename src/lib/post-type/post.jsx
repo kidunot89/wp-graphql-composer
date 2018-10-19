@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { Parser as ReactParser } from 'html-to-react';
+import ReactHtmlParser from 'react-html-parser';
 
-const parser = new ReactParser();
 const post = ({ featured, postId, title, content, details, Attachment, DetailsComponent, ...rest }) => (
-  <article id={`post-${postId}`} {...rest}>
+  <article id={`post-${postId}`} className="post type-post" {...rest}>
     {featured && 
       <Attachment
         mediaItemId={featured}
@@ -12,7 +11,7 @@ const post = ({ featured, postId, title, content, details, Attachment, DetailsCo
         className={`wp-post-image`}
       />
     }
-    {parser.parse(content)}
+    {ReactHtmlParser(content)}
   </article>
 );
 

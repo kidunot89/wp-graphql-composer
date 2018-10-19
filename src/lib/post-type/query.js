@@ -39,7 +39,7 @@ export const PAGE_QUERY = gql`
 `;
 
 export const PAGE_BY_QUERY = gql`
-  query PageByQuery($uri: String, $pageId: Int) {
+  query PageByQuery($uri: String, $pageId: ID) {
     pageBy(uri: $uri, pageId: $pageId) {
       id
       uri
@@ -66,7 +66,6 @@ export const POST_COMMENTS_QUERY = gql`
           type
           content
           date
-          modified
           author{
             ... on User {
               id
@@ -131,7 +130,7 @@ export const POST_QUERY = gql`
 `;
 
 export const POST_BY_QUERY = gql`
-  query PostQuery($postId: Int, $slug: String, $uri: String) {
+  query PostQuery($postId: ID, $slug: String, $uri: String) {
     postBy(postId: $postId, slug: $slug, uri: $uri) {
       id
       postId

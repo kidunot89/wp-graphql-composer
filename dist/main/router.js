@@ -9,12 +9,12 @@ var mapLoopProps = function mapLoopProps(_ref) {
   var data = _ref.data,
       rest = _objectWithoutProperties(_ref, ['data']);
 
-  var pageForPosts = get(data, 'allSettings.pageForPosts');
+  var pageForPostSlug = get(data, 'allSettings.pageForPosts');
   var pageOnFront = get(data, 'allSettings.pageOnFront');
   var structure = get(data, 'allSettings.permalinkStructure');
   var limit = get(data, 'allSettings.readingSettingsPostsPerPage');
 
-  return Object.assign({ pageForPosts: pageForPosts, pageOnFront: pageOnFront, structure: structure, limit: limit }, rest);
+  return Object.assign({ pageForPostSlug: pageForPostSlug, pageOnFront: pageOnFront, structure: structure, limit: limit }, rest);
 };
 
 export { mapLoopProps };
@@ -22,7 +22,7 @@ export var defaultRoutes = function defaultRoutes(_ref2) {
   var limit = _ref2.limit,
       pageOnFront = _ref2.pageOnFront,
       postsPath = _ref2.postsPath,
-      slug = _ref2.slug;
+      pageForPostSlug = _ref2.pageForPostSlug;
   return function (_ref3) {
     var Archive = _ref3.Archive,
         Page = _ref3.Page,
@@ -35,9 +35,9 @@ export var defaultRoutes = function defaultRoutes(_ref2) {
       frontChildren,
       React.createElement(Route, { exact: true, path: '/', render: function render() {
           if (pageOnFront) {
-            return React.createElement(Page, { pageId: pageOnFront });
+            return React.createElement(Page, { id: pageOnFront });
           }
-          return React.createElement(Archive, { first: limit });
+          return React.createElement(Archive, { first: limit, noHeader: true, showContent: true });
         } }),
       React.createElement(Route, {
         exact: true,
@@ -52,9 +52,22 @@ export var defaultRoutes = function defaultRoutes(_ref2) {
       }),
       React.createElement(Route, {
         exact: true,
-        path: '/:year(\\d{4})/:monthnum(\\d{2})',
+        path: '/:year(\\d{4})/:monthnum(\\d{2})/:day(\\d{2})',
         render: function render(_ref5) {
           var params = _ref5.match.params;
+
+          var day = parseInt(params.day, 10);
+          var year = parseInt(params.year, 10);
+          var month = parseInt(params.monthnum, 10);
+
+          return React.createElement(Archive, { first: limit, where: { month: month, year: year, day: day } });
+        }
+      }),
+      React.createElement(Route, {
+        exact: true,
+        path: '/:year(\\d{4})/:monthnum(\\d{2})',
+        render: function render(_ref6) {
+          var params = _ref6.match.params;
 
           var year = parseInt(params.year, 10);
           var month = parseInt(params.monthnum, 10);
@@ -64,37 +77,36 @@ export var defaultRoutes = function defaultRoutes(_ref2) {
       }),
       React.createElement(Route, {
         path: '/category/:category',
-        render: function render(_ref6) {
-          var params = _ref6.match.params;
-          return React.createElement(Archive, { first: limit, where: params });
-        }
-      }),
-      React.createElement(Route, {
-        path: '/tag/:tag',
         render: function render(_ref7) {
           var params = _ref7.match.params;
           return React.createElement(Archive, { first: limit, where: params });
         }
       }),
       React.createElement(Route, {
-        path: '/author/:author',
+        path: '/tag/:tag',
         render: function render(_ref8) {
           var params = _ref8.match.params;
           return React.createElement(Archive, { first: limit, where: params });
         }
       }),
       React.createElement(Route, {
-        path: '/search/:search',
+        path: '/author/:author',
         render: function render(_ref9) {
           var params = _ref9.match.params;
-
-          console.log(params);
           return React.createElement(Archive, { first: limit, where: params });
         }
       }),
-      slug & React.createElement(Route, {
+      React.createElement(Route, {
+        path: '/search/:search',
+        render: function render(_ref10) {
+          var params = _ref10.match.params;
+
+          return React.createElement(Archive, { first: limit, where: params });
+        }
+      }),
+      pageForPostSlug & React.createElement(Route, {
         exact: true,
-        path: '/' + slug,
+        path: '/' + pageForPostSlug,
         render: function render() {
           return React.createElement(Archive, { first: limit });
         }
@@ -102,8 +114,8 @@ export var defaultRoutes = function defaultRoutes(_ref2) {
       React.createElement(Route, {
         exact: true,
         path: postsPath,
-        render: function render(_ref10) {
-          var params = _ref10.match.params;
+        render: function render(_ref11) {
+          var params = _ref11.match.params;
           var post_id = params.post_id,
               postname = params.postname;
 
@@ -114,8 +126,8 @@ export var defaultRoutes = function defaultRoutes(_ref2) {
       children,
       React.createElement(Route, {
         path: '/(.*)',
-        render: function render(_ref11) {
-          var params = _ref11.match.params;
+        render: function render(_ref12) {
+          var params = _ref12.match.params;
           return React.createElement(Page, { uri: params[0] });
         }
       })
@@ -127,15 +139,15 @@ var routesProcessor = function routesProcessor(routesView) {
   return function (BaseComponent) {
     var BaseFactory = createFactory(BaseComponent);
 
-    var RoutesProcessor = function RoutesProcessor(_ref12) {
-      var pageForPosts = _ref12.pageForPosts,
-          pageOnFront = _ref12.pageOnFront,
-          structure = _ref12.structure,
-          limit = _ref12.limit,
-          Archive = _ref12.Archive,
-          Post = _ref12.Post,
-          Page = _ref12.Page,
-          rest = _objectWithoutProperties(_ref12, ['pageForPosts', 'pageOnFront', 'structure', 'limit', 'Archive', 'Post', 'Page']);
+    var RoutesProcessor = function RoutesProcessor(_ref13) {
+      var pageForPosts = _ref13.pageForPosts,
+          pageOnFront = _ref13.pageOnFront,
+          structure = _ref13.structure,
+          limit = _ref13.limit,
+          Archive = _ref13.Archive,
+          Post = _ref13.Post,
+          Page = _ref13.Page,
+          rest = _objectWithoutProperties(_ref13, ['pageForPosts', 'pageOnFront', 'structure', 'limit', 'Archive', 'Post', 'Page']);
 
       if (!structure) {
         throw new Error('Pretty permalinks must be on');

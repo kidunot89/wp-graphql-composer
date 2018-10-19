@@ -8,8 +8,9 @@ export const ARCHIVE_QUERY = gql`
       $first: Int,
       $category: String,
       $tag: String,
-      $month: Int,
       $year: Int,
+      $month: Int,
+      $day: Int,
       $author: String,
       $search: String
     ) {
@@ -19,7 +20,7 @@ export const ARCHIVE_QUERY = gql`
         categoryName: $category,
         tag: $tag,
         authorName: $author,
-        dateQuery: { month: $month, year: $year },
+        dateQuery: { year: $year, month: $month, day: $day },
         search: $search
       }
     ) {
@@ -27,9 +28,11 @@ export const ARCHIVE_QUERY = gql`
         id
         postId
         excerpt
+        content
         date
         modified
         title
+        permalink
         featuredImage {
           id
           mediaItemId
@@ -41,12 +44,14 @@ export const ARCHIVE_QUERY = gql`
           nodes {
             id
             name
+            slug
           }
         }
         categories {
           nodes {
             id
             name
+            slug
           }
         }
         author {

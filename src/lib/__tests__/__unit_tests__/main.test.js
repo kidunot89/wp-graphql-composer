@@ -34,6 +34,101 @@ const loopQueryResults = {
   },
 }
 
+const archiveResults = [{
+  id: "P0TSH0t",
+  postId: 7,
+  uri: "parent-post/child-post",
+  slug: "test-post",
+  excerpt: "<h1>Hello World</h1>",
+  date: "2018-09-12 23:02:46",
+  modified: "2018-09-19 00:26:14",
+  title: "Hello world!",
+  permalink: "2018/09/hello-world/",
+  author: {
+    id: "Bugger",
+    userId: 3,
+    nicename: "kimboChop",
+    avatar: {
+      url: "http://2.gravatar.com/avatar/8cbbea0504f915ea88622f97badd1bed?s=96&d=mm&r=g",
+      foundAvatar: true,
+      __typename: 'Avatar',
+    },
+    __typename: 'User',
+  },
+  categories: {
+    nodes: [
+      {
+        id: "Y2F0ZWdvcnk6MTM=",
+        name: "Test One",
+        slug: "test-one",
+        __typename: 'Category',
+      },
+      {
+        id: "Y2F0ZWdvcnk6MTQ=",
+        name: "Test Two",
+        slug: "test-two",
+        __typename: 'Category',
+      },
+      {
+        id: "Y2F0ZWdvcnk6MQ==",
+        name: "Uncategorized",
+        slug: "uncategorized",
+        __typename: 'Category',
+      },
+      {
+        id: "Y2F0ZWfvxwk6MQ==",
+        name: "Web Development",
+        slug: "web-dev",
+        __typename: 'Category',
+      }
+    ],
+    __typename: 'PostCategoriesConnection'
+  },
+  tags: {
+    nodes: [
+      {
+        id: "cG9zdF90YWc6OQ==",
+        name: "Forsha",
+        slug: "forsha",
+        __typename: 'Tag',
+      },
+      {
+        id: "cG9zdF90YWc6MTA=",
+        name: "GetIt",
+        slug: 'get-it',
+        __typename: 'Tag',
+      },
+      {
+        id: "cG9zdF90YWc6MTI=",
+        name: "Jane",
+        slug: "jane",
+        __typename: 'Tag',
+      },
+      {
+        id: "cG9zdF90YWc6MTE=",
+        name: "Plain",
+        slug: "plain",
+        __typename: 'Tag',
+      },
+      {
+        id: "cG9zdF90YWc6OA==",
+        name: "Yep",
+        slug: "yep",
+        __typename: 'Tag',
+      },
+      {
+        id: "cG9zdF90YWc6OS==",
+        name: "Javascript",
+        slug: "javascript",
+        __typename: 'Tag',
+      }
+    ],
+    __typename: 'PostTagsConnection',
+  },
+  featuredImage: null,
+  __typename: 'Post',
+}];
+
 const mocks = [
   loopQueryResults,
   {
@@ -177,6 +272,7 @@ const mocks = [
         first: 5,
         category: null,
         tag: null,
+        day: null,
         month: null,
         year: null,
         author: null,
@@ -186,82 +282,7 @@ const mocks = [
     result: {
       data: {
         posts: {
-          nodes: [
-            {
-              id: "P0TSH0t",
-              postId: 7,
-              uri: "parent-post/child-post",
-              slug: "test-post",
-              excerpt: "<h1>Hello World</h1>",
-              date: "2018-09-12 23:02:46",
-              modified: "2018-09-19 00:26:14",
-              title: "Hello world!",
-              permalink: "2018/09/hello-world/",
-              author: {
-                id: "Bugger",
-                userId: 3,
-                nicename: "kimboChop",
-                avatar: {
-                  url: "http://2.gravatar.com/avatar/8cbbea0504f915ea88622f97badd1bed?s=96&d=mm&r=g",
-                  foundAvatar: true,
-                  __typename: 'Avatar',
-                },
-                __typename: 'User',
-              },
-              categories: {
-                nodes: [
-                  {
-                    id: "Y2F0ZWdvcnk6MTM=",
-                    name: "testOne",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MTQ=",
-                    name: "testtwo",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MQ==",
-                    name: "Uncategorized",
-                    __typename: 'Category',
-                  }
-                ],
-                __typename: 'PostCategoriesConnection'
-              },
-              tags: {
-                nodes: [
-                  {
-                    id: "cG9zdF90YWc6OQ==",
-                    name: "Forsha",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTA=",
-                    name: "GetIt",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTI=",
-                    name: "Jane",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTE=",
-                    name: "Plain",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6OA==",
-                    name: "Yep",
-                    __typename: 'Tag',
-                  }
-                ],
-                __typename: 'PostTagsConnection',
-              },
-              featuredImage: null,
-              __typename: 'Post',
-            }
-          ],
+          nodes: archiveResults,
           __typename: 'RootPostsConnection'
         }
       }
@@ -274,6 +295,7 @@ const mocks = [
         first: 5,
         category: null,
         tag: null,
+        day: 1,
         month: 9,
         year: 2018,
         author: null,
@@ -283,82 +305,7 @@ const mocks = [
     result: {
       data: {
         posts: {
-          nodes: [
-            {
-              id: "P0TSH0t",
-              postId: 7,
-              uri: "parent-post/child-post",
-              slug: "test-post",
-              excerpt: "<h1>Hello World</h1>",
-              date: "2018-09-12 23:02:46",
-              modified: "2018-09-19 00:26:14",
-              title: "Hello world!",
-              permalink: "2018/09/hello-world/",
-              author: {
-                id: "Bugger",
-                userId: 3,
-                nicename: "kimboChop",
-                avatar: {
-                  url: "http://2.gravatar.com/avatar/8cbbea0504f915ea88622f97badd1bed?s=96&d=mm&r=g",
-                  foundAvatar: true,
-                  __typename: 'Avatar',
-                },
-                __typename: 'User',
-              },
-              categories: {
-                nodes: [
-                  {
-                    id: "Y2F0ZWdvcnk6MTM=",
-                    name: "testOne",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MTQ=",
-                    name: "testtwo",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MQ==",
-                    name: "Uncategorized",
-                    __typename: 'Category',
-                  }
-                ],
-                __typename: 'PostCategoriesConnection'
-              },
-              tags: {
-                nodes: [
-                  {
-                    id: "cG9zdF90YWc6OQ==",
-                    name: "Forsha",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTA=",
-                    name: "GetIt",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTI=",
-                    name: "Jane",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTE=",
-                    name: "Plain",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6OA==",
-                    name: "Yep",
-                    __typename: 'Tag',
-                  }
-                ],
-                __typename: 'PostTagsConnection',
-              },
-              featuredImage: null,
-              __typename: 'Post',
-            }
-          ],
+          nodes: archiveResults,
           __typename: 'RootPostsConnection'
         }
       }
@@ -371,6 +318,30 @@ const mocks = [
         first: 5,
         category: null,
         tag: null,
+        day: null,
+        month: 9,
+        year: 2018,
+        author: null,
+        search: null,
+      },
+    },
+    result: {
+      data: {
+        posts: {
+          nodes: archiveResults,
+          __typename: 'RootPostsConnection'
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: ARCHIVE_QUERY,
+      variables: { 
+        first: 5,
+        category: null,
+        tag: null,
+        day: null,
         month: null,
         year: 2018,
         author: null,
@@ -380,82 +351,7 @@ const mocks = [
     result: {
       data: {
         posts: {
-          nodes: [
-            {
-              id: "P0TSH0t",
-              postId: 7,
-              uri: "parent-post/child-post",
-              slug: "test-post",
-              excerpt: "<h1>Hello World</h1>",
-              date: "2018-09-12 23:02:46",
-              modified: "2018-09-19 00:26:14",
-              title: "Hello world!",
-              permalink: "2018/09/hello-world/",
-              author: {
-                id: "Bugger",
-                userId: 3,
-                nicename: "kimboChop",
-                avatar: {
-                  url: "http://2.gravatar.com/avatar/8cbbea0504f915ea88622f97badd1bed?s=96&d=mm&r=g",
-                  foundAvatar: true,
-                  __typename: 'Avatar',
-                },
-                __typename: 'User',
-              },
-              categories: {
-                nodes: [
-                  {
-                    id: "Y2F0ZWdvcnk6MTM=",
-                    name: "testOne",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MTQ=",
-                    name: "testtwo",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MQ==",
-                    name: "Uncategorized",
-                    __typename: 'Category',
-                  }
-                ],
-                __typename: 'PostCategoriesConnection'
-              },
-              tags: {
-                nodes: [
-                  {
-                    id: "cG9zdF90YWc6OQ==",
-                    name: "Forsha",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTA=",
-                    name: "GetIt",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTI=",
-                    name: "Jane",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTE=",
-                    name: "Plain",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6OA==",
-                    name: "Yep",
-                    __typename: 'Tag',
-                  }
-                ],
-                __typename: 'PostTagsConnection',
-              },
-              featuredImage: null,
-              __typename: 'Post',
-            }
-          ],
+          nodes: archiveResults,
           __typename: 'RootPostsConnection'
         }
       }
@@ -468,6 +364,7 @@ const mocks = [
         first: 5,
         category: null,
         tag: null,
+        day: null,
         month: null,
         year: null,
         author: 'punch45',
@@ -477,82 +374,7 @@ const mocks = [
     result: {
       data: {
         posts: {
-          nodes: [
-            {
-              id: "P0TSH0t",
-              postId: 7,
-              uri: "parent-post/child-post",
-              slug: "test-post",
-              excerpt: "<h1>Hello World</h1>",
-              date: "2018-09-12 23:02:46",
-              modified: "2018-09-19 00:26:14",
-              title: "Hello world!",
-              permalink: "2018/09/hello-world/",
-              author: {
-                id: "Bugger",
-                userId: 3,
-                nicename: 'punch45',
-                avatar: {
-                  url: "http://2.gravatar.com/avatar/8cbbea0504f915ea88622f97badd1bed?s=96&d=mm&r=g",
-                  foundAvatar: true,
-                  __typename: 'Avatar',
-                },
-                __typename: 'User',
-              },
-              categories: {
-                nodes: [
-                  {
-                    id: "Y2F0ZWdvcnk6MTM=",
-                    name: "testOne",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MTQ=",
-                    name: "testtwo",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MQ==",
-                    name: "Uncategorized",
-                    __typename: 'Category',
-                  }
-                ],
-                __typename: 'PostCategoriesConnection'
-              },
-              tags: {
-                nodes: [
-                  {
-                    id: "cG9zdF90YWc6OQ==",
-                    name: "Forsha",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTA=",
-                    name: "GetIt",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTI=",
-                    name: "Jane",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTE=",
-                    name: "Plain",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6OA==",
-                    name: "Yep",
-                    __typename: 'Tag',
-                  }
-                ],
-                __typename: 'PostTagsConnection',
-              },
-              featuredImage: null,
-              __typename: 'Post',
-            }
-          ],
+          nodes: archiveResults,
           __typename: 'RootPostsConnection'
         }
       }
@@ -565,6 +387,7 @@ const mocks = [
         first: 5,
         category: 'web-dev',
         tag: null,
+        day: null,
         month: null,
         year: null,
         author: null,
@@ -574,82 +397,7 @@ const mocks = [
     result: {
       data: {
         posts: {
-          nodes: [
-            {
-              id: "P0TSH0t",
-              postId: 7,
-              uri: "parent-post/child-post",
-              slug: "test-post",
-              excerpt: "<h1>Hello World</h1>",
-              date: "2018-09-12 23:02:46",
-              modified: "2018-09-19 00:26:14",
-              title: "Hello world!",
-              permalink: "2018/09/hello-world/",
-              author: {
-                id: "Bugger",
-                userId: 3,
-                nicename: "kimboChop",
-                avatar: {
-                  url: "http://2.gravatar.com/avatar/8cbbea0504f915ea88622f97badd1bed?s=96&d=mm&r=g",
-                  foundAvatar: true,
-                  __typename: 'Avatar',
-                },
-                __typename: 'User',
-              },
-              categories: {
-                nodes: [
-                  {
-                    id: "Y2F0ZWdvcnk6MTM=",
-                    name: "testOne",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MTQ=",
-                    name: "testtwo",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MQ==",
-                    name: "Uncategorized",
-                    __typename: 'Category',
-                  }
-                ],
-                __typename: 'PostCategoriesConnection'
-              },
-              tags: {
-                nodes: [
-                  {
-                    id: "cG9zdF90YWc6OQ==",
-                    name: "Forsha",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTA=",
-                    name: "GetIt",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTI=",
-                    name: "Jane",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTE=",
-                    name: "Plain",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6OA==",
-                    name: "Yep",
-                    __typename: 'Tag',
-                  }
-                ],
-                __typename: 'PostTagsConnection',
-              },
-              featuredImage: null,
-              __typename: 'Post',
-            }
-          ],
+          nodes: archiveResults,
           __typename: 'RootPostsConnection'
         }
       }
@@ -662,6 +410,7 @@ const mocks = [
         first: 5,
         category: null,
         tag: 'javascript',
+        day: null,
         month: null,
         year: null,
         author: null,
@@ -671,82 +420,7 @@ const mocks = [
     result: {
       data: {
         posts: {
-          nodes: [
-            {
-              id: "P0TSH0t",
-              postId: 7,
-              uri: "parent-post/child-post",
-              slug: "test-post",
-              excerpt: "<h1>Hello World</h1>",
-              date: "2018-09-12 23:02:46",
-              modified: "2018-09-19 00:26:14",
-              title: "Hello world!",
-              permalink: "2018/09/hello-world/",
-              author: {
-                id: "Bugger",
-                userId: 3,
-                nicename: "kimboChop",
-                avatar: {
-                  url: "http://2.gravatar.com/avatar/8cbbea0504f915ea88622f97badd1bed?s=96&d=mm&r=g",
-                  foundAvatar: true,
-                  __typename: 'Avatar',
-                },
-                __typename: 'User',
-              },
-              categories: {
-                nodes: [
-                  {
-                    id: "Y2F0ZWdvcnk6MTM=",
-                    name: "testOne",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MTQ=",
-                    name: "testtwo",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MQ==",
-                    name: "Uncategorized",
-                    __typename: 'Category',
-                  }
-                ],
-                __typename: 'PostCategoriesConnection'
-              },
-              tags: {
-                nodes: [
-                  {
-                    id: "cG9zdF90YWc6OQ==",
-                    name: "Forsha",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTA=",
-                    name: "GetIt",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTI=",
-                    name: "Jane",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTE=",
-                    name: "Plain",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6OA==",
-                    name: "Yep",
-                    __typename: 'Tag',
-                  }
-                ],
-                __typename: 'PostTagsConnection',
-              },
-              featuredImage: null,
-              __typename: 'Post',
-            }
-          ],
+          nodes: archiveResults,
           __typename: 'RootPostsConnection'
         }
       }
@@ -759,6 +433,7 @@ const mocks = [
         first: 5,
         category: null,
         tag: null,
+        day: null,
         month: null,
         year: null,
         author: null,
@@ -768,82 +443,7 @@ const mocks = [
     result: {
       data: {
         posts: {
-          nodes: [
-            {
-              id: "P0TSH0t",
-              postId: 7,
-              uri: "parent-post/child-post",
-              slug: "test-post",
-              excerpt: "<h1>Hello World</h1>",
-              date: "2018-09-12 23:02:46",
-              modified: "2018-09-19 00:26:14",
-              title: "Hello world!",
-              permalink: "2018/09/hello-world/",
-              author: {
-                id: "Bugger",
-                userId: 3,
-                nicename: "kimboChop",
-                avatar: {
-                  url: "http://2.gravatar.com/avatar/8cbbea0504f915ea88622f97badd1bed?s=96&d=mm&r=g",
-                  foundAvatar: true,
-                  __typename: 'Avatar',
-                },
-                __typename: 'User',
-              },
-              categories: {
-                nodes: [
-                  {
-                    id: "Y2F0ZWdvcnk6MTM=",
-                    name: "testOne",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MTQ=",
-                    name: "testtwo",
-                    __typename: 'Category',
-                  },
-                  {
-                    id: "Y2F0ZWdvcnk6MQ==",
-                    name: "Uncategorized",
-                    __typename: 'Category',
-                  }
-                ],
-                __typename: 'PostCategoriesConnection'
-              },
-              tags: {
-                nodes: [
-                  {
-                    id: "cG9zdF90YWc6OQ==",
-                    name: "Forsha",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTA=",
-                    name: "GetIt",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTI=",
-                    name: "Jane",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6MTE=",
-                    name: "Plain",
-                    __typename: 'Tag',
-                  },
-                  {
-                    id: "cG9zdF90YWc6OA==",
-                    name: "Yep",
-                    __typename: 'Tag',
-                  }
-                ],
-                __typename: 'PostTagsConnection',
-              },
-              featuredImage: null,
-              __typename: 'Post',
-            }
-          ],
+          nodes: archiveResults,
           __typename: 'RootPostsConnection'
         }
       }
@@ -858,6 +458,21 @@ const mocks = [
       },
     },
     result: {
+      errors: [
+        {
+          message: "The \"uri\" is invalid",
+          category: "user",
+          locations: [
+            {
+              line: 2,
+              column: 3
+            }
+          ],
+          path: [
+            "page"
+          ]
+        }
+      ],
       data: {
         pageBy: null,
       }
@@ -951,6 +566,24 @@ it(`navigates to an posts archive of the most recent posts
 it(`navigates to an posts archive by month`, async () => {
   const { getByTestId, getByText } = render(
     <MockedProvider mocks={mocks} cache={cache} addTypename>
+      <MemoryRouter initialEntries={[ '/2018/09/01' ]}>
+        <Main data-testid="test-main" />
+      </MemoryRouter>
+    </MockedProvider>
+  );
+
+  // Confirms Main
+  const mainElement = await waitForElement(() => getByTestId(/test-main/));
+  expect(mainElement).toBeTruthy();
+
+  // Confirms Content
+  const content = await waitForElement(() => getByText(/Posts made September 1, 2018/));
+  expect(content).toBeTruthy();
+});
+
+it(`navigates to an posts archive by month`, async () => {
+  const { getByTestId, getByText } = render(
+    <MockedProvider mocks={mocks} cache={cache} addTypename>
       <MemoryRouter initialEntries={[ '/2018/09' ]}>
         <Main data-testid="test-main" />
       </MemoryRouter>
@@ -1016,7 +649,7 @@ it(`navigates to an posts archive by category`, async () => {
   expect(mainElement).toBeTruthy();
 
   // Confirms Content
-  const content = await waitForElement(() => getByText(/Posts categorized in web-dev/));
+  const content = await waitForElement(() => getByText(/Posts categorized in Web Development/));
   expect(content).toBeTruthy();
 });
 
@@ -1052,7 +685,7 @@ it(`navigates to an posts archive by search`, async () => {
   expect(mainElement).toBeTruthy();
 
   // Confirms Content
-  const content = await waitForElement(() => getByText(/Searching lorem ipsum/));
+  const content = await waitForElement(() => getByText(/Searching "lorem ipsum"/));
   expect(content).toBeTruthy();
 });
 
@@ -1070,7 +703,8 @@ it(`navigates to an 404 error`, async () => {
   expect(mainElement).toBeTruthy();
 
   // Confirms Content
-  const content = getByText(/Hello World/);
+  const content = await waitForElement(() => 
+    getByText(/^Sorry, we can't locate the page you're looking for. Please, try again later.$|^GraphQL error: The "uri" is invalid$/));
   expect(content).toBeTruthy();
 });
 

@@ -6,6 +6,7 @@ import { baseComposer, queryComposer } from '../composers';
 import { Error, Loading } from '../utils';
 
 import { MENU_WHERE_QUERY, MENU_QUERY, MENU_ITEM_QUERY } from './query';
+import { menuStateManager } from './state-manager';
 import menu from './menu';
 import menuItem, { Link } from './menu-item';
 import subMenu from './sub-menu';
@@ -82,7 +83,10 @@ menu.compose = queryComposer({
       var data = _ref7.data,
           rest = _objectWithoutProperties(_ref7, ['data']);
 
-      return Object.assign({ menu: get(data, 'menus.nodes[0]') }, rest);
+      return Object.assign({
+        homeUrl: get(data, 'generalSettings.url'),
+        menu: get(data, 'menus.nodes[0]')
+      }, rest);
     }
   }, {
     cond: function cond(_ref8) {
@@ -105,17 +109,13 @@ menu.compose = queryComposer({
       var data = _ref11.data,
           rest = _objectWithoutProperties(_ref11, ['data']);
 
-      return Object.assign({ menu: get(data, 'menu') }, rest);
+      return Object.assign({
+        homeUrl: get(data, 'generalSettings.url'),
+        menu: get(data, 'menu')
+      }, rest);
     }
   }],
-  sharedMapper: function sharedMapper(_ref12) {
-    var menu = _ref12.menu,
-        rest = _objectWithoutProperties(_ref12, ['menu']);
-
-    return Object.assign({
-      items: get(menu, 'menuItems.nodes')
-    }, omit(menu, 'id', 'menuItems'), omit(rest, 'id'));
-  }
+  extraHocs: [menuStateManager]
 });
 
 var Menu = menu.compose({});

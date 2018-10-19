@@ -2,12 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Parser as ReactParser } from 'html-to-react';
+import ReactHtmlParser from 'react-html-parser';
 
 import { Attachment } from './';
 import { PostCommentsContext } from './context';
-
-const parser = new ReactParser();
 
 // Comment Author V Card
 const AuthorVCard = ({ userId, nicename, name, avatar }) => (
@@ -35,17 +33,12 @@ const AuthorVCard = ({ userId, nicename, name, avatar }) => (
 );
 
 // Comment Metadata
-const Metadata = ({ date, modified, editable, onEdit, onDelete }) => {
+const Metadata = ({ date, editable, onEdit, onDelete }) => {
   return (
     <div className="comment-metadata">
       <time dateTime={date}>
         {moment(date).format('LLL')}
       </time>
-      { modified !== date && (
-        <time dateTime={modified}>
-          Last updated on: {moment(modified).format('LLL')}
-        </time>
-      )}
       {/* if logged in user is the comment author add update and delete buttons */}
       {editable && (
         <React.Fragment>
@@ -63,7 +56,7 @@ const Metadata = ({ date, modified, editable, onEdit, onDelete }) => {
 
 // Comment Content
 const Content = ({ content }) => (
-  <div className="comment-content">{parser.parse(content)}</div>
+  <div className="comment-content">{ReactHtmlParser(content)}</div>
 );
 
 /**

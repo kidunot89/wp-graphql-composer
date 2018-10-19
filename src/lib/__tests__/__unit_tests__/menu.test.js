@@ -75,6 +75,11 @@ const menuData = {
   __typename: 'Menu'
 };
 
+const generalSettingsData = {
+  url: 'https://example.com',
+  __typename: 'Settings',
+}
+
 const menuItemRequests = [
   {
     request: {
@@ -243,7 +248,8 @@ const mocks = [
     },
     result: {
       data: {
-        menu: menuData
+        menu: menuData,
+        generalSettings: generalSettingsData,
       }
     }
   },
@@ -257,7 +263,8 @@ const mocks = [
         menus: {
           nodes: [menuData],
           __typename: 'MenusConnection',
-        }
+        },
+        generalSettings: generalSettingsData,
       }
     }
   },

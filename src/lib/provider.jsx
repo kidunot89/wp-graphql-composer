@@ -2,7 +2,12 @@ import React from 'react';
 import ApolloClient from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloLink, concat } from 'apollo-link';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
+import introspectionQueryResultData from './fragmentTypes.json';
+
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData,
+});
 
 export const createClient = httpLink => {
   // Add the authorization to the headers
@@ -19,7 +24,8 @@ export const createClient = httpLink => {
   return new ApolloClient({
     link: concat(authMiddleware, httpLink),
     cache: new InMemoryCache({
-      dataIdFromObject: object => object.id || null
+      dataIdFromObject: object => object.id,
+      fragmentMatcher,
     }),
     clientState: {
 
