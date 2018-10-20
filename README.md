@@ -1,10 +1,13 @@
 # What is WP-GraphQL Composer?
-WP-GraphQL Composer is a library of [React](https://reactjs.org) components that does most of the the legwork for creating a [React-Apollo](https://www.apollographql.com/docs/react/) Wordpress theme.
+WP-GraphQL Composer is a [React](https://reactjs.org) components library/toolkit that does most of the the legwork for creating a Wordpress theme and plugin powered by [React-Apollo](https://www.apollographql.com/docs/react/).
 
-The components within this library are make up of reusable [Higher-Order-Components](https://reactjs.org/docs/higher-order-components.html) that are wrapped around a [React Stateless Component](https://reactjs.org/docs/components-and-props.html) using Andrew Clark's [Recompose](https://recompose.docsforhumans.com/) library. This library was created to be an extension of the [WPGraphQL](https://wpgraphql.com/) plugin, and component and their queries won't work without a [GraphQL](https://graphql.org/) server serving a Schema not identical to the created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed to my knowledge
+The components within this library are make up of reusable [Higher-Order-Components](https://reactjs.org/docs/higher-order-components.html) that are wrapped around a [React Stateless Component](https://reactjs.org/docs/components-and-props.html) using Andrew Clark's [Recompose](https://recompose.docsforhumans.com/) library. This library was created to be an extension of the [WPGraphQL](https://wpgraphql.com/) plugin, and component and their queries won't work without a [GraphQL](https://graphql.org/) server serving a Schema not identical to the created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed *to my knowledge*.
 
 ## What Does It Offer?
 An easy solution to quickly creating a React app served by [WordPress](https://wordpress.org)
+
+## Demo
+Returning soon...
 
 ## Getting Started
 Run the command npm install wp-graphql-composer in a your React app directory.
@@ -31,7 +34,14 @@ And wrap you root component in a WPProvider component like so.
   );
 ```
 
-## Usage
+## Scaffolding Usage
+A command line tool for creating a stub WordPress theme and plugin for loading your react in also included.
+
+Run `wp-graphql-compose init` from your terminal in you working directory, select either `Theme` or `Plugin` and the theme or plugin files will be added to you project folder in the `template` directory for editing.
+
+Add ` && wp-graphql-compose build` to you `build` script in npm packages and the template files will be added to the `build` folder upon use `npm run build`
+
+## Component Usage
 Simply import a component and pass the required props.
 
 ```
@@ -118,7 +128,6 @@ Simply import a component and pass the required props.
     </WPProvider>
   );
 ```
-You can learn more about the [Menu](https://api.axistaylor.com/composer/lib#menu) component and the rest of the library in the [Components](https://api.axistaylor.com/composer/lib) and [Documentation](https://api.axistaylor.com/composer/docs) sections.
 
 ## Creating New Composers
 You can create a completely new composer function using the helper composer functions in `lib/composers`. There are two primary functions made `baseComposer` and `queryComposer`. They are similar but their uses are little different.
