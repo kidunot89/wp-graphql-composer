@@ -39,7 +39,7 @@ A command line tool for creating a stub WordPress theme and plugin for loading y
 
 Run `wp-graphql-compose init` from your terminal in you working directory, select either `Theme` or `Plugin` and the theme or plugin files will be added to you project folder in the `template` directory for editing.
 
-Add ` && wp-graphql-compose build` to you `build` script in npm packages and the template files will be added to the `build` folder upon use `npm run build`
+Add ` && wp-graphql-compose build` to you `build` script in your package.json and the template files will be added to the `build` folder upon use `npm run build`
 
 ## Component Usage
 Simply import a component and pass the required props.
@@ -64,7 +64,7 @@ Simply import a component and pass the required props.
 ## Modifying Pre-Composed Components
 1. To create a new template for say the `Menu` component, import `menu`, `menuItem`, and `subItem` view components from `wp-graphql-composer`.
 `import { menu, menuItem, subItem } from 'wp-graphql-composer';`
-2. Next create new components to be the new view layers for the menu, menu item, and sub menu components. You don't have to change all three for but I am just to show how its done. I'm also using the `map` and `isEmpty` functions from the `lodash` package to help map the items.
+2. Next create new components to be the new view layers for the menu, menu item, and sub menu components. You don't have to change all three for but I am just to show how its done.
 ```
   const subMenuView = ({ MenuItem, SubMenu, items, ...rest }) => (
     <ol data-testid="custom-submenu" {...rest}>
@@ -136,28 +136,43 @@ You can create a completely new composer function using the helper composer func
 
 ```
 const composer = baseComposer({
-  view: ViewComponent, // default view layer component
-  loading: { view: LoadingViewComponent, cond: props => !!props.loading }, // default properties passed to loading handler 
-  error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' }, // default properties passed to error handler,
-  extraHocs: [], // default HOCs wrapped around the mapper and view layer component
-  mapper: props => props, // default mapper function
-  ...extraDefaults, // all of elements are pass to the view component as a prop.
+  // default view layer component
+  view: ViewComponent,
+  // default properties passed to loading state handler 
+  loading: { view: LoadingViewComponent, cond: props => !!props.loading },
+  // default properties passed to error state handler
+  error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' },
+  // default HOCs wrapped around the mapper and view layer component
+  extraHocs: [],
+  // default mapper function
+  mapper: props => props,
+  // all other parameters are pass to the view component as a prop.
+  ...extraDefaults,
 })
 
-const ComposedComponent = composer({ view, loading, error, extraHocs, mapper }) // all default values can be overwritten in composed instances
+// all default values can be overwritten in composed instances
+const ComposedComponent = composer({ view, loading, error, extraHocs, mapper }) 
 ```
 
 `queryComposer` - similar to `baseComposer` but it includes conditional GraphQL HOCs each can have a `cond` function prop and `mapper`.
 ```
 const composer = queryComposer({
-  view: ViewComponent, // default view layer component
-  queries: [{ query: GRAPHQL_QUERY, config: { options: {...}, ... }, mapper }] // default query properties
-  loading: { view: LoadingViewComponent, cond: props => !!props.loading }, // default properties passed to loading handler 
-  error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' }, // default properties passed to error handler,
-  extraHocs: [], // default HOCs wrapped around the mapper and view layer component
-  sharedMapper: props => props, // default mapper function
-  ...extraDefaults, // all of elements are pass to the view component as a prop.
+  // default view layer component
+  view: ViewComponent,
+  // default query properties
+  queries: [{ query: GRAPHQL_QUERY, config: { options: {...}, ... }, mapper }]
+  // default properties passed to loading state handler
+  loading: { view: LoadingViewComponent, cond: props => !!props.loading }, 
+  // default properties passed to error state handler
+  error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' }, 
+  // default HOCs wrapped around the mapper and view layer component
+  extraHocs: [],
+  // default mapper function shared by all queries
+  sharedMapper: props => props,
+  // all other parameters are pass to the view component as a props.
+  ...extraDefaults,
 })
 
-const ComposedComponent = composer({ view, queries, loading, error, extraHocs, mapper }) // all default values can be overwritten in composed instances
+// just like with baseComposer all default values can be overwritten in composed instances
+const ComposedComponent = composer({ view, queries, loading, error, extraHocs, mapper }) 
 ```
