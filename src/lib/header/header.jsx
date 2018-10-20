@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import './header.scss';
+
 const header = ({ url, title, description, logo, children, Attachment, ...rest }) => {
   return (
     <div className="site-header" role="banner" {...rest}>

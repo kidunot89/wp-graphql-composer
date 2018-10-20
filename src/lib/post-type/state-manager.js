@@ -53,7 +53,7 @@ export const postStateManager = (BaseComponent) => {
       const { data, ...rest } = this.props;
 
       const post = get(data, 'post') || get(data, 'postBy');
-      const featured = get(post, 'featuredImage.mediaItemId');
+      const featured = get(post, 'featuredImage.id');
       const details = {
         author: get(post, 'author'),
         categories: get(post, 'categories.nodes'),

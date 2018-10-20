@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './main.scss';
+
 const main = ({ Archive, children, className, Page, Post, Routes, ...rest }) => (
   <main role="main" className={`site-main${className ? ' '+className : ''}`} {...rest}>
     <Routes {...{ Archive, Page, Post }} />

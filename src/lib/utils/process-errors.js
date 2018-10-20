@@ -1,10 +1,6 @@
 import React from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { fas } from '@fortawesome/free-solid-svg-icons'
 
-// Load icons to FontAwesome library
-library.add(fas);
+import Icon from './icon';
 
 export const processMessage = (defaultMessage, message) => {
   if(process.env.REACT_APP_DEBUG_MODE) return message || defaultMessage;
@@ -25,7 +21,7 @@ export default ({ type = '', message, ...rest }) => {
           `Sorry, we can't locate the ${typename} you're looking for. Please, try again later.`,
           message,
         ),
-        icon: (<FontAwesomeIcon color="Tomato" size="2x" icon={['fas', 'times']} mask={['fas', 'circle']}/>),
+        icon: (<Icon name="error" size="large" />),
         type,
         ...rest
       };
@@ -37,7 +33,7 @@ export default ({ type = '', message, ...rest }) => {
           `Sorry, you aren't authorized to view this ${typename}.`,
           message,
         ),
-        icon: (<FontAwesomeIcon color="Tomato" size="2x" icon={['fas', 'ban']}/>),
+        icon: (<Icon name="block" size="large" />),
         type,
         ...rest
       };
@@ -49,7 +45,7 @@ export default ({ type = '', message, ...rest }) => {
           `Sorry, there was a problem loading the ${typename} you are trying to access. Please, try again later.`,
           message,
         ),
-        icon: (<FontAwesomeIcon color="Tomato" size="2x" icon={['fas', 'exclamation-circle']} />),
+        icon: (<Icon name="error_outline" size="large" />),
         type,
         ...rest
       };
@@ -61,7 +57,7 @@ export default ({ type = '', message, ...rest }) => {
           `Sorry, there was a system error while loading the ${typename} you request. Please, try again later or report this to us.`,
           message,
         ),
-        icon: (<FontAwesomeIcon color="Tomato" size="2x" icon={['fas', 'exclamation-triangle']} />),
+        icon: (<Icon name="report" size="large" />),
         type,
         ...rest
       };
@@ -72,7 +68,7 @@ export default ({ type = '', message, ...rest }) => {
           'Wow, this is embarassing! We\'re not sure what happened. Or... a lazy dev just forgot to add a message here. Sorry!.',
           message,
         ),
-        icon: (<FontAwesomeIcon size="2x" icon={['fas', 'grin-beam-sweat']} />),
+        icon: (<Icon name="sentiment_very_dissatisfied" size="large" />),
         type,
         ...rest
       };

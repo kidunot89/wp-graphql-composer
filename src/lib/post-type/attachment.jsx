@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
+import './attachment.scss';
+
 /**
  * Attachment base stateless component
  * 

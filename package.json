@@ -1,7 +1,7 @@
 {
   "name": "wp-graphql-composer",
   "version": "0.1.3",
-  "description": "A library of customizable WordPress React-Apollo components",
+  "description": "A light-weight framework for developing wordpress React-powered WordPress plugin and themes",
   "keywords": [
     "wp-graphql",
     "wordpress",
@@ -11,7 +11,10 @@
     "react-apollo",
     "recompose"
   ],
-  "author": "Geoff Taylor",
+  "author": {
+    "name": "Geoff Taylor",
+    "url": "https://axistaylor.com/"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -30,59 +33,42 @@
   "bin": {
     "wp-graphql-compose": "bin/compose.js"
   },
-  "scripts": {
-    "start-js": "react-scripts start",
-    "start": "npm-run-all -p watch-css watch-demo-css start-js",
-    "watch-css": "npm run build-css && node-sass-chokidar src/lib/scss/ -o src/lib/ --watch --recursive",
-    "build-css": "node-sass-chokidar src/lib/scss/ -o src/lib/",
-    "watch-demo-css": "npm run build-css && node-sass-chokidar src/demo/scss/ -o src/demo/ --watch --recursive",
-    "build-demo-css": "node-sass-chokidar src/demo/scss/ -o src/demo/",
-    "build": "npm run build-css && rimraf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__",
-    "build-demo": "npm-run-all -s build-css build-demo-css && react-scripts build && rimraf demo && mv build demo",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-react": "^6.24.1",
-    "casual": "^1.5.19",
-    "node-sass-chokidar": "^1.3.3",
-    "npm-run-all": "^4.1.3",
-    "react-testing-library": "^5.1.0",
-    "rimraf": "^2.6.2"
-  },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.4.1",
-    "@fortawesome/fontawesome-svg-core": "^1.2.4",
-    "@fortawesome/free-brands-svg-icons": "^5.3.1",
-    "@fortawesome/free-regular-svg-icons": "^5.3.1",
-    "@fortawesome/free-solid-svg-icons": "^5.3.1",
-    "@fortawesome/react-fontawesome": "^0.1.3",
     "apollo-boost": "^0.1.16",
     "commander": "^2.19.0",
     "del-symlinks": "^0.1.2",
-    "dotenv": "^6.1.0",
     "graphql": "^14.0.2",
-    "html-to-react": "^1.3.3",
     "inquirer": "^6.2.0",
     "make-symlinks": "^1.1.0",
     "moment": "^2.22.2",
+    "node-sass": "^4.9.4",
     "react": "^16.5.2",
     "react-apollo": "^2.2.4",
     "react-dom": "^16.5.2",
     "react-html-parser": "^2.0.2",
-    "react-live": "^1.11.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^1.1.5",
+    "react-scripts": "2.0.5",
     "react-transition-group": "^2.5.0",
     "recompose": "^0.30.0",
     "shelljs": "^0.8.2"
   },
-  "proxy": {
-    "/graphql": {
-      "target": "http://wpgraphql.example:8000",
-      "ws": true
-    }
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react": "^6.24.1",
+    "react-testing-library": "^5.1.0"
   },
-  "homepage": "https://api.axistaylor.com/composer/"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "rm -rf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__",
+    "test": "react-scripts test --env=jsdom",
+    "coverage": "react-scripts test --env=jsdom --coverage",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://wpgraphql.example:8000",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

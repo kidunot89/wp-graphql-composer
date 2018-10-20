@@ -73,6 +73,9 @@ const reduceBreakpoints = (sizes) => {
 };
 
 export default ({ data, src, alt, ...rest }) => {
+  const variables = [
+    'id', 'mediaItemId', 'slug', 'uri'
+  ];
   const imgSrc = get(data, 'mediaItemBy.sourceUrl') || src;
   const altText = alt || get(data, 'mediaItemBy.altText');
 
@@ -83,9 +86,9 @@ export default ({ data, src, alt, ...rest }) => {
 
     return {
       src: imgSrc,  alt: altText, srcSet: sources.join(', '), sizes: srcSizes.join(', '),
-      ...omit(rest, ['fallback', 'mediaItemId']),
+      ...omit(rest, ['fallback', ...variables]),
     };
   }
 
-  return { src: imgSrc,  alt: altText, ...omit(rest, ['fallback', 'mediaItemId']) };
+  return { src: imgSrc,  alt: altText, ...omit(rest, ['fallback', ...variables]) };
 };

@@ -1,12 +1,8 @@
 import React from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { render, cleanup, waitForElement } from 'react-testing-library';
+import { render, cleanup } from 'react-testing-library';
 
-import { Error } from 'utils';
-
-library.add(fas);
+import { Error, Icon } from 'utils';
+;
 
 afterEach(cleanup);
 
@@ -19,7 +15,7 @@ it(`renders 404 error message and icon`, () => {
 });
 
 it(`renders 403 error message and custom icon`, () => {
-  const CustomIcon = () => (<FontAwesomeIcon color="Tomato" size="2x" icon={['fas', 'ban']}/>);
+  const CustomIcon = () => (<Icon name="block" size="large" />);
   const { baseElement } = render(<CustomIcon />);
   const customIcon = baseElement.querySelector('div').innerHTML;
 
@@ -27,11 +23,11 @@ it(`renders 403 error message and custom icon`, () => {
   const icon = getByTestId(/error-icon/);
   expect(icon).toBeTruthy();
   expect(icon.innerHTML === customIcon).toBeTruthy();
-  expect(getByText(/Sorry, you aren\'t authorized to view this content\./)).toBeTruthy();
+  expect(getByText(/Sorry, you aren't authorized to view this content\./)).toBeTruthy();
 });
 
 it(`renders query error message and icon`, () => {
-  const CustomIcon = () => (<FontAwesomeIcon color="Tomato" size="2x" icon={['fas', 'exclamation-circle']} />);
+  const CustomIcon = () => (<Icon name="error_outline" size="large" />)
   const { baseElement } = render(<CustomIcon />);
   const customIcon = baseElement.querySelector('div').innerHTML;
 
@@ -43,7 +39,7 @@ it(`renders query error message and icon`, () => {
 });
 
 it(`renders unknown error message and icon`, () => {
-  const CustomIcon = () => (<FontAwesomeIcon size="2x" icon={['fas', 'grin-beam-sweat']} />);
+  const CustomIcon = () => (<Icon name="sentiment_very_dissatisfied" size="large" />)
   const { baseElement } = render(<CustomIcon />);
   const customIcon = baseElement.querySelector('div').innerHTML;
 
@@ -51,11 +47,11 @@ it(`renders unknown error message and icon`, () => {
   const icon = getByTestId(/error-icon/);
   expect(icon).toBeTruthy();
   expect(icon.innerHTML === customIcon).toBeTruthy();
-  expect(getByText(/Wow, this is embarassing! We\'re not sure what happened\. Or\.\.\. a lazy dev just forgot to add a message here\. Sorry!/)).toBeTruthy();
+  expect(getByText(/Wow, this is embarassing! We're not sure what happened\. Or\.\.\. a lazy dev just forgot to add a message here\. Sorry!/)).toBeTruthy();
 });
 
 it(`renders custom error message and icon`, () => {
-  const CustomIcon = () => (<FontAwesomeIcon size="2x" icon={['fas', 'circle']} />);
+  const CustomIcon = () => (<Icon name="stars" />)
   const { baseElement } = render(<CustomIcon />);
   const customIcon = baseElement.querySelector('div').innerHTML;
 

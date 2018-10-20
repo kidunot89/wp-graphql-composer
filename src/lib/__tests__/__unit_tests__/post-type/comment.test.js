@@ -368,16 +368,19 @@ it(`deletes an existing post comment`, async () => {
   const comments = await waitForElement(() => getByTestId(/test-comments/));
   expect(comments).toBeTruthy();
 
-  expect(comments.querySelectorAll('.comment').length).toBe(3);
+  expect(comments.querySelectorAll('.comment-content').length).toBe(3);
 
-  const target = comments.querySelectorAll('#comment-2');
+  const target = comments.querySelector('#comment-2');
   expect(target).toBeTruthy();
 
   // Fire delete event
   fireEvent.click(getByText(/Delete/));
 
-  await wait(() => expect(comments.innerHTML).not.toContain(target.outerHTML));
-  expect(comments.querySelectorAll('.comment').length).toBe(2);
+  await wait(() => expect(
+    getByTestId(/test-comments/)
+      .querySelectorAll('.comment-content').length).toBe(2),
+      { timeout: 4500 });
+  console.log(comments.innerHTML);
 });
 
 

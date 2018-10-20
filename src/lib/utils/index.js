@@ -6,6 +6,8 @@ import progressMapper from './process-loading';
 import error from './error';
 import errorMapper from './process-errors';
 
+import Icon from './icon';
+
 /**
  * Creates composer for loading component
  */
@@ -31,5 +33,5 @@ const Error = error.compose({});
  */
 export {
   Error, error, errorMapper, Loading,
-  loading, progressMapper,
+  loading, progressMapper, Icon,
 };

@@ -10,7 +10,12 @@ it(`renders mock image at different sizes while maintaining the image's aspect r
   const mocks = [{
     request: {
       query: ATTACHMENT_QUERY,
-      variables: { mediaItemId: 1 },
+      variables: { 
+        mediaItemId: 1,
+        id: null,
+        slug: null,
+        uri: null,
+      },
     },
     result: {
       data: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Parser as ReactParser } from 'html-to-react';
+import ReactHtmlParser from 'react-html-parser';
 import { render, cleanup, waitForElement } from 'react-testing-library';
 import { MockedProvider } from 'react-apollo/test-utils';
 
@@ -73,12 +73,11 @@ it(`renders a page by uri`, async () => {
 
 
 it(`render a page with a custom view component`, async () => {
-  const parser = new ReactParser();
   const CustomPage = page.compose({
     view: ({ pageId, title, content, date, modified, ...rest }) => (
       <div id={`page-${pageId}`} data-testid="page-body" {...rest}>
         <h1 data-testid="page-title">{title}</h1>
-        <div data-testid="page-content">{parser.parse(content)}</div>
+        <div data-testid="page-content">{ReactHtmlParser(content)}</div>
         <div>
           <span data-testid="page-date">{date}</span>
           <span data-testid="page-modified">{modified}</span>

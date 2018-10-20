@@ -1,10 +1,34 @@
 import React from 'react';
-import '../mock-utils';
 import { render, cleanup, waitForElement, fireEvent } from 'react-testing-library';
 import { MockedProvider } from 'react-apollo/test-utils';
 import v3 from 'uuid/v3';
 
 import { Login, login, UserControls, userControls, LOGIN_MUTATION, VIEWER_QUERY } from 'user';
+
+// test-utils.js
+class LocalStorageMock {
+  constructor() {
+    this.store = {};
+  }
+
+  clear() {
+    this.store = {};
+  }
+
+  getItem(key) {
+    return this.store[key] || null;
+  }
+
+  setItem(key, value) {
+    this.store[key] = value.toString();
+  }
+
+  removeItem(key) {
+    delete this.store[key];
+  }
+};
+
+global.localStorage = new LocalStorageMock();
 
 afterEach(() => {
   localStorage.clear();
@@ -151,7 +175,7 @@ it(`renders successful login with custom templates`, async () => {
       <div {...rest} data-testid="user-controls">
         <button
           data-testid="logout-button"
-          onClick={() => logout().then(c => c.resetStore())}
+          onClick={logout}
         >Logout</button>
       </div>
     )

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { createAppState, AppContext } from './app-context';
-import Body from './layout';
+import AllComponents from './all-components';
 
-import 'style.css';
 import './app.css';
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +23,7 @@ class App extends Component {
   render() {
     return (
       <AppContext.Provider value={this.state}>
-        <Body />
+        <AllComponents />
       </AppContext.Provider>
     )
   }

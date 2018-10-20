@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { map } from 'lodash';
 
+import './archive.scss';
+
 const archive = ({
   Attachment,
   PostResult,

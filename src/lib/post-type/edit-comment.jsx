@@ -4,6 +4,8 @@ import { isNull } from 'lodash';
 
 import { PostCommentsContext } from './context';
 
+import './edit-comment.scss';
+
 const editComment = ({
   id, commentKey, update, submitButtonText,
   ...rest
@@ -17,7 +19,7 @@ const editComment = ({
       const onSubmit = update ? onUpdate(commentKey, id) : onCreate(commentKey);
 
       return (
-        <form className="comment-form" {...rest}>
+        <form className="comment-form" {...rest} onSubmit={onSubmit}>
           { !isNull(author) &&
             <input
               type="text"
@@ -52,7 +54,7 @@ const editComment = ({
             placeholder="Enter Message"
           />
           {error && <p>{error}</p>}
-          <button onClick={onSubmit}>{submitButtonText}</button>      
+          <button type="submit">{submitButtonText}</button>      
         </form>
       )
     }}

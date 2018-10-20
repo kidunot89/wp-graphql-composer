@@ -1,17 +1,10 @@
 import React from 'react'
 import { get } from 'lodash';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { fas } from '@fortawesome/free-solid-svg-icons'
 
-// Load icons to FontAwesome library
-library.add(fas);
+import Icon from './icon';
 
 export const defaultIcon = (
-  <div className="fa-layers">
-    <FontAwesomeIcon size="2x" icon={['fas', 'circle']} />
-    <FontAwesomeIcon size="2x" icon={['fas', 'circle-notch']} transform="shrink-1" color={'#B2F300'} spin />
-  </div>
+  (<Icon name="autorenew" size="large" />)
 )
 
 export default ({ data, icon: altIcon, message, ...rest }) => {

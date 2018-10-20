@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Parser as ReactParser } from 'html-to-react';
+import ReactHtmlParser from 'react-html-parser';
 import { render, cleanup, waitForElement } from 'react-testing-library';
 import { MockedProvider } from 'react-apollo/test-utils';
 
@@ -181,7 +181,6 @@ it(`renders a post by slug`, async () => {
 
 
 it(`renders a post by uri with a custom view component`, async () => {
-  const parser = new ReactParser();
   const customDetails = ({ date, modified, author: { userId, nicename }, tags, categories }) => {
     const created = new Date(date);
     const updated = (modified) ? new Date(modified) : false;
@@ -211,7 +210,7 @@ it(`renders a post by uri with a custom view component`, async () => {
       <article id={`post-${postId}`} {...rest}>
         <Attachment mediaItemId={featured} fallback />
         <div data-testid="post-content">
-          {parser.parse(content)}
+          {ReactHtmlParser(content)}
         </div>
         <footer>
           <DetailsComponent {...details} />

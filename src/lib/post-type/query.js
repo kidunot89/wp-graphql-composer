@@ -7,8 +7,8 @@ import { gql } from 'apollo-boost';
  * Queries
  */
 export const ATTACHMENT_QUERY = gql`
-  query AttachmentQuery($mediaItemId: Int) {
-    mediaItemBy(mediaItemId: $mediaItemId){
+  query AttachmentQuery($id: String, $mediaItemId: ID, $slug: String, $uri: String) {
+    mediaItemBy(id: $id, mediaItemId: $mediaItemId, slug: $slug, uri: $uri){
       id
       altText
       mediaType

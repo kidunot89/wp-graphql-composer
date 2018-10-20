@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './login.scss';
+
 const login = ({
   username, password, userFieldError, passFieldError,
   formError, onChange, onSubmit, className, reset,

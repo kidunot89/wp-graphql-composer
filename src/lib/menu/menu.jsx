@@ -4,6 +4,8 @@ import { isEmpty, map, omit } from 'lodash';
 
 import { compileClassName } from '../helpers';
 
+import './menu.scss';
+
 const menu = ({ slug, items, SubMenu, MenuItem, ...rest }) => {
   const className = compileClassName(rest, 'menu-container', 'horizontal');
   return (

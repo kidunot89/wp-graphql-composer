@@ -10,7 +10,7 @@ import { queryComposer } from '../composers';
 import {
   ATTACHMENT_QUERY, PAGE_QUERY, PAGE_BY_QUERY, POST_QUERY, POST_BY_QUERY,
   POST_COMMENTS_QUERY, DELETE_COMMENT_MUTATION, NEW_COMMENT_MUTATION,
-  UPDATE_COMMENT_MUTATION, 
+  UPDATE_COMMENT_MUTATION,
 } from './query';
 
 import attachmentMapper from './attachment-mapper';
@@ -28,13 +28,15 @@ attachment.compose = queryComposer({
   view: attachment,
   whileLoading: { view: Loading },
   forError: { view: Error, type: '404-image' },
-  queries: [{
-    query: ATTACHMENT_QUERY,
-    config: {
-      options: ({ mediaItemId }) => ({ mediaItemId }),
-      skip: ({ mediaItemId }) => !mediaItemId
-    }
-  }],
+  queries: [
+    {
+      query: ATTACHMENT_QUERY,
+      config: {
+        options: ({ id, mediaItemId, slug, uri }) => ({ id, mediaItemId, slug, uri }),
+        skip: ({ id, mediaItemId, slug, uri }) => !id && !mediaItemId && !slug && !uri
+      }
+    },
+  ],
   sharedMapper: attachmentMapper
 });
 

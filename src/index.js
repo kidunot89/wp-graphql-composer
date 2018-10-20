@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from "react-dom";
 import { BrowserRouter as Router } from 'react-router-dom';
 import { HttpLink } from 'apollo-link-http';
-import { WPProvider } from 'provider';
+import { WPProvider } from 'lib';
 import App from './demo/app'
 
 // Create HttpLink

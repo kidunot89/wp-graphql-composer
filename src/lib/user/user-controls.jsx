@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './user-controls.scss';
+
 const userControls = ({ className, userId, nicename, firstName, logout, ...rest }) => (
   <div className={`user-controls${className ? ' '+className : ''}`} {...rest}>
     <div className="greeting">

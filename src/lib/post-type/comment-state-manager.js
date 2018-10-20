@@ -144,7 +144,7 @@ export const postCommentsStateManager = (BaseComponent) => {
           console.log('delete mutation success');
         })
         .catch(error => {
-          console.log('delete mutation success');
+          console.warn('delete mutation failed');
           console.warn(error);
         });
       }
@@ -188,15 +188,12 @@ export const postCommentsStateManager = (BaseComponent) => {
 
       return () => {
         const { workingState: { [key]: { content } } } = this.state;
-        const now = new Date();
-        const date = `${now.getMonth()}/${now.getDate()}/${now.getFullYear()}`
         mutate({
           mutation: UPDATE_COMMENT_MUTATION,
           variables: {
             type: null,
             id,
             content,
-            date,
             clientId: v3(`${id}update`, v3.URL),
           },
           update: (cache, { data: { updateComment: { comment } } } ) => {

@@ -2,15 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
 
+import styles from './post.scss';
+
 const post = ({ featured, postId, title, content, details, Attachment, DetailsComponent, ...rest }) => (
   <article id={`post-${postId}`} className="post type-post" {...rest}>
-    {featured && 
-      <Attachment
-        mediaItemId={featured}
-        data-attachment-id={featured}
-        className={`wp-post-image`}
-      />
-    }
+    <Attachment
+      id={featured}
+      data-attachment-id={featured}
+      className={`wp-post-image`}
+      fallback
+    />
     {ReactHtmlParser(content)}
   </article>
 );

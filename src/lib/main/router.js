@@ -4,16 +4,16 @@ import { setDisplayName, wrapDisplayName } from 'recompose';
 import { Switch, Route } from 'react-router-dom';
 
 export const mapLoopProps = ({ data, ...rest }) => {
-  const pageForPostSlug = get(data, 'allSettings.pageForPosts');
+  const pageForPostsSlug = get(data, 'allSettings.pageForPosts');
   const pageOnFront = get(data, 'allSettings.pageOnFront');
   const structure = get(data, 'allSettings.permalinkStructure');
   const limit = get(data, 'allSettings.readingSettingsPostsPerPage');
   
-  return { pageForPostSlug, pageOnFront, structure, limit,...rest };
+  return { pageForPostsSlug, pageOnFront, structure, limit,...rest };
 };
 
 export const defaultRoutes = 
-({ limit, pageOnFront, postsPath, pageForPostSlug }) => 
+({ limit, pageOnFront, postsPath, pageForPostsSlug }) => 
   ({ Archive, Page, Post, frontChildren, children }) => (
     <Switch>
       {/* Extra Routes */}
@@ -102,10 +102,10 @@ export const defaultRoutes =
       />
       
       {/* Page for posts */}
-      {pageForPostSlug & (
+      {pageForPostsSlug & (
         <Route
           exact
-          path={`/${pageForPostSlug}`}
+          path={`/${pageForPostsSlug}`}
           render={() => (
             <Archive first={limit} />
           )} 
@@ -139,7 +139,7 @@ export const routesProcessor = (routesView) => (BaseComponent) => {
   const BaseFactory = createFactory(BaseComponent);
 
   const RoutesProcessor = ({
-    pageForPosts, pageOnFront, structure, limit,
+    pageForPostsSlug, pageOnFront, structure, limit,
     Archive, Post, Page, ...rest
   }) => {
     if (!structure) {
@@ -152,9 +152,7 @@ export const routesProcessor = (routesView) => (BaseComponent) => {
     .replace(/:(post_id)/g, ':$1(\\d{3})')
     .replace(/:(year)/g, ':$1(\\d{4})');
 
-    const slug = (pageForPosts) ? pageForPosts.slug : undefined;
-
-    const Routes = routesView({limit, pageOnFront, postsPath, slug});
+    const Routes = routesView({limit, pageOnFront, postsPath, pageForPostsSlug});
     
     return BaseFactory({
       Routes,

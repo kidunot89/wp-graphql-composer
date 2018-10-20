@@ -7,6 +7,8 @@ import ReactHtmlParser from 'react-html-parser';
 import { Attachment } from './';
 import { PostCommentsContext } from './context';
 
+import './comment.scss';
+
 // Comment Author V Card
 const AuthorVCard = ({ userId, nicename, name, avatar }) => (
   <div className="comment-author vcard">

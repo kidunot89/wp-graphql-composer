@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { map } from 'lodash';
 import { PostCommentsContext } from './context';
 
+import './post-comments.scss';
 
 const postComments = ({
   commentsData, commentView: CommentView, editCommentView: EditCommentView,
@@ -15,10 +16,10 @@ const postComments = ({
       const isEditing = editing[newCommentKey];
 
       return (
-        <div id={`post-${postId}-comments`} className="comments-area" {...rest}>
+        <div id={`post-${postId}-comments`} className="comment-area" {...rest}>
           {commentsData.length && 
             <React.Fragment>
-              <h2 className="comments-title">
+              <h2 className="comment-title">
                 {`${commentsData.length} thoughts on ${title}`}
               </h2>
               <ol className="comment-list">

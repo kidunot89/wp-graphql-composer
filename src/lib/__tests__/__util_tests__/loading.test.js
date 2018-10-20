@@ -1,12 +1,7 @@
 import React from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { fas } from '@fortawesome/free-solid-svg-icons'
 import { render, cleanup } from 'react-testing-library';
 
-import { Loading } from 'utils';
-
-library.add(fas);
+import { Icon, Loading } from 'utils';
 
 afterEach(cleanup);
 
@@ -19,7 +14,7 @@ it(`displays default loading icon, and default loading message`, async() => {
 });
 
 it(`displays custom loading icon, and custom loading message`, async() => {
-  const CustomIcon = () => (<FontAwesomeIcon size="2x" icon={['fas', 'arrow-alt-circle-right']} />);
+  const CustomIcon = () => (<Icon name="autorenew" />);
   const { baseElement } = render(<CustomIcon />);
   const customIcon = baseElement.querySelector('div').innerHTML;
 

@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import introspectionQueryResultData from 'fragmentTypes.json';
 import { Main, main, LOOP_QUERY } from 'main';
-import { PAGE_BY_QUERY, POST_BY_QUERY } from 'post-type';
+import { PAGE_QUERY, PAGE_BY_QUERY, POST_BY_QUERY } from 'post-type';
 import { ARCHIVE_QUERY } from 'archives';
 
 afterEach(cleanup);
@@ -20,12 +20,8 @@ const loopQueryResults = {
   result: {
     data: {
       allSettings: {
-        pageForPosts: {
-          id: 'xTw0P@ckF',
-          slug: 'blog',
-          __typename: 'Page'
-        },
-        pageOnFront: 3,
+        pageForPosts: 'blog',
+        pageOnFront: "W0T5R0x",
         permalinkStructure: '/%monthnum%/%year%/%day%/%postname%/',
         readingSettingsPostsPerPage: 5,
         __typename: 'Settings',
@@ -39,6 +35,7 @@ const archiveResults = [{
   postId: 7,
   uri: "parent-post/child-post",
   slug: "test-post",
+  content: "<h1>Hello World</h1>",
   excerpt: "<h1>Hello World</h1>",
   date: "2018-09-12 23:02:46",
   modified: "2018-09-19 00:26:14",
@@ -244,15 +241,14 @@ const mocks = [
   },
   {
     request: {
-      query: PAGE_BY_QUERY,
+      query: PAGE_QUERY,
       variables: { 
-        pageId: 3,
-        uri: null,
+        id: "W0T5R0x",
       },
     },
     result: {
       data: {
-        pageBy: {
+        page: {
           id: "W0T5R0x",
           uri: "sample-page",
           pageId: 3,
