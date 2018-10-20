@@ -1,5 +1,4 @@
 import React from 'react';
-
 export var postCommentsInitialState = {
   editing: {},
   workingState: {}

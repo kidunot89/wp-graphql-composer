@@ -1,0 +1,12 @@
+@import '../global-scss/font-n-colors';
+@import '../global-scss/alignments';
+
+.comment {
+  .comment-content a {
+    word-wrap: break-word;
+  }
+  
+  .bypostauthor {
+    display: block;
+  }
+}

@@ -1,8 +1,7 @@
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
+import _objectWithoutProperties from "/home/geoff/Dev/web/wp-graphql-composer/node_modules/@babel/runtime/helpers/esm/objectWithoutProperties";
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
+import styles from './post.scss';
 
 var post = function post(_ref) {
   var featured = _ref.featured,
@@ -12,33 +11,17 @@ var post = function post(_ref) {
       details = _ref.details,
       Attachment = _ref.Attachment,
       DetailsComponent = _ref.DetailsComponent,
-      rest = _objectWithoutProperties(_ref, ['featured', 'postId', 'title', 'content', 'details', 'Attachment', 'DetailsComponent']);
+      rest = _objectWithoutProperties(_ref, ["featured", "postId", "title", "content", "details", "Attachment", "DetailsComponent"]);
 
-  return React.createElement(
-    'article',
-    Object.assign({ id: 'post-' + postId, className: 'post type-post' }, rest),
-    featured && React.createElement(Attachment, {
-      mediaItemId: featured,
-      'data-attachment-id': featured,
-      className: 'wp-post-image'
-    }),
-    ReactHtmlParser(content)
-  );
-};
-
-post.propTypes = {
-  Attachment: PropTypes.func.isRequired,
-  featured: PropTypes.number,
-  postId: PropTypes.number.isRequired,
-  title: PropTypes.string,
-  content: PropTypes.string,
-  details: PropTypes.shape({
-    author: PropTypes.shape({}),
-    date: PropTypes.string,
-    modified: PropTypes.string,
-    tags: PropTypes.arrayOf(PropTypes.shape({})),
-    categories: PropTypes.arrayOf(PropTypes.shape({}))
-  })
+  return React.createElement("article", Object.assign({
+    id: "post-".concat(postId),
+    className: "post type-post"
+  }, rest), React.createElement(Attachment, {
+    id: featured,
+    "data-attachment-id": featured,
+    className: "wp-post-image",
+    fallback: true
+  }), ReactHtmlParser(content));
 };
 
 post.defaultProps = {
@@ -47,5 +30,4 @@ post.defaultProps = {
   content: undefined,
   details: undefined
 };
-
 export default post;
