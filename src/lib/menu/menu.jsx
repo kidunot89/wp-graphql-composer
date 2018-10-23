@@ -1,29 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { isEmpty, map, omit } from 'lodash';
+import classNames from 'classnames';
+import { isEmpty, map } from 'lodash';
 
-import { compileClassName } from '../helpers';
+import styles from './menu.module.scss';
 
-import './menu.scss';
-
-const menu = ({ slug, items, SubMenu, MenuItem, ...rest }) => {
-  const className = compileClassName(rest, 'menu-container', 'horizontal');
+const menu = ({ as: Element, className: addedCN, slug, items, SubMenu, MenuItem, ...rest }) => {
+  const className = classNames(styles.menu, addedCN);
+  
   return (
-    <div id={`menu-${slug}`} {...omit(rest, 'horizontal')} className={className}>
-      <ul className="nav-menu">
-        { !isEmpty(items) &&
-          map(items, ({ id, menuItemId, ...r }) => (
+    <Element id={`menu-${slug}`} className={className} {...rest}>
+      { !isEmpty(items) &&
+        map(items, ({ id, menuItemId, cssClasses, ...r }) => {
+          const itemClassName = classNames(
+            styles.item,
+            ...cssClasses,
+            `menu-item-${menuItemId}`,
+          );
+
+          return (
             <li
               id={`menu-item-${menuItemId}`}
-              className={`menu-item menu-item-${menuItemId} ${r.cssClasses.join(' ')}`}
+              className={itemClassName}
               key={id}
             >
               <MenuItem id={id} {...{...r, SubMenu, MenuItem }} />
             </li>
-          ))
-        }
-      </ul>
-    </div>
+          );
+        })
+      }
+    </Element>
   );
 };
 
@@ -32,12 +38,17 @@ menu.propTypes = {
   SubMenu: PropTypes.func.isRequired,
   MenuItem: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.shape({})),
-  horizontal: PropTypes.bool,
+  as: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func,
+  ]),
+  className: PropTypes.string,
 }
 
 menu.defaultProps = {
   items: [],
-  horizontal: undefined,
+  as: 'ul',
+  className: undefined,
 };
 
 export default menu;

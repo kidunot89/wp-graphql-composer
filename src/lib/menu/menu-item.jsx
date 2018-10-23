@@ -4,21 +4,23 @@ import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
 import { MenuContext } from './context';
 
+import styles from './menu-item.module.scss';
+
 export const Link = ({ url, children, homeUrl, ...rest }) => {
   if (!url || url === '#') return (
-    <span className="menu-item-text">
+    <span className={styles.text}>
       {children}
     </span>
   );
 
   if (url.startsWith(homeUrl)) return (
-    <NavLink exact to={`${url.substring(homeUrl.length)}`} {...rest}>
+    <NavLink className={styles.link} exact to={`${url.substring(homeUrl.length)}`} {...rest}>
       {children}
     </NavLink>
   );
 
   return (
-    <a href={url} {...rest}>
+    <a className={styles.link} href={url} {...rest}>
       {children}
     </a>
   );
@@ -35,7 +37,7 @@ const menuItem = ({
         <Link {...{ ...rest, url, homeUrl }}>
           {label}
           {description &&
-            <div className="menu-item-description">
+            <div className={styles.description}>
               {description}
             </div>
           }

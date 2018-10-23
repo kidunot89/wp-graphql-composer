@@ -1,14 +1,24 @@
 import { get, omit } from 'lodash';
 
+// Utils
 import { baseComposer, queryComposer } from '../composers'
 import { Error, Loading } from '../utils';
 
+// Queries
 import { MENU_WHERE_QUERY, MENU_QUERY, MENU_ITEM_QUERY } from './query';
+
+// State and Context
+import { menuInitialState, MenuContext } from './context';
 import { menuStateManager } from './state-manager';
+
+// Default View Layer Components
 import menu from './menu';
 import menuItem, { Link } from './menu-item';
-import subMenu from './sub-menu'
+import subMenu from './sub-menu';
 
+/**
+ * SubMenu Composer
+ */
 subMenu.compose = baseComposer({
   view: subMenu,
   whileLoading: { view: Loading },
@@ -18,6 +28,9 @@ subMenu.compose = baseComposer({
 
 const SubMenu = subMenu.compose({});
 
+/**
+ * MenuItem Composer
+ */
 menuItem.compose = queryComposer({
   view: menuItem,
   whileLoading: { view: Loading },
@@ -37,6 +50,9 @@ menuItem.compose = queryComposer({
 
 const MenuItem = menuItem.compose({});
 
+/**
+ * Menu Composer
+ */
 menu.compose = queryComposer({
   view: menu,
   MenuItem,
@@ -73,9 +89,11 @@ menu.compose = queryComposer({
 
 const Menu = menu.compose({});
 
+// Export all imports
 export {
   Menu, menu, MenuItem, menuItem,
   SubMenu, subMenu, Link,
   MENU_WHERE_QUERY, MENU_QUERY, MENU_ITEM_QUERY,
+  menuInitialState, MenuContext
 };
 

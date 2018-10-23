@@ -1,6 +1,8 @@
 import _objectWithoutProperties from "/home/geoff/Dev/web/wp-graphql-composer/node_modules/@babel/runtime/helpers/esm/objectWithoutProperties";
 import React from 'react';
 import _ from 'lodash';
+import classNames from 'classnames';
+import styles from './error.module.scss';
 
 var error = function error(_ref) {
   var icon = _ref.icon,
@@ -8,19 +10,20 @@ var error = function error(_ref) {
       type = _ref.type,
       rest = _objectWithoutProperties(_ref, ["icon", "message", "type"]);
 
+  var className = classNames(styles.error, "".concat(type, "-error"), styles.on);
   return React.createElement("div", Object.assign({
-    className: "".concat(type, "-error")
+    className: className
   }, rest), React.createElement("div", {
-    className: "error-icon",
-    "data-testid": "error-icon"
+    className: styles.content
+  }, React.createElement("div", {
+    className: styles.icon
   }, icon), React.createElement("div", {
-    className: "error-message",
-    "data-testid": "error-message"
+    className: styles.message
   }, Array.isArray(message) ? React.createElement("ul", null, _.map(message, function (item, i) {
     return React.createElement("li", {
       key: "item-".concat(i + 2)
     }, item);
-  })) : message));
+  })) : message)));
 };
 
 error.defaultProps = {

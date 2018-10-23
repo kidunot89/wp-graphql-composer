@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { isNull } from 'lodash';
+import classNames from 'classnames';
 
 import { PostCommentsContext } from './context';
 
-import './edit-comment.scss';
+import styles from './edit-comment.module.scss';
 
 const editComment = ({
-  id, commentKey, update, submitButtonText,
-  ...rest
+  id, commentKey, update, className: added,
+  submitButtonText, ...rest
 }) => (
   <PostCommentsContext.Consumer>
     {({
@@ -17,9 +18,16 @@ const editComment = ({
     }) => {
       const onChange = change(commentKey);
       const onSubmit = update ? onUpdate(commentKey, id) : onCreate(commentKey);
-
+      const className = classNames(
+        styles.form,
+        added,
+      )
       return (
-        <form className="comment-form" {...rest} onSubmit={onSubmit}>
+        <form
+          className={className} 
+          {...rest}
+          onSubmit={onSubmit}
+        >
           { !isNull(author) &&
             <input
               type="text"
@@ -66,11 +74,13 @@ editComment.propTypes = {
   id: PropTypes.string,
   submitButtonText: PropTypes.string,
   update: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 editComment.defaultProps = {
   update: false,
   submitButtonText: 'Leave Comment',
+  className: undefined,
 };
 
 export default editComment;

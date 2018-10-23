@@ -1,15 +1,17 @@
 import _objectWithoutProperties from "/home/geoff/Dev/web/wp-graphql-composer/node_modules/@babel/runtime/helpers/esm/objectWithoutProperties";
 import React from 'react';
 import { isNull } from 'lodash';
+import classNames from 'classnames';
 import { PostCommentsContext } from './context';
-import './edit-comment.scss';
+import styles from './edit-comment.module.scss';
 
 var editComment = function editComment(_ref) {
   var id = _ref.id,
       commentKey = _ref.commentKey,
       update = _ref.update,
+      added = _ref.className,
       submitButtonText = _ref.submitButtonText,
-      rest = _objectWithoutProperties(_ref, ["id", "commentKey", "update", "submitButtonText"]);
+      rest = _objectWithoutProperties(_ref, ["id", "commentKey", "update", "className", "submitButtonText"]);
 
   return React.createElement(PostCommentsContext.Consumer, null, function (_ref2) {
     var _ref2$workingState$co = _ref2.workingState[commentKey],
@@ -23,8 +25,9 @@ var editComment = function editComment(_ref) {
         onCreate = _ref2.onCreate;
     var onChange = change(commentKey);
     var onSubmit = update ? onUpdate(commentKey, id) : onCreate(commentKey);
+    var className = classNames(styles.form, added);
     return React.createElement("form", Object.assign({
-      className: "comment-form"
+      className: className
     }, rest, {
       onSubmit: onSubmit
     }), !isNull(author) && React.createElement("input", {
@@ -58,6 +61,7 @@ var editComment = function editComment(_ref) {
 
 editComment.defaultProps = {
   update: false,
-  submitButtonText: 'Leave Comment'
+  submitButtonText: 'Leave Comment',
+  className: undefined
 };
 export default editComment;

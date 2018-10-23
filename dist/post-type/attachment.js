@@ -1,6 +1,7 @@
 import _objectWithoutProperties from "/home/geoff/Dev/web/wp-graphql-composer/node_modules/@babel/runtime/helpers/esm/objectWithoutProperties";
 import React from 'react';
-import './attachment.scss';
+import classNames from 'classnames';
+import styles from './attachment.module.scss';
 /**
  * Attachment base stateless component
  * 
@@ -9,11 +10,14 @@ import './attachment.scss';
 
 var attachment = function attachment(_ref) {
   var src = _ref.src,
+      added = _ref.className,
       alt = _ref.alt,
-      rest = _objectWithoutProperties(_ref, ["src", "alt"]);
+      rest = _objectWithoutProperties(_ref, ["src", "className", "alt"]);
 
+  var className = classNames(styles.attachment, added);
   return src ? React.createElement("img", Object.assign({
     src: src,
+    classNames: className,
     alt: alt
   }, rest)) : null;
 };

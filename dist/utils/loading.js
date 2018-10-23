@@ -1,4 +1,6 @@
 import React from 'react';
+import classNames from 'classnames';
+import styles from './loading.module.scss';
 
 var loading = function loading(_ref) {
   var icon = _ref.icon,
@@ -6,14 +8,17 @@ var loading = function loading(_ref) {
       _ref$progress = _ref.progress,
       total = _ref$progress.total,
       max = _ref$progress.max;
+  var className = classNames(styles.loading, styles.on);
+  var percentage = total && max ? "".concat(Math.ceil(total / max), "%") : undefined;
   return React.createElement("div", {
-    className: "loading"
+    className: className
   }, React.createElement("div", {
-    className: "loading-icon",
-    "data-testid": "loading-icon"
+    className: styles.content
+  }, React.createElement("div", {
+    className: styles.icon
   }, icon), React.createElement("div", {
-    className: "loading-message"
-  }, message));
+    className: styles.message
+  }, message, " ", percentage)));
 };
 
 loading.defaultProps = {

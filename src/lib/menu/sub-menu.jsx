@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { map } from 'lodash';
+import classNames from 'classnames';
+import { Icon } from '../utils';
+
+import baseStyles from './menu.module.scss';
+import styles from './sub-menu.module.scss';
 
 class subMenu extends React.Component {
   constructor(props) {
@@ -14,29 +19,47 @@ class subMenu extends React.Component {
   }
 
   render() {
+    const className = classNames(
+      baseStyles.menu,
+      styles.menu,
+      { [styles.on]: this.state.isCollapsed }
+    );
+
+    const dropdownClassName = classNames(
+      styles.dropdown,
+      { [styles.on]: this.state.isCollapsed }
+    );
     const { isCollapsed } = this.state;
-    const collapse = (isCollapsed) ? '' : ' toggle-on';
     const { MenuItem, SubMenu, items, ...rest } = this.props;
 
     return (
       <React.Fragment>
         <button
-          className={`dropdown-toggle${collapse}`}
+          className={dropdownClassName}
           aria-expanded={isCollapsed}
           onClick={this.toggle}
         >
-          <span className="icon-arrow-up" />
+          <Icon className={styles.icon} name="arrow_drop_down" dark />
         </button>
-        <ul className={`sub-menu${collapse}`} {...rest}>
-          {map(items, ({ id, menuItemId, ...r }) => (
-            <li
-              id={`menu-item-${menuItemId}`}
-              className={`menu-item menu-item-${menuItemId} ${r.cssClasses.join(' ')}`}
-              key={id}
-            >
-              <MenuItem id={id} {...{ ...r, MenuItem, SubMenu }} />
-            </li>
-          ))}
+        <ul className={className} {...rest}>
+          {map(items, ({ id, menuItemId, cssClasses, ...r }) => {
+            const itemClassName = classNames(
+              baseStyles.item,
+              styles.item,
+              ...cssClasses,
+              `menu-item-${menuItemId}`,
+            );
+
+            return (
+              <li
+                id={`menu-item-${menuItemId}`}
+                className={itemClassName}
+                key={id}
+              >
+                <MenuItem id={id} {...{ ...r, MenuItem, SubMenu }} />
+              </li>
+            );
+          })}
         </ul>
       </React.Fragment>
     )

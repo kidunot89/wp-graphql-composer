@@ -3,19 +3,21 @@ import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser';
+import classNames from 'classnames';
 import { Attachment } from './';
 import { PostCommentsContext } from './context';
-import './comment.scss'; // Comment Author V Card
+import styles from './comment.module.scss'; // Comment Author V Card
 
 var AuthorVCard = function AuthorVCard(_ref) {
   var userId = _ref.userId,
       nicename = _ref.nicename,
       name = _ref.name,
       avatar = _ref.avatar;
+  var avatarClassName = classNames(styles.avatar, "avatar-".concat(userId));
   return React.createElement("div", {
-    className: "comment-author vcard"
+    className: styles.author
   }, avatar ? React.createElement(Attachment, {
-    className: "avatar avatar-".concat(userId, " photo"),
+    className: avatarClassName,
     src: avatar.url,
     fallback: true
   }) : React.createElement(Attachment, {
@@ -23,11 +25,11 @@ var AuthorVCard = function AuthorVCard(_ref) {
     src: "https://secure.gravatar.com/avatar/",
     fallback: true
   }), React.createElement("strong", {
-    className: "fn"
+    className: styles.fn
   }, nicename ? React.createElement(Link, {
     to: "/author/".concat(nicename)
   }, nicename) : name), React.createElement("span", {
-    className: "says"
+    className: styles.says
   }, " says:"));
 }; // Comment Metadata
 
@@ -38,15 +40,16 @@ var Metadata = function Metadata(_ref2) {
       onEdit = _ref2.onEdit,
       onDelete = _ref2.onDelete;
   return React.createElement("div", {
-    className: "comment-metadata"
+    className: styles.metadata
   }, React.createElement("time", {
+    className: styles.datetime,
     dateTime: date
   }, moment(date).format('LLL')), editable && React.createElement(React.Fragment, null, React.createElement("span", {
-    className: "edit-link"
+    className: "".concat(styles.button, " ").concat(styles.edit)
   }, React.createElement("button", {
     onClick: onEdit
   }, "Edit")), React.createElement("span", {
-    className: "delete-link"
+    className: "".concat(styles.button, " ").concat(styles.delete)
   }, React.createElement("button", {
     onClick: onDelete
   }, "Delete"))));
@@ -56,7 +59,7 @@ var Metadata = function Metadata(_ref2) {
 var Content = function Content(_ref3) {
   var content = _ref3.content;
   return React.createElement("div", {
-    className: "comment-content"
+    className: styles.content
   }, ReactHtmlParser(content));
 };
 /**
@@ -74,7 +77,9 @@ var comment = function comment(_ref4) {
       modified = _ref4.modified,
       author = _ref4.author,
       EditCommentView = _ref4.EditCommentView,
-      rest = _objectWithoutProperties(_ref4, ["id", "commentId", "type", "content", "date", "modified", "author", "EditCommentView"]);
+      added = _ref4.className,
+      Container = _ref4.as,
+      rest = _objectWithoutProperties(_ref4, ["id", "commentId", "type", "content", "date", "modified", "author", "EditCommentView", "className", "as"]);
 
   // const newCommentKey = `comment-${commentId}-reply`; - TODO...
   var updateCommentKey = "comment-".concat(commentId, "-edit");
@@ -85,10 +90,12 @@ var comment = function comment(_ref4) {
         userId = _ref5.userId;
     var onEdit = edit(updateCommentKey, content);
     var isEditing = editing[updateCommentKey];
-    var onDelete = deleted(id); // If editing render form for editing content
+    var onDelete = deleted(id);
+    var className = classNames(styles.comment, added); // If editing render form for editing content
 
-    if (isEditing) return React.createElement("div", {
-      id: "comment-".concat(commentId)
+    if (isEditing) return React.createElement(Container, {
+      id: "comment-".concat(commentId),
+      className: className
     }, React.createElement(EditCommentView, {
       id: id,
       commentKey: updateCommentKey,
@@ -96,14 +103,14 @@ var comment = function comment(_ref4) {
       update: true
     })); // else render comment
 
-    return React.createElement("li", {
+    return React.createElement(Container, {
       id: "comment-".concat(commentId),
-      className: "comment"
+      className: className
     }, React.createElement("article", Object.assign({
       id: "div-comment-".concat(commentId),
-      className: "comment-body"
+      className: styles.body
     }, rest), React.createElement("footer", {
-      className: "comment-meta"
+      className: styles.meta
     }, React.createElement(AuthorVCard, author), React.createElement(Metadata, {
       date: date,
       modified: modified,
@@ -119,6 +126,8 @@ var comment = function comment(_ref4) {
 comment.defaultProps = {
   author: {},
   date: undefined,
-  type: undefined
+  type: undefined,
+  as: 'div',
+  className: undefined
 };
 export default comment;

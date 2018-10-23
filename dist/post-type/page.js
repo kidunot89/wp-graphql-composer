@@ -1,19 +1,24 @@
 import _objectWithoutProperties from "/home/geoff/Dev/web/wp-graphql-composer/node_modules/@babel/runtime/helpers/esm/objectWithoutProperties";
 import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
-import './post.scss';
+import classNames from 'classnames';
+import './post.global.scss';
+import styles from './post.module.scss';
 
 var page = function page(_ref) {
-  var pageId = _ref.pageId,
+  var Container = _ref.as,
+      pageId = _ref.pageId,
       title = _ref.title,
       content = _ref.content,
       date = _ref.date,
       modified = _ref.modified,
-      rest = _objectWithoutProperties(_ref, ["pageId", "title", "content", "date", "modified"]);
+      added = _ref.className,
+      rest = _objectWithoutProperties(_ref, ["as", "pageId", "title", "content", "date", "modified", "className"]);
 
-  return React.createElement("article", Object.assign({
-    id: "page-".concat(title),
-    className: "page type-page"
+  var className = classNames(styles.page, added);
+  return React.createElement(Container, Object.assign({
+    id: "page-".concat(pageId),
+    className: className
   }, rest), React.createElement("div", {
     className: "entry-content"
   }, ReactHtmlParser(content)));
@@ -21,6 +26,8 @@ var page = function page(_ref) {
 
 page.defaultProps = {
   title: undefined,
-  content: ''
+  content: '',
+  className: undefined,
+  as: 'article'
 };
 export default page;

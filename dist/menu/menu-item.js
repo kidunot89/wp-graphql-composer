@@ -4,6 +4,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 import { MenuContext } from './context';
+import styles from './menu-item.module.scss';
 export var Link = function Link(_ref) {
   var url = _ref.url,
       children = _ref.children,
@@ -11,13 +12,15 @@ export var Link = function Link(_ref) {
       rest = _objectWithoutProperties(_ref, ["url", "children", "homeUrl"]);
 
   if (!url || url === '#') return React.createElement("span", {
-    className: "menu-item-text"
+    className: styles.text
   }, children);
   if (url.startsWith(homeUrl)) return React.createElement(NavLink, Object.assign({
+    className: styles.link,
     exact: true,
     to: "".concat(url.substring(homeUrl.length))
   }, rest), children);
   return React.createElement("a", Object.assign({
+    className: styles.link,
     href: url
   }, rest), children);
 };
@@ -38,7 +41,7 @@ var menuItem = function menuItem(_ref2) {
       url: url,
       homeUrl: homeUrl
     }), label, description && React.createElement("div", {
-      className: "menu-item-description"
+      className: styles.description
     }, description));
   }), !isEmpty(items) && React.createElement(SubMenu, {
     items: items,

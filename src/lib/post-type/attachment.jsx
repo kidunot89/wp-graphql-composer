@@ -1,16 +1,30 @@
 import React from 'react'
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-import './attachment.scss';
+import styles from './attachment.module.scss';
 
 /**
  * Attachment base stateless component
  * 
  * @param {object} props 
  */
-const attachment = ({ src, alt, ...rest }) => (src) ?
-  (<img src={src} alt={alt} {...rest} />) :
-  null;
+const attachment = ({ src, className: added, alt, ...rest }) => {
+  const className = classNames(
+    styles.attachment,
+    added,
+  );
+
+  return (src) ?
+    (
+      <img
+        src={src}
+        classNames={className}
+        alt={alt}
+        {...rest}
+      />) :
+    null;
+}
 
 attachment.propTypes = {
   src: PropTypes.string,

@@ -3,51 +3,59 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser';
+import classNames from 'classnames';
 
 import { Attachment } from './';
 import { PostCommentsContext } from './context';
 
-import './comment.scss';
+import styles from './comment.module.scss';
 
 // Comment Author V Card
-const AuthorVCard = ({ userId, nicename, name, avatar }) => (
-  <div className="comment-author vcard">
-    { avatar ? 
-      <Attachment
-        className={`avatar avatar-${userId} photo`}
-        src={avatar.url}
-        fallback
-      /> :
-      <Attachment
-        className={`avatar photo`}
-        src="https://secure.gravatar.com/avatar/"
-        fallback
-      />
-    }
-    <strong className="fn">
-      { nicename ? 
-        (<Link to={`/author/${nicename}`}>{nicename}</Link>) :
-        name
+const AuthorVCard = ({ userId, nicename, name, avatar }) => {
+  const avatarClassName = classNames(
+    styles.avatar,
+    `avatar-${userId}`,
+  );
+
+  return (
+    <div className={styles.author}>
+      { avatar ? 
+        <Attachment
+          className={avatarClassName}
+          src={avatar.url}
+          fallback
+        /> :
+        <Attachment
+          className={`avatar photo`}
+          src="https://secure.gravatar.com/avatar/"
+          fallback
+        />
       }
-    </strong>
-    <span className="says"> says:</span>
-  </div>
-);
+      <strong className={styles.fn}>
+        { nicename ? 
+          (<Link to={`/author/${nicename}`}>{nicename}</Link>) :
+          name
+        }
+      </strong>
+      <span className={styles.says}> says:</span>
+    </div>
+  );
+}
 
 // Comment Metadata
 const Metadata = ({ date, editable, onEdit, onDelete }) => {
   return (
-    <div className="comment-metadata">
-      <time dateTime={date}>
+    <div className={styles.metadata}>
+      <time className={styles.datetime} dateTime={date}>
         {moment(date).format('LLL')}
       </time>
       {/* if logged in user is the comment author add update and delete buttons */}
       {editable && (
         <React.Fragment>
-          <span className="edit-link">
+          <span className={`${styles.button} ${styles.edit}`}>
             <button onClick={onEdit}>Edit</button>
           </span>
-          <span className="delete-link">
+          <span className={`${styles.button} ${styles.delete}`}>
             <button onClick={onDelete}>Delete</button>
           </span>
         </React.Fragment>
@@ -58,7 +66,7 @@ const Metadata = ({ date, editable, onEdit, onDelete }) => {
 
 // Comment Content
 const Content = ({ content }) => (
-  <div className="comment-content">{ReactHtmlParser(content)}</div>
+  <div className={styles.content}>{ReactHtmlParser(content)}</div>
 );
 
 /**
@@ -68,7 +76,7 @@ const Content = ({ content }) => (
 const comment = ({
   id, commentId, type, content,
   date, modified, author, EditCommentView,
-  ...rest
+  className: added, as: Container, ...rest
 }) => {
   // const newCommentKey = `comment-${commentId}-reply`; - TODO...
   const updateCommentKey = `comment-${commentId}-edit`;
@@ -79,23 +87,28 @@ const comment = ({
         const isEditing = editing[updateCommentKey];
         const onDelete = deleted(id);
 
+        const className = classNames(
+          styles.comment,
+          added,
+        );
+
         // If editing render form for editing content
         if (isEditing) return (
-          <div id={`comment-${commentId}`}>
+          <Container id={`comment-${commentId}`} className={className}>
             <EditCommentView
               id={id}
               commentKey={updateCommentKey} 
               submitButtonText="Save Changes"
               update
             />
-          </div>
+          </Container>
         );
 
         // else render comment
         return (
-          <li id={`comment-${commentId}`} className="comment">
-            <article id={`div-comment-${commentId}`} className="comment-body" {...rest}>
-              <footer className="comment-meta">
+          <Container id={`comment-${commentId}`} className={className}>
+            <article id={`div-comment-${commentId}`} className={styles.body} {...rest}>
+              <footer className={styles.meta}>
                 <AuthorVCard {...author} />
                 <Metadata
                   date={date}
@@ -107,7 +120,7 @@ const comment = ({
               </footer>
               <Content content={content} />
             </article>
-          </li>
+          </Container>
         );
 
       }}
@@ -125,12 +138,16 @@ comment.propTypes = {
   author: PropTypes.shape({}),
   date: PropTypes.string,
   type: PropTypes.string,
+  as: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  className: PropTypes.string,
 };
 
 comment.defaultProps = {
   author: {},
   date: undefined,
   type: undefined,
+  as: 'div',
+  className: undefined,
 };
 
 export default comment;

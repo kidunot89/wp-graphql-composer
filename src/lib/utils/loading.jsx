@@ -1,11 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+
+import styles from './loading.module.scss';
 
 const loading = ({ icon, message, progress: { total, max } }) => {
+  const className = classNames(
+    styles.loading,
+    styles.on,
+  );
+  
+  const percentage = (total && max) ?
+    `${Math.ceil(total / max)}%` :
+    undefined;
   return (
-    <div className="loading">
-      <div className="loading-icon" data-testid="loading-icon">{icon}</div>
-      <div className="loading-message">{message}</div>
+    <div className={className}>
+      <div className={styles.content}>
+        <div className={styles.icon}>{icon}</div>
+        <div className={styles.message}>{message} {percentage}</div>
+      </div>
     </div>
   )
 }

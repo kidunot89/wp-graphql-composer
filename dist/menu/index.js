@@ -1,13 +1,22 @@
 import _objectSpread from "/home/geoff/Dev/web/wp-graphql-composer/node_modules/@babel/runtime/helpers/esm/objectSpread";
 import _objectWithoutProperties from "/home/geoff/Dev/web/wp-graphql-composer/node_modules/@babel/runtime/helpers/esm/objectWithoutProperties";
-import { get, omit } from 'lodash';
+import { get, omit } from 'lodash'; // Utils
+
 import { baseComposer, queryComposer } from '../composers';
-import { Error, Loading } from '../utils';
-import { MENU_WHERE_QUERY, MENU_QUERY, MENU_ITEM_QUERY } from './query';
-import { menuStateManager } from './state-manager';
+import { Error, Loading } from '../utils'; // Queries
+
+import { MENU_WHERE_QUERY, MENU_QUERY, MENU_ITEM_QUERY } from './query'; // State and Context
+
+import { menuInitialState, MenuContext } from './context';
+import { menuStateManager } from './state-manager'; // Default View Layer Components
+
 import menu from './menu';
 import menuItem, { Link } from './menu-item';
 import subMenu from './sub-menu';
+/**
+ * SubMenu Composer
+ */
+
 subMenu.compose = baseComposer({
   view: subMenu,
   whileLoading: {
@@ -21,6 +30,10 @@ subMenu.compose = baseComposer({
   }
 });
 var SubMenu = subMenu.compose({});
+/**
+ * MenuItem Composer
+ */
+
 menuItem.compose = queryComposer({
   view: menuItem,
   whileLoading: {
@@ -55,6 +68,10 @@ menuItem.compose = queryComposer({
   }
 });
 var MenuItem = menuItem.compose({});
+/**
+ * Menu Composer
+ */
+
 menu.compose = queryComposer({
   view: menu,
   MenuItem: MenuItem,
@@ -132,5 +149,6 @@ menu.compose = queryComposer({
   }],
   extraHocs: [menuStateManager]
 });
-var Menu = menu.compose({});
-export { Menu, menu, MenuItem, menuItem, SubMenu, subMenu, Link, MENU_WHERE_QUERY, MENU_QUERY, MENU_ITEM_QUERY };
+var Menu = menu.compose({}); // Export all imports
+
+export { Menu, menu, MenuItem, menuItem, SubMenu, subMenu, Link, MENU_WHERE_QUERY, MENU_QUERY, MENU_ITEM_QUERY, menuInitialState, MenuContext };

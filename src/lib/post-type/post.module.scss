@@ -1,0 +1,52 @@
+.page,
+.post {
+  .entry-footer {
+    max-width: initial;
+    padding: 0.5em 1.5em 1.5em; 
+    margin: 0 auto;
+    border-bottom: none;
+
+    a {
+      text-decoration: none;
+      transition: color 350ms ease-in;
+
+      &:hover {
+        transition: color 550ms ease-out;
+      }
+
+      &:visited {}
+    }
+
+    .posted-on {
+      .date, 
+      .modified {
+        position: relative;
+        display: inline-block;
+      }
+
+      .modified::before {
+      }
+    }
+
+    .byline,
+    .tags-links,
+    .cat-links {
+      a {
+        position: relative;
+        display: inline-block;
+      }
+    }
+
+    .byline a::before { content: ""; }
+    .tags-links a::before { content: ""; }
+    .cat-links a::before { content: ""; }
+
+    .tags-links a::after {
+      content: ", ";
+    }
+
+    .tags-links a:last-of-type::after {
+      content: none;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+.description {
+  font-size: 80%;
+}
+
+.link { text-decoration: none; }
+
+.link,
+.text {
+  order: 0;
+  flex-grow: 8;
+  flex-shrink: 0;
+
+  padding: 1.5em 1em;
+  transition:
+    color 250ms ease-out,
+    background-color 320ms ease-in;
+}

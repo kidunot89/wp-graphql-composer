@@ -1,28 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { map } from 'lodash';
-import { PostCommentsContext } from './context';
+import classNames from 'classnames';
 
-import './post-comments.scss';
+import { PostCommentsContext } from './context';
+import styles from './post-comments.module.scss';
 
 const postComments = ({
   commentsData, commentView: CommentView, editCommentView: EditCommentView,
-  title, open, postId, ...rest
+  title, open, postId, className: added, 
+  as: Container, ...rest
 }) => (
   <PostCommentsContext.Consumer>
     {({ editing, onEdit: edit }) => {
       const newCommentKey = 'post-reply';
       const onEdit = edit(newCommentKey);
       const isEditing = editing[newCommentKey];
+      const className = classNames(
+        styles.area,
+        added,
+      );
 
       return (
-        <div id={`post-${postId}-comments`} className="comment-area" {...rest}>
+        <Container
+          id={`post-${postId}-comments`}
+          className={classNames('comment-area', className)}
+          {...rest}
+        >
           {commentsData.length && 
             <React.Fragment>
-              <h2 className="comment-title">
+              <h2 className={styles.title}>
                 {`${commentsData.length} thoughts on ${title}`}
               </h2>
-              <ol className="comment-list">
+              <ol className={styles.list}>
                 {map(
                   commentsData, 
                   comment => (
@@ -36,18 +46,18 @@ const postComments = ({
               </ol>
             </React.Fragment>
           }
-          <footer className="post-comments-footer">
+          <footer className={styles.footer}>
             {!!open && isEditing ? 
               <EditCommentView commentKey={newCommentKey} /> :
               <button
-                className="add-comment-button"
+                className={styles.button}
                 onClick={onEdit}
               >
                 Add Comment
               </button>
             }
           </footer>
-        </div>
+        </Container>
       );
 
     }}
@@ -62,10 +72,12 @@ postComments.propTypes = {
   })),
   postId: PropTypes.number.isRequired,
   open: PropTypes.bool,
+  as: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
 };
 
 postComments.defaultProps = {
   open: false,
+  as: 'div'
 };
 
 export default postComments;
