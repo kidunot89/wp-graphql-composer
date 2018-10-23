@@ -28,6 +28,7 @@
   "files": [
     "dist",
     "templates",
+    "bin",
     "scripts.js"
   ],
   "bin": {
