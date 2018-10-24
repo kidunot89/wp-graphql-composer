@@ -29,8 +29,10 @@ export var defaultRoutes = function defaultRoutes(_ref2) {
         Page = _ref3.Page,
         Post = _ref3.Post,
         frontChildren = _ref3.frontChildren,
-        children = _ref3.children;
-    return React.createElement(Switch, null, frontChildren, React.createElement(Route, {
+        children = _ref3.children,
+        rest = _objectWithoutProperties(_ref3, ["Archive", "Page", "Post", "frontChildren", "children"]);
+
+    return React.createElement(Switch, rest, frontChildren, React.createElement(Route, {
       exact: true,
       path: "/",
       render: function render() {

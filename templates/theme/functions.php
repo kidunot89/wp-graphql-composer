@@ -231,9 +231,25 @@ class WPGraphQLComposer {
 
 		if( file_exists( get_template_directory() . '/asset-manifest.json' ) ) {
 			$assets = json_decode( file_get_contents( get_template_directory() . '/asset-manifest.json' ), true );
+			foreach( $assets as $key => $value ) {
+				if ( preg_match( '/^main.css$/', $key ) ) {
+					$css_url = $value;
+				}
+				if ( preg_match( '/^runtime~main.js$/', $key ) ) {
+					$runtime_url = $value;
+				}
+				if ( preg_match( '/^.*chunk.js$/', $key ) ) {
+					$chunk_js_url = $value;
+				}
+				if ( preg_match( '/^main.js$/', $key ) ) {
+					$main_js_url = $value;
+				}
+			}
 			
-			wp_enqueue_style( 'main-style', get_template_directory_uri() . '/' . $assets['main.css'] );
-			wp_enqueue_script( 'react-script', get_template_directory_uri() . '/' . $assets['main.js'], array(), self::$theme_version, true );
+			wp_enqueue_style( 'docs-style', $css_url );
+			wp_enqueue_script( 'runtime-main', $runtime_url, array(), self::$theme_version, true );
+			wp_enqueue_script( 'vendor-script', $chunk_js_url, array(), self::$theme_version, true );
+			wp_enqueue_script( 'main-script', $main_js_url, array(), self::$theme_version, true );
 		} else {
 			wp_enqueue_style( 'gutenbergtheme-style', get_template_directory_uri() . '/no-js/main.css' );
 			wp_enqueue_style( 'gutenbergthemeblocks-style', get_template_directory_uri() . '/no-js/blocks.css' );

@@ -14,8 +14,8 @@ export const mapLoopProps = ({ data, ...rest }) => {
 
 export const defaultRoutes = 
 ({ limit, pageOnFront, postsPath, pageForPostsSlug }) => 
-  ({ Archive, Page, Post, frontChildren, children }) => (
-    <Switch>
+  ({ Archive, Page, Post, frontChildren, children, ...rest }) => (
+    <Switch {...rest}>
       {/* Extra Routes */}
       {frontChildren}
 
