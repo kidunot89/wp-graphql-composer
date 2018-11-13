@@ -35,7 +35,7 @@
     "wp-graphql-compose": "./bin/compose.js"
   },
   "dependencies": {
-    "apollo-boost": "^0.1.16",
+    "apollo-boost": "^0.1.20",
     "classnames": "^2.2.6",
     "commander": "^2.19.0",
     "del-symlinks": "^0.1.2",
@@ -43,20 +43,20 @@
     "inquirer": "^6.2.0",
     "make-symlinks": "^1.1.0",
     "moment": "^2.22.2",
-    "node-sass": "^4.9.4",
-    "react": "^16.5.2",
+    "node-sass": "^4.10.0",
+    "react": "^16.6.3",
     "react-apollo": "^2.2.4",
-    "react-dom": "^16.5.2",
+    "react-dom": "^16.6.3",
     "react-html-parser": "^2.0.2",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.5",
     "react-transition-group": "^2.5.0",
     "recompose": "^0.30.0",
-    "shelljs": "^0.8.2"
+    "shelljs": "^0.8.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "react-testing-library": "^5.1.0"
+    "@babel/cli": "^7.1.5",
+    "react-testing-library": "^5.2.3"
   },
   "scripts": {
     "start": "react-scripts start",
