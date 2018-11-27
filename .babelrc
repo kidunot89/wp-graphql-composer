@@ -1,1 +1,10 @@
-{ "presets": ["react-app"] }
+{ 
+    "presets": [
+        [ "@babel/preset-env", { "modules": false } ],
+        "react-app"
+    ],
+    "plugins": [
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-external-helpers",
+    ]
+}
