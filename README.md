@@ -4,10 +4,7 @@ WP-GraphQL Composer is a [React](https://reactjs.org) components library/toolkit
 The components within this library are make up of reusable [Higher-Order-Components](https://reactjs.org/docs/higher-order-components.html) that are wrapped around a [React Stateless Component](https://reactjs.org/docs/components-and-props.html) using Andrew Clark's [Recompose](https://recompose.docsforhumans.com/) library. This library was created to be an extension of the [WPGraphQL](https://wpgraphql.com/) plugin, and component and their queries won't work without a [GraphQL](https://graphql.org/) server serving a Schema not identical to the created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed *to my knowledge*.
 
 ## What Does It Offer?
-An easy solution to quickly creating a React app served by [WordPress](https://wordpress.org)
-
-## Demo
-Returning soon...
+An easy solution to quickly creating a React-Apollo apps for [WordPress](https://wordpress.org) sites exposed by WPGraphQL
 
 ## Getting Started
 Run the command npm install wp-graphql-composer in a your React app directory.
@@ -33,13 +30,6 @@ And wrap you root component in a WPProvider component like so.
     </WPProvider>
   );
 ```
-
-## Scaffolding Usage
-A command line tool for creating a stub WordPress theme and plugin for loading your react in also included.
-
-Run `wp-graphql-compose init` from your terminal in you working directory, select either `Theme` or `Plugin` and the theme or plugin files will be added to you project folder in the `template` directory for editing.
-
-Add ` && wp-graphql-compose build` to you `build` script in your package.json and the template files will be added to the `build` folder upon use `npm run build`
 
 ## Component Usage
 Simply import a component and pass the required props.
@@ -175,4 +165,59 @@ const composer = queryComposer({
 
 // just like with baseComposer all default values can be overwritten in composed instances
 const ComposedComponent = composer({ view, queries, loading, error, extraHocs, mapper }) 
+```
+
+## Components
+- Archives
+- Attachment
+- Header
+- Main
+- Menu
+- Page
+- Post
+- PostComments
+- Login
+- UserControls
+
+## Util Components
+- Error
+- Icon
+- Loading
+
+## Composer Functions
+- BaseComposer
+- QueryComposer
+- UtilComposer
+
+## Higher-Order Components
+- whileLoading
+- forError
+- composeQuery
+
+## Project Structure
+```
+├── bin
+├── dist
+│   ├── index.js
+│   ├── index.js.map
+│   ├── index.module.js
+│   └── index.module.js.map
+├── src
+│   ├── ... - components
+│   └── index.js - library exporter
+├── test
+│   ├── __unit_tests__ - component tests
+│   ├── __util_tests__ - util component tests
+│   ├── composers.test.js - composer function and HOC tests
+│   └── fragmentTypes.json - Introspection data for Apollo test utils
+├── .babelrc
+├── .gitignore
+├── .npmignore
+├── CHANGELOG
+├── CODE_OF_CONDUCT.md
+├── LICENSE
+├── package.json
+├── README.md
+├── rollup.config.js
+└── package.json 
 ```
