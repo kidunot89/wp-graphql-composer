@@ -168,13 +168,13 @@ const ComposedComponent = composer({ view, queries, loading, error, extraHocs, m
 ```
 
 ## Components
-- Archives
+- Archives - Schema patch needed. Read more below.
 - Attachment
 - Header - Unusable until WPGraphQL PR#571 merged
 - Main - Schema patch needed. Read more below.
 - Menu
-- Page
-- Post
+- Page - Schema patch needed. Read more below.
+- Post - Schema patch needed. Read more below.
 - PostComments
 - Login
 - UserControls
