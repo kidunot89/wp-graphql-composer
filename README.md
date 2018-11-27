@@ -1,10 +1,10 @@
 # What is WP-GraphQL Composer?
-WP-GraphQL Composer is a library of [React]() components that does most of the the legwork for creating a [React-Apollo]() Wordpress theme.
+WP-GraphQL Composer is a [React](https://reactjs.org) components library/toolkit that does most of the the legwork for creating a Wordpress theme and plugin powered by [React-Apollo](https://www.apollographql.com/docs/react/).
 
-The components within this library are make up of reusable [Higher-Order-Components]() that are wrapped around a [React Stateless Component]() using Andrew Clark's Recompose library. This library was created to be an extension of the [WPGraphQL]() plugin, and component and their queries won't work without a [GraphQL]() server serving a Schema not identical to the created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed to my knowledge
+The components within this library are make up of reusable [Higher-Order-Components](https://reactjs.org/docs/higher-order-components.html) that are wrapped around a [React Stateless Component](https://reactjs.org/docs/components-and-props.html) using Andrew Clark's [Recompose](https://recompose.docsforhumans.com/) library. This library was created to be an extension of the [WPGraphQL](https://wpgraphql.com/) plugin, and component and their queries won't work without a [GraphQL](https://graphql.org/) server serving a Schema not identical to the created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed *to my knowledge*.
 
 ## What Does It Offer?
-An easy solution to quickly creating a React app served by [WordPress]()
+An easy solution to quickly creating a React-Apollo apps for [WordPress](https://wordpress.org) sites exposed by WPGraphQL
 
 ## Getting Started
 Run the command npm install wp-graphql-composer in a your React app directory.
@@ -31,7 +31,7 @@ And wrap you root component in a WPProvider component like so.
   );
 ```
 
-## Usage
+## Component Usage
 Simply import a component and pass the required props.
 
 ```
@@ -54,42 +54,60 @@ Simply import a component and pass the required props.
 ## Modifying Pre-Composed Components
 1. To create a new template for say the `Menu` component, import `menu`, `menuItem`, and `subItem` view components from `wp-graphql-composer`.
 `import { menu, menuItem, subItem } from 'wp-graphql-composer';`
-2. Next create new components to be the new view layers for the menu, menu item, and sub menu components. You don't have to change all three for but I am just to show how its done. I'm also using the `map` and `isEmpty` functions from the `lodash` package to help map the items.
+2. Next create new components to be the new view layers for the menu, menu item, and sub menu components. You don't have to change all three for but I am just to show how its done.
 ```
-  const customSubMenu = ({ Item, items, ...rest }) => (
-    <ol {...rest}>
-      {_.map(items, ({ id, ...rest }) => (<li key={id}><Item id={id} {...rest} /></li>))}
+  const subMenuView = ({ MenuItem, SubMenu, items, ...rest }) => (
+    <ol data-testid="custom-submenu" {...rest}>
+      {_.map(items, ({ id, menuItemId, cssClasses, ...r}) => (
+        <li key={id}>
+          <MenuItem
+            className={\`menuItem \${cssClasses.join(' ')}\`}
+            id={id}
+            {...{ ...r, MenuItem, SubMenu }}
+          />
+        </li>
+      ))}
     </ol>
-  ),
-  ({ url, label, ...rest }) => (
-    <a href={url} {...rest}>{label}</a>
   );
 
-  const customMenuItem = ({ url, label, items, SubMenu, ...rest }) => (
+  const menuItemView = ({ url, label, items, SubMenu, MenuItem, description, ...rest }) => (
     <React.Fragment>
-      <a href={url} {...rest}>{label}</a>
-      {!_.isEmpty(items) && (<SubMenu className="sub-menu" items={items} />)}
+      <Link {...{ ...rest, url }}>{label}</Link>
+      {!_.isEmpty(items) && (
+        <SubMenu
+          className="sub-menu"
+          {...{ items, SubMenu, MenuItem}}
+        />
+      )}
     </React.Fragment>
   );
 
-  const customMenu = ({ slug, className, 'data-testid': dataTestId, items, MenuItem }) => (
-    <div id={`menu-${slug}`} className={className} data-testid={dataTestId}>
-      {_.map(items, ({ id, ...r}) => (<MenuItem key={id} id={id} {...r} />))}
+  const customMenuView = ({ slug, className, items, MenuItem, SubMenu, ...rest }) => (
+    <div id={\`menu-\${slug}\`} className={className} {...rest}>
+      {_.map(items, ({ id, menuItemId, cssClasses, ...r}) => (
+        <div key={id} className="menu-item">
+          <MenuItem
+            className={\`menuItem \${cssClasses.join(' ')}\`}
+            id={id}
+            {...{ ...r, MenuItem, SubMenu }}
+          />
+        </div>
+      ))}
     </div>
   );
 ```
 3. Last lastly use the `compose` function on each of the imported components to compose a new `CustomMenu` Component.
 ```
-  const CustomSubMenu = subMenu.compose(customMenu);
-  const CustomMenuItem = menuItem.compose(customMenuItem, CustomMenu);
-  const CustomMenu = menu.compose(customMenu, CustomMenuItem);
+  const SubMenu = subMenu.compose({ view: subMenuView });
+  const MenuItem = menuItem.compose({ view: menuItemView });
+  const CustomMenu = menu.compose({
+    view: customMenuView,
+    MenuItem,
+    SubMenu
+  });
 
   const App = () => (
     <div className="app">
-      <strong>Default Menu</strong>
-      <Menu location="SOCIAL" />
-
-      <strong>Custom Menu</strong>
       <CustomMenu location="SOCIAL" />
     </div>
   );
@@ -100,7 +118,106 @@ Simply import a component and pass the required props.
     </WPProvider>
   );
 ```
-You can learn more about the [Menu]() component and the rest of the library in the [Components]() and [Documentation]() sections.
 
-## Composing New Components
-Coming soon...
+## Creating New Composers
+You can create a completely new composer function using the helper composer functions in `lib/composers`. There are two primary functions made `baseComposer` and `queryComposer`. They are similar but their uses are little different.
+
+`baseComposer` - composers created from the function create a composer wrapped in an loading component, errorComponent, and propMapper. Example below.
+
+```
+const composer = baseComposer({
+  // default view layer component
+  view: ViewComponent,
+  // default properties passed to loading state handler 
+  loading: { view: LoadingViewComponent, cond: props => !!props.loading },
+  // default properties passed to error state handler
+  error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' },
+  // default HOCs wrapped around the mapper and view layer component
+  extraHocs: [],
+  // default mapper function
+  mapper: props => props,
+  // all other parameters are pass to the view component as a prop.
+  ...extraDefaults,
+})
+
+// all default values can be overwritten in composed instances
+const ComposedComponent = composer({ view, loading, error, extraHocs, mapper }) 
+```
+
+`queryComposer` - similar to `baseComposer` but it includes conditional GraphQL HOCs each can have a `cond` function prop and `mapper`.
+```
+const composer = queryComposer({
+  // default view layer component
+  view: ViewComponent,
+  // default query properties
+  queries: [{ query: GRAPHQL_QUERY, config: { options: {...}, ... }, mapper }]
+  // default properties passed to loading state handler
+  loading: { view: LoadingViewComponent, cond: props => !!props.loading }, 
+  // default properties passed to error state handler
+  error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' }, 
+  // default HOCs wrapped around the mapper and view layer component
+  extraHocs: [],
+  // default mapper function shared by all queries
+  sharedMapper: props => props,
+  // all other parameters are pass to the view component as a props.
+  ...extraDefaults,
+})
+
+// just like with baseComposer all default values can be overwritten in composed instances
+const ComposedComponent = composer({ view, queries, loading, error, extraHocs, mapper }) 
+```
+
+## Components
+- Archives
+- Attachment
+- Header
+- Main
+- Menu
+- Page
+- Post
+- PostComments
+- Login
+- UserControls
+
+## Util Components
+- Error
+- Icon
+- Loading
+
+## Composer Functions
+- BaseComposer
+- QueryComposer
+- UtilComposer
+
+## Higher-Order Components
+- whileLoading
+- forError
+- composeQuery
+
+## Project Structure
+```
+├── bin
+├── dist
+│   ├── index.js
+│   ├── index.js.map
+│   ├── index.module.js
+│   └── index.module.js.map
+├── src
+│   ├── ... - components
+│   └── index.js - library exporter
+├── test
+│   ├── __unit_tests__ - component tests
+│   ├── __util_tests__ - util component tests
+│   ├── composers.test.js - composer function and HOC tests
+│   └── fragmentTypes.json - Introspection data for Apollo test utils
+├── .babelrc
+├── .gitignore
+├── .npmignore
+├── CHANGELOG
+├── CODE_OF_CONDUCT.md
+├── LICENSE
+├── package.json
+├── README.md
+├── rollup.config.js
+└── package.json 
+```

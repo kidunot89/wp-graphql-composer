@@ -1,0 +1,50 @@
+/* fallback */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/materialicons/v41/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+
+.icon {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+
+  /* Rules for sizing the icon. */
+  &.tiny { font-size: 18px; }
+  &.small { font-size: 24px; }
+  &.medium { font-size: 36px; }
+  &.large { font-size: 48px; }
+
+  /* Rules for using icons as black on a light background. */
+  &.dark {
+    color: rgba(0, 0, 0, 0.54); 
+    &.inactive { color: rgba(0, 0, 0, 0.26); }
+  }
+
+  /* Rules for using icons as white on a dark background. */
+  &.light {
+    color: rgba(255, 255, 255, 1);
+    &.md-inactive { color: rgba(255, 255, 255, 0.3); }
+  }
+}
