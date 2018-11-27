@@ -1,9 +1,12 @@
 #Changelog
 
+## [Experimental/Incomplete]
+## Added
+- **Introspectation CLI** use `wpg-intro <endpoint> <output>` to run execute an introspection query against `<endpoint>`, and a json file will be save at `<output>` for use in `WPProvider`. (Incomplete)
+
 ## [0.2.0] Breaking Change
 ### Added
 - **New build configuration** see changes below
-- **Introspectation CLI** use `wpg-intro <endpoint> <output>` to run execute an introspection query against `<endpoint>`, and a json file will be save at `<output>` for use in `WPProvider`.
 
 ### Changes
 - **PWD restructured** `src/lib/` => `src/`
