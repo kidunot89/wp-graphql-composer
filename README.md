@@ -170,8 +170,8 @@ const ComposedComponent = composer({ view, queries, loading, error, extraHocs, m
 ## Components
 - Archives
 - Attachment
-- Header
-- Main
+- Header - Unusable until WPGraphQL PR#571 merged
+- Main - Schema patch needed. Read more below.
 - Menu
 - Page
 - Post
@@ -220,4 +220,125 @@ const ComposedComponent = composer({ view, queries, loading, error, extraHocs, m
 ├── README.md
 ├── rollup.config.js
 └── package.json 
+```
+
+## Schema patch
+By default some WP settings aren't exposed by WPGraphQL. This is due to the fact that these settings are loaded using WordPress's Option API. While there have been talks of patching these settings in WPGraphQL nothing has been done as of yet. To get around this issue the settings can be added to the WPGraphQL schema manually. Below is an example that you can copy and patch into your theme's `functions.php` or plugin's `[plugin-name].php`. These are also the settings needed by a couple of the components in the library.
+```
+use GraphQLRelay\Relay;
+use \WPGraphQL\Data\DataSource;
+
+function wp_graphql_schema_patch() {
+  register_graphql_fields( 'Settings', [
+    /** 
+     * Defines the page_on_front setting
+     */
+    'pageOnFront' => [
+      'type' => 'ID',
+      'description' => __( 'The page that should be displayed on the front page' ),
+      'resolve' => function() {
+        $id = get_option( 'page_on_front', null );
+        return ! empty( $id ) ? Relay::toGlobalId( 'page', $id ) : null;
+      },
+    ],
+
+    /** 
+     * Defines the page_for_posts setting
+     */
+    'pageForPosts' => [
+      'type' => 'String',
+      'description' => __( 'The page that displays posts' ),
+      'resolve' => function() {
+        $id = get_option( 'page_for_posts' );
+        return ! empty( $id ) ? DataSource::resolve_post_object( $id, 'page' )->post_name : null;
+      },
+    ],
+
+    /** 
+     * Defines the show_avatar setting
+     */
+    'showAvatars' => [
+      'type' => 'Boolean',
+      'description' => __( 'Avatar Display' ),
+      'resolve' => function() {
+        return get_option( 'show_avatars', false );
+      },
+    ],
+
+    /** 
+     * Defines the users_can_register setting
+     */
+    'usersCanRegister' => [
+      'type' => 'Boolean',
+      'description' => __( 'Anyone can register' ),
+      'resolve' => function() {
+        return get_option( 'users_can_register', false );
+      },
+    ],
+
+    /** 
+     * Defines the permalink_structure setting
+     */
+    'permalinkStructure' => [
+      'type' => 'String',
+      'description' => __( 'The structure of the blog\'s permalinks.' ),
+      'resolve' => function() {
+        return get_option( 'permalink_structure' );
+      },
+    ],
+
+    /** 
+     * Defines the home_url setting
+     */
+    'homeUrl' => [
+      'type' => 'String',
+      'description' => __( 'The url to current site. Use this if site is a multisite' ),
+      'resolve' => function() {
+        return home_url();
+      },
+    ],
+  ] );
+
+  /** 
+   * Holds the post type object permalink field
+   */
+  $permalink = [
+    'type' 				=> 'String',
+    'args' 				=> [
+      'leavename' => [
+        'type' 				=> 'Boolean',
+        'description' => __( 'Whether to keep post name or page name' ),
+      ],
+    ],
+    'description' 	=> __( 'The permalink to the post object' ),
+    'resolve' => function( \WP_Post $post, $args ) {
+      if ( ! empty( $args['leavename'] ) && $args['leavename'] ) {
+        $leavename = true;
+      } else {
+        $leavename = false;
+      }
+
+      /**
+      * Strip site url for routing use
+      */
+      $permalink = str_replace( home_url() . '/', '', get_permalink( $post, $leavename ) );
+      return ( $permalink ) ? $permalink : null;
+    },
+  ];
+  register_graphql_field( 'post', 'permalink', $permalink );
+  register_graphql_field( 'page', 'permalink', $permalink );
+  register_graphql_field( 'attachment', 'permalink', $permalink );
+
+  $isGutenPost = [
+    'type' 				=> 'Boolean',
+    'description' 	=> __( 'Is post made with the Gutenberg' ),
+    'resolve' => function( \WP_Post $post, $args ) {
+      $is_guten_post = preg_match("/<!-- wp:(.*) -->/", $post->post_content ) ? true : false;
+      return $is_guten_post;
+    },
+  ];
+  register_graphql_field( 'post', 'isGutenPost', $isGutenPost );
+  register_graphql_field( 'page', 'isGutenPost', $isGutenPost );
+}
+add_action( 'graphql_register_types', 'function wp_graphql_schema_patch' );
 ```
