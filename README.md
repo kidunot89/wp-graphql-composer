@@ -223,7 +223,7 @@ const ComposedComponent = composer({ view, queries, loading, error, extraHocs, m
 ```
 
 ## Schema patch
-By default some WP settings aren't exposed by WPGraphQL. This is due to the fact that these settings are loaded using WordPress's Option API. While there have been talks of patching these settings in WPGraphQL nothing has been done as of yet. To get around this issue the settings can be added to the WPGraphQL schema manually. Below is an example that you can copy and patch into your theme's `functions.php` or plugin's `[plugin-name].php`. These are also the settings needed by a couple of the components in the library.
+By default some WP settings aren't exposed by WPGraphQL. This is due to the fact that these settings aren't loaded using WordPress's Option API. While there have been talks of patching these settings in WPGraphQL nothing has been done as of yet. To get around this issue the settings can be added to the WPGraphQL schema manually. Below is an example that you can copy and patch into your theme's `functions.php` or plugin's `[plugin-name].php`. These are also the settings needed by a couple of the components in the library.
 ```
 use GraphQLRelay\Relay;
 use \WPGraphQL\Data\DataSource;
