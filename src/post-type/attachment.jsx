@@ -11,8 +11,8 @@ import classNames from 'classnames';
  */
 import { Error, Loading } from '../utils'; 
 import { queryComposer } from '../composers';
-import { CUSTOM_LOGO_QUERY, ATTACHMENT_QUERY } from './query';
-import { customLogoMapper, attachmentMapper } from './attachment-mapper';
+import { ATTACHMENT_QUERY } from './query';
+import attachmentMapper from './attachment-mapper';
 
 /**
  * SCSS Module
@@ -56,20 +56,14 @@ attachment.compose = queryComposer({
   forError: { view: Error, type: '404-image' },
   queries: [
     {
-      query: CUSTOM_LOGO_QUERY,
-      cond: ({ customLogo }) => !!customLogo,
-      mapper: customLogoMapper,
-    },
-    {
       query: ATTACHMENT_QUERY,
-      cond: ({ customLogo }) => !customLogo,
-      mapper: attachmentMapper,
       config: {
         options: ({ id, mediaItemId, slug, uri }) => ({ id, mediaItemId, slug, uri }),
         skip: ({ id, mediaItemId, slug, uri }) => !id && !mediaItemId && !slug && !uri
       }
     },
   ],
+  sharedMapper: attachmentMapper
 });
 
 /**

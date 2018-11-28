@@ -7,5 +7,9 @@ export const HEADER_QUERY = gql`
       generalSettingsDescription
       homeUrl
     }
+
+    themeMods {
+      customLogo
+    }
   }
 `;

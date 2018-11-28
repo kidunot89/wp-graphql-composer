@@ -6,26 +6,6 @@ import { gql } from 'apollo-boost';
 /**
  * Queries
  */
-export const CUSTOM_LOGO_QUERY = gql`
-  query CustomLogoQuery {
-    themeMods {
-      customLogo {
-        id
-        altText
-        mediaType
-        sourceUrl
-        mediaDetails{
-          sizes {
-            width
-            height
-            sourceUrl
-          }
-        }
-      }
-    }
-  }
-`;
-
 export const ATTACHMENT_QUERY = gql`
   query AttachmentQuery($id: String, $mediaItemId: ID, $slug: String, $uri: String) {
     mediaItemBy(id: $id, mediaItemId: $mediaItemId, slug: $slug, uri: $uri){
