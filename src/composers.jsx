@@ -104,11 +104,11 @@ export const forError = ({
   );
 
 /**
- * QueryCondition
- * @param {func} cond - condition function ex. (props) -> !!props.id
- * @param {gql} query - query to be request
- * @param {object} config - graphql(query, config)
- * @param {func} mapper - props mapper function
+ * @typedef QueryCondition
+ * @property {func} cond - condition function ex. (props) -> !!props.id
+ * @property {gql} query - query to be request
+ * @property {object} config - graphql(query, config)
+ * @property {func} mapper - props mapper function
  */
 
 /**

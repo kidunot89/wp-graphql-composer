@@ -386,11 +386,11 @@ var forError = function forError(_ref2) {
   }));
 };
 /**
- * QueryCondition
- * @param {func} cond - condition function ex. (props) -> !!props.id
- * @param {gql} query - query to be request
- * @param {object} config - graphql(query, config)
- * @param {func} mapper - props mapper function
+ * @typedef QueryCondition
+ * @property {func} cond - condition function ex. (props) -> !!props.id
+ * @property {gql} query - query to be request
+ * @property {object} config - graphql(query, config)
+ * @property {func} mapper - props mapper function
  */
 
 /**
@@ -2289,8 +2289,18 @@ var Login = login$1.compose();
  * User Exporter
  */
 
-function _templateObject9() {
+function _templateObject10() {
   var data = _taggedTemplateLiteral(["\n  mutation UpdateCommentMutation(\n    $type: String,\n    $id: ID!,\n    $content: String!,\n    $date: String!,\n    $clientId: String!,\n  ) {\n    updateComment(input: {\n      type: $type,\n      id: $id,\n      content: $content,\n      date: $date,\n      clientMutationId: $clientId\n    }) {\n      clientMutationId\n      comment {\n        id,\n        commentId,\n        type,\n        content,\n        date\n        author {\n          ... on CommentAuthor {\n            id\n            name\n          },\n          ... on User {\n            id\n            nicename\n          }\n        }\n      }\n    }\n  }\n"]);
+
+  _templateObject10 = function _templateObject10() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject9() {
+  var data = _taggedTemplateLiteral(["\n  mutation NewCommentMutation(\n    $author: String,\n    $authorEmail: String,\n    $authorUrl: String,\n    $type: String,\n    $userId: Int,\n    $parent: String,\n    $postId: Int,\n    $content: String!,\n    $date: String!,\n    $clientId: String!,\n  ) {\n    createComment(input: {\n      author: $author,\n      authorEmail: $authorEmail,\n      authorUrl: $authorUrl,\n      type: $type,\n      userId: $userId,\n      parent: $parent,\n      postId: $postId,\n      content: $content,\n      date: $date,\n      clientMutationId: $clientId\n    }) {\n      clientMutationId\n      comment {\n        id,\n        commentId,\n        type,\n        content,\n        date\n        author {\n          ... on CommentAuthor {\n            id\n            name\n          },\n          ... on User {\n            id\n            nicename\n          }\n        }\n      }\n    }\n  }\n"]);
 
   _templateObject9 = function _templateObject9() {
     return data;
@@ -2300,7 +2310,7 @@ function _templateObject9() {
 }
 
 function _templateObject8() {
-  var data = _taggedTemplateLiteral(["\n  mutation NewCommentMutation(\n    $author: String,\n    $authorEmail: String,\n    $authorUrl: String,\n    $type: String,\n    $userId: Int,\n    $parent: String,\n    $postId: Int,\n    $content: String!,\n    $date: String!,\n    $clientId: String!,\n  ) {\n    createComment(input: {\n      author: $author,\n      authorEmail: $authorEmail,\n      authorUrl: $authorUrl,\n      type: $type,\n      userId: $userId,\n      parent: $parent,\n      postId: $postId,\n      content: $content,\n      date: $date,\n      clientMutationId: $clientId\n    }) {\n      clientMutationId\n      comment {\n        id,\n        commentId,\n        type,\n        content,\n        date\n        author {\n          ... on CommentAuthor {\n            id\n            name\n          },\n          ... on User {\n            id\n            nicename\n          }\n        }\n      }\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  mutation DeleteCommentMutation($clientId: String!, $id: ID!) {\n    deleteComment(input: { id: $id, clientMutationId: $clientId }) {\n      clientMutationId\n      comment {\n        id\n      }\n    }\n  }\n"]);
 
   _templateObject8 = function _templateObject8() {
     return data;
@@ -2310,7 +2320,7 @@ function _templateObject8() {
 }
 
 function _templateObject7() {
-  var data = _taggedTemplateLiteral(["\n  mutation DeleteCommentMutation($clientId: String!, $id: ID!) {\n    deleteComment(input: { id: $id, clientMutationId: $clientId }) {\n      clientMutationId\n      comment {\n        id\n      }\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  query PostQuery($postId: ID, $slug: String, $uri: String) {\n    postBy(postId: $postId, slug: $slug, uri: $uri) {\n      id\n      postId\n      slug\n      uri\n      content\n      date\n      modified\n      title\n      permalink\n      author {\n        id\n        userId\n        nicename\n        avatar {\n          url\n          foundAvatar\n        }\n      }\n      categories {\n        nodes {\n          id\n          name\n        }\n      }\n      tags {\n        nodes {\n          id\n          name\n        }\n      }\n      featuredImage {\n        id\n      }\n    }\n  }\n"]);
 
   _templateObject7 = function _templateObject7() {
     return data;
@@ -2320,7 +2330,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  var data = _taggedTemplateLiteral(["\n  query PostQuery($postId: ID, $slug: String, $uri: String) {\n    postBy(postId: $postId, slug: $slug, uri: $uri) {\n      id\n      postId\n      slug\n      uri\n      content\n      date\n      modified\n      title\n      permalink\n      author {\n        id\n        userId\n        nicename\n        avatar {\n          url\n          foundAvatar\n        }\n      }\n      categories {\n        nodes {\n          id\n          name\n        }\n      }\n      tags {\n        nodes {\n          id\n          name\n        }\n      }\n      featuredImage {\n        id\n      }\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  query PostQuery($id: ID!) {\n    post(id: $id) {\n      id\n      postId\n      slug\n      uri\n      content\n      date\n      modified\n      title\n      permalink\n      author {\n        id\n        userId\n        nicename\n        avatar {\n          url\n          foundAvatar\n        }\n      }\n      categories {\n        nodes {\n          id\n          name\n        }\n      }\n      tags {\n        nodes {\n          id\n          name\n        }\n      }\n      featuredImage {\n        id\n        mediaItemId\n        title\n        altText\n        sourceUrl\n      }\n    }\n  }\n"]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -2330,7 +2340,7 @@ function _templateObject6() {
 }
 
 function _templateObject5() {
-  var data = _taggedTemplateLiteral(["\n  query PostQuery($id: ID!) {\n    post(id: $id) {\n      id\n      postId\n      slug\n      uri\n      content\n      date\n      modified\n      title\n      permalink\n      author {\n        id\n        userId\n        nicename\n        avatar {\n          url\n          foundAvatar\n        }\n      }\n      categories {\n        nodes {\n          id\n          name\n        }\n      }\n      tags {\n        nodes {\n          id\n          name\n        }\n      }\n      featuredImage {\n        id\n        mediaItemId\n        title\n        altText\n        sourceUrl\n      }\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  query PostCommentsQuery($id: ID!) {\n    post(id: $id) {\n      id\n      postId\n      title\n      commentStatus\n      comments{\n        nodes {\n          id\n          commentId\n          type\n          content\n          date\n          author{\n            ... on User {\n              id\n              userId\n              nicename\n              avatar {\n                url\n              }\n            }\n            ... on CommentAuthor {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n"]);
 
   _templateObject5 = function _templateObject5() {
     return data;
@@ -2340,7 +2350,7 @@ function _templateObject5() {
 }
 
 function _templateObject4() {
-  var data = _taggedTemplateLiteral(["\n  query PostCommentsQuery($id: ID!) {\n    post(id: $id) {\n      id\n      postId\n      title\n      commentStatus\n      comments{\n        nodes {\n          id\n          commentId\n          type\n          content\n          date\n          author{\n            ... on User {\n              id\n              userId\n              nicename\n              avatar {\n                url\n              }\n            }\n            ... on CommentAuthor {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  query PageByQuery($uri: String, $pageId: ID) {\n    pageBy(uri: $uri, pageId: $pageId) {\n      id\n      uri\n      pageId\n      title\n      content\n      date\n      modified\n    }\n  }\n"]);
 
   _templateObject4 = function _templateObject4() {
     return data;
@@ -2350,7 +2360,7 @@ function _templateObject4() {
 }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  query PageByQuery($uri: String, $pageId: ID) {\n    pageBy(uri: $uri, pageId: $pageId) {\n      id\n      uri\n      pageId\n      title\n      content\n      date\n      modified\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  query PageQuery($id: ID!) {\n    page(id: $id){\n      id\n      uri\n      pageId\n      title\n      content\n      date\n      modified\n    }\n  }\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -2360,7 +2370,7 @@ function _templateObject3() {
 }
 
 function _templateObject2$1() {
-  var data = _taggedTemplateLiteral(["\n  query PageQuery($id: ID!) {\n    page(id: $id){\n      id\n      uri\n      pageId\n      title\n      content\n      date\n      modified\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  query AttachmentQuery($id: String, $mediaItemId: ID, $slug: String, $uri: String) {\n    mediaItemBy(id: $id, mediaItemId: $mediaItemId, slug: $slug, uri: $uri){\n      id\n      altText\n      mediaType\n      sourceUrl\n      mediaDetails{\n        sizes {\n          width\n          height\n          sourceUrl\n        }\n      }\n    }\n  }\n"]);
 
   _templateObject2$1 = function _templateObject2() {
     return data;
@@ -2370,7 +2380,7 @@ function _templateObject2$1() {
 }
 
 function _templateObject$1() {
-  var data = _taggedTemplateLiteral(["\n  query AttachmentQuery($id: String, $mediaItemId: ID, $slug: String, $uri: String) {\n    mediaItemBy(id: $id, mediaItemId: $mediaItemId, slug: $slug, uri: $uri){\n      id\n      altText\n      mediaType\n      sourceUrl\n      mediaDetails{\n        sizes {\n          width\n          height\n          sourceUrl\n        }\n      }\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  query CustomLogoQuery {\n    themeMods {\n      customLogo {\n        id\n        altText\n        mediaType\n        sourceUrl\n        mediaDetails{\n          sizes {\n            width\n            height\n            sourceUrl\n          }\n        }\n      }\n    }\n  }\n"]);
 
   _templateObject$1 = function _templateObject() {
     return data;
@@ -2382,19 +2392,20 @@ function _templateObject$1() {
  * Queries
  */
 
-var ATTACHMENT_QUERY = gql(_templateObject$1());
-var PAGE_QUERY = gql(_templateObject2$1());
-var PAGE_BY_QUERY = gql(_templateObject3());
-var POST_COMMENTS_QUERY = gql(_templateObject4());
-var POST_QUERY = gql(_templateObject5());
-var POST_BY_QUERY = gql(_templateObject6());
+var CUSTOM_LOGO_QUERY = gql(_templateObject$1());
+var ATTACHMENT_QUERY = gql(_templateObject2$1());
+var PAGE_QUERY = gql(_templateObject3());
+var PAGE_BY_QUERY = gql(_templateObject4());
+var POST_COMMENTS_QUERY = gql(_templateObject5());
+var POST_QUERY = gql(_templateObject6());
+var POST_BY_QUERY = gql(_templateObject7());
 /**
  * Mutations
  */
 
-var DELETE_COMMENT_MUTATION = gql(_templateObject7());
-var NEW_COMMENT_MUTATION = gql(_templateObject8());
-var UPDATE_COMMENT_MUTATION = gql(_templateObject9());
+var DELETE_COMMENT_MUTATION = gql(_templateObject8());
+var NEW_COMMENT_MUTATION = gql(_templateObject9());
+var UPDATE_COMMENT_MUTATION = gql(_templateObject10());
 
 /**
  * Maps image source for srcSet attribute
@@ -2468,13 +2479,13 @@ var reduceBreakpoints = function reduceBreakpoints(sizes) {
   return reduced;
 };
 
-var attachmentMapper = (function (_ref4) {
+var variables = ['id', 'mediaItemId', 'slug', 'uri', 'customLogo'];
+var attachmentMapper = function attachmentMapper(_ref4) {
   var data = _ref4.data,
       src = _ref4.src,
       alt = _ref4.alt,
       rest = _objectWithoutProperties(_ref4, ["data", "src", "alt"]);
 
-  var variables = ['id', 'mediaItemId', 'slug', 'uri'];
   var imgSrc = get(data, 'mediaItemBy.sourceUrl') || src;
   var altText = alt || get(data, 'mediaItemBy.altText');
   var sizes = get(data, 'mediaItemBy.mediaDetails.sizes');
@@ -2494,7 +2505,33 @@ var attachmentMapper = (function (_ref4) {
     src: imgSrc,
     alt: altText
   }, omit(rest, ['fallback'].concat(variables)));
-});
+};
+var customLogoMapper = function customLogoMapper(_ref5) {
+  var data = _ref5.data,
+      src = _ref5.src,
+      alt = _ref5.alt,
+      rest = _objectWithoutProperties(_ref5, ["data", "src", "alt"]);
+
+  var imgSrc = get(data, 'themeMods.customLogo.sourceUrl') || src;
+  var altText = alt || get(data, 'themeMods.customLogo.altText');
+  var sizes = get(data, 'themeMods.customLogo.mediaDetails.sizes');
+
+  if (sizes && sizes.length > 0) {
+    var sources = map(sizes, mapSources);
+    var srcSizes = reduceBreakpoints(sizes);
+    return _objectSpread({
+      src: imgSrc,
+      alt: altText,
+      srcSet: sources.join(', '),
+      sizes: srcSizes.join(', ')
+    }, omit(rest, ['fallback'].concat(variables)));
+  }
+
+  return _objectSpread({
+    src: imgSrc,
+    alt: altText
+  }, omit(rest, ['fallback'].concat(variables)));
+};
 
 var css$5 = "/* Extra Small */\n/* Small */\n/* Medium */\n/* Large */\n/* Extra Large */\n";
 var styles$3 = {};
@@ -2551,13 +2588,25 @@ attachment.compose = queryComposer({
     type: '404-image'
   },
   queries: [{
+    query: CUSTOM_LOGO_QUERY,
+    cond: function cond(_ref2) {
+      var customLogo = _ref2.customLogo;
+      return !!customLogo;
+    },
+    mapper: customLogoMapper
+  }, {
     query: ATTACHMENT_QUERY,
+    cond: function cond(_ref3) {
+      var customLogo = _ref3.customLogo;
+      return !customLogo;
+    },
+    mapper: attachmentMapper,
     config: {
-      options: function options(_ref2) {
-        var id = _ref2.id,
-            mediaItemId = _ref2.mediaItemId,
-            slug = _ref2.slug,
-            uri = _ref2.uri;
+      options: function options(_ref4) {
+        var id = _ref4.id,
+            mediaItemId = _ref4.mediaItemId,
+            slug = _ref4.slug,
+            uri = _ref4.uri;
         return {
           id: id,
           mediaItemId: mediaItemId,
@@ -2565,16 +2614,15 @@ attachment.compose = queryComposer({
           uri: uri
         };
       },
-      skip: function skip(_ref3) {
-        var id = _ref3.id,
-            mediaItemId = _ref3.mediaItemId,
-            slug = _ref3.slug,
-            uri = _ref3.uri;
+      skip: function skip(_ref5) {
+        var id = _ref5.id,
+            mediaItemId = _ref5.mediaItemId,
+            slug = _ref5.slug,
+            uri = _ref5.uri;
         return !id && !mediaItemId && !slug && !uri;
       }
     }
-  }],
-  sharedMapper: attachmentMapper
+  }]
 });
 /**
  * Compose default Attachment Component
@@ -4979,7 +5027,7 @@ var headerMapper = function headerMapper(_ref) {
 };
 
 function _templateObject$4() {
-  var data = _taggedTemplateLiteral(["\n  query HeaderQuery {\n    allSettings {\n      generalSettingsTitle\n      generalSettingsDescription\n      homeUrl\n    }\n\n    themeMods {\n      customLogo\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  query HeaderQuery {\n    allSettings {\n      generalSettingsTitle\n      generalSettingsDescription\n      homeUrl\n    }\n  }\n"]);
 
   _templateObject$4 = function _templateObject() {
     return data;
@@ -5005,10 +5053,9 @@ var header$1 = function header(_ref) {
   var url = _ref.url,
       title = _ref.title,
       description = _ref.description,
-      logo = _ref.logo,
       children = _ref.children,
       Attachment$$1 = _ref.Attachment,
-      rest = _objectWithoutProperties(_ref, ["url", "title", "description", "logo", "children", "Attachment"]);
+      rest = _objectWithoutProperties(_ref, ["url", "title", "description", "children", "Attachment"]);
 
   return React.createElement("div", Object.assign({
     className: "site-header",
@@ -5028,7 +5075,7 @@ var header$1 = function header(_ref) {
     },
     __self: this
   }, React.createElement(Attachment$$1, {
-    mediaItemId: logo,
+    customLogo: true,
     className: "custom-logo",
     alt: title,
     fallback: true,
@@ -5546,5 +5593,5 @@ var Main = main.compose();
  * Default Template Exporter
  */
 
-export { compileClassName, createClient, WPProvider, whileLoading, errorHandler, forError, composeQuery, utilComposer, baseComposer, queryComposer, loading, Loading, progressMapper, error, Error$1 as Error, errorMapper, Icon, VIEWER_QUERY, LOGIN_MUTATION, login$1 as login, Login, userControls$1 as userControls, UserControls, ATTACHMENT_QUERY, PAGE_QUERY, PAGE_BY_QUERY, POST_COMMENTS_QUERY, POST_QUERY, POST_BY_QUERY, DELETE_COMMENT_MUTATION, NEW_COMMENT_MUTATION, UPDATE_COMMENT_MUTATION, attachment, Attachment, comment, editComment, page, Page, post, Post, postComments, PostComments, archive$1 as archive, Archive, ARCHIVE_QUERY, MENU_QUERY, MENU_WHERE_QUERY, MENU_ITEM_QUERY, menuInitialState, MenuContext, menu, Menu, menuItem, MenuItem, Link$1 as Link, subMenu, SubMenu, header$1 as header, Header, headerMapper, HEADER_QUERY, main, Main, mapLoopProps, defaultRoutes, routesProcessor, LOOP_QUERY };
+export { compileClassName, createClient, WPProvider, whileLoading, errorHandler, forError, composeQuery, utilComposer, baseComposer, queryComposer, loading, Loading, progressMapper, error, Error$1 as Error, errorMapper, Icon, VIEWER_QUERY, LOGIN_MUTATION, login$1 as login, Login, userControls$1 as userControls, UserControls, CUSTOM_LOGO_QUERY, ATTACHMENT_QUERY, PAGE_QUERY, PAGE_BY_QUERY, POST_COMMENTS_QUERY, POST_QUERY, POST_BY_QUERY, DELETE_COMMENT_MUTATION, NEW_COMMENT_MUTATION, UPDATE_COMMENT_MUTATION, attachment, Attachment, comment, editComment, page, Page, post, Post, postComments, PostComments, archive$1 as archive, Archive, ARCHIVE_QUERY, MENU_QUERY, MENU_WHERE_QUERY, MENU_ITEM_QUERY, menuInitialState, MenuContext, menu, Menu, menuItem, MenuItem, Link$1 as Link, subMenu, SubMenu, header$1 as header, Header, headerMapper, HEADER_QUERY, main, Main, mapLoopProps, defaultRoutes, routesProcessor, LOOP_QUERY };
 //# sourceMappingURL=index.module.js.map

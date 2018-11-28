@@ -27,12 +27,12 @@ import './header.scss';
  * 
  * @returns {React.Component} 
  */
-const header = ({ url, title, description, logo, children, Attachment, ...rest }) => {
+const header = ({ url, title, description, children, Attachment, ...rest }) => {
   return (
     <div className="site-header" role="banner" {...rest}>
       <div id="masthead" className="site-branding">
         <Attachment
-          mediaItemId={logo}
+          customLogo
           className="custom-logo"
           alt={title}
           fallback
