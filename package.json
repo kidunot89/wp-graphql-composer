@@ -1,6 +1,6 @@
 {
   "name": "wp-graphql-composer",
-  "version": "0.3.0",
+  "version": "0.2.1",
   "description": "A light-weight framework for developing wordpress React-powered WordPress plugin and themes",
   "keywords": [
     "wp-graphql",
