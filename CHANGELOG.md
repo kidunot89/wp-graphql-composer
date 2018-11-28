@@ -4,6 +4,14 @@
 ## Added
 - **Introspectation CLI** use `wpg-intro <endpoint> <output>` to run execute an introspection query against `<endpoint>`, and a json file will be save at `<output>` for use in `WPProvider`. (Incomplete)
 
+## [0.2.1]
+### Added 
+- **CUSTOM_LOGO_QUERY** new query add to Attachment default stack. 
+Example use with default Attachment stack: `<Attachment customLogo />`.
+
+### Changes
+- **Header** `CUSTOM_LOGO_QUERY` now used by Attachment component in default Header view component. 
+
 ## [0.2.0] Breaking Change
 ### Added
 - **New build configuration** see changes below
