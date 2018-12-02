@@ -74,8 +74,8 @@
     "examples:build": "cd \"./examples\" && \"./node_modules/.bin/webpack\"",
     "examples:watch": "cd \"./examples\" && \"./node_modules/.bin/webpack-dev-server\"",
     "start": "(npm run watch & npm run examples:watch)",
-    "test": "jest --no-cache --watch",
-    "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+    "test": "jest test --no-cache --watch",
+    "coveralls": "jest test --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "proxy": "http://wpgraphql.example:8000",
   "browserslist": [
