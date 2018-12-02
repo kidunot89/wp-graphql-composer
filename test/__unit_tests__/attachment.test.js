@@ -2,7 +2,7 @@ import React from 'react';
 import { render, cleanup, waitForElement, wait } from 'react-testing-library';
 import { MockedProvider } from 'react-apollo/test-utils';
 
-import { ATTACHMENT_QUERY, Attachment, attachment } from '../../dist';
+import { CUSTOM_LOGO_QUERY, ATTACHMENT_QUERY, Attachment, attachment } from '../../dist';
 
 afterEach(cleanup);
 
@@ -77,6 +77,63 @@ it(`renders mock image at different sizes while maintaining the image's aspect r
 
   image = await waitForElement(() => getByAltText(/test image/));
   expect(image).toBeTruthy();
+});
+
+it(`render theme custom logo`, async() => {
+  const mocks = [{
+    request: {
+      query: CUSTOM_LOGO_QUERY,
+    },
+    result: {
+      data: {
+        themeMods: {
+          customLogo: {
+            id: "YXR0YWNobWVudDoxNTk=",
+            altText: 'dummy-image',
+            mediaType: "image",
+            sourceUrl: "https://source.unsplash.com/1250x833",
+            mediaDetails: {
+              sizes: [{
+                width: "150",
+                height: "150",
+                sourceUrl: "https://source.unsplash.com/150x150"
+              }, {
+                width: "300",
+                height: "200",
+                sourceUrl: "https://source.unsplash.com/300x200"
+              }, {
+                width: "768",
+                height: "512",
+                sourceUrl: "https://source.unsplash.com/768x512"
+              }, {
+                width: "1024",
+                height: "682",
+                sourceUrl: "https://source.unsplash.com/1024x682"
+              }]
+            }
+          }
+        }
+      }
+    },
+  }];
+
+  /**
+   * Original Size and className
+   */
+  const { getByAltText } = render(
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <Attachment customLogo className="dummy-image" alt="dummy-image" />
+    </MockedProvider>
+  );
+
+  let image = await waitForElement(() => getByAltText(/dummy-image/));
+  expect(image).toBeTruthy();
+  expect(image.getAttribute('class')).toEqual('dummy-image');
+  expect(image.getAttribute('srcSet'))
+    .toEqual('https://source.unsplash.com/150x150 150w, https://source.unsplash.com/300x200 300w, https://source.unsplash.com/768x512 768w, https://source.unsplash.com/1024x682 1024w');
+
+  expect(image.getAttribute('sizes'))
+    .toEqual('(max-width: 768px) 768px, (max-width: 1200px) 1024px');
 });
 
 it(`renders fallback image`, async () => {
