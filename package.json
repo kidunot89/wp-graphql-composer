@@ -1,6 +1,6 @@
 {
   "name": "wp-graphql-composer",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A light-weight framework for developing wordpress React-powered WordPress plugin and themes",
   "keywords": [
     "wp-graphql",
@@ -48,6 +48,7 @@
     "babel-preset-react-app": "^6.1.0",
     "babel-register": "^6.26.0",
     "classnames": "^2.2.6",
+    "coveralls": "^3.0.2",
     "css-loader": "^1.0.1",
     "eslint": "^5.9.0",
     "jest": "^23.6.0",
@@ -73,7 +74,8 @@
     "examples:build": "cd \"./examples\" && \"./node_modules/.bin/webpack\"",
     "examples:watch": "cd \"./examples\" && \"./node_modules/.bin/webpack-dev-server\"",
     "start": "(npm run watch & npm run examples:watch)",
-    "test": "jest --no-cache --watch"
+    "test": "jest --no-cache --watch",
+    "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "proxy": "http://wpgraphql.example:8000",
   "browserslist": [
@@ -81,5 +83,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
+  }
 }

@@ -1,8 +1,12 @@
 # Changelog
 
 ## [Experimental/Incomplete]
-## Added
+### Added
 - **Introspectation CLI** use `wpg-intro <endpoint> <output>` to run execute an introspection query against `<endpoint>`, and a json file will be save at `<output>` for use in `WPProvider`. (Incomplete)
+
+## [0.2.2]
+### Added
+- **Coveralls and Travis-CI** support Travis-CI and code coverage /w Coveralls.io added.
 
 ## [0.2.1]
 ### Added 
