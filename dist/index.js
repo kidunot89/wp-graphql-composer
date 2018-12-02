@@ -386,11 +386,11 @@
     }));
   };
   /**
-   * QueryCondition
-   * @param {func} cond - condition function ex. (props) -> !!props.id
-   * @param {gql} query - query to be request
-   * @param {object} config - graphql(query, config)
-   * @param {func} mapper - props mapper function
+   * @typedef QueryCondition
+   * @property {func} cond - condition function ex. (props) -> !!props.id
+   * @property {gql} query - query to be request
+   * @property {object} config - graphql(query, config)
+   * @property {func} mapper - props mapper function
    */
 
   /**
@@ -5027,7 +5027,7 @@
   };
 
   function _templateObject$4() {
-    var data = _taggedTemplateLiteral(["\n  query HeaderQuery {\n    allSettings {\n      generalSettingsTitle\n      generalSettingsDescription\n      homeUrl\n    }\n\n    themeMods {\n      customLogo\n    }\n  }\n"]);
+    var data = _taggedTemplateLiteral(["\n  query HeaderQuery {\n    allSettings {\n      generalSettingsTitle\n      generalSettingsDescription\n      homeUrl\n    }\n  }\n"]);
 
     _templateObject$4 = function _templateObject() {
       return data;
