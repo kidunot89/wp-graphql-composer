@@ -72,10 +72,15 @@ const reduceBreakpoints = (sizes) => {
   return reduced;
 };
 
-export default ({ data, src, alt, ...rest }) => {
-  const variables = [
-    'id', 'mediaItemId', 'slug', 'uri'
-  ];
+const variables = [
+  'id',
+  'mediaItemId',
+  'slug',
+  'uri',
+  'customLogo',
+];
+
+export const attachmentMapper = ({ data, src, alt, ...rest }) => {
   const imgSrc = get(data, 'mediaItemBy.sourceUrl') || src;
   const altText = alt || get(data, 'mediaItemBy.altText');
 
@@ -92,3 +97,21 @@ export default ({ data, src, alt, ...rest }) => {
 
   return { src: imgSrc,  alt: altText, ...omit(rest, ['fallback', ...variables]) };
 };
+
+export const customLogoMapper = ({ data, src, alt, ...rest }) => {
+  const imgSrc = get(data, 'themeMods.customLogo.sourceUrl') || src;
+  const altText = alt || get(data, 'themeMods.customLogo.altText');
+
+  const sizes = get(data, 'themeMods.customLogo.mediaDetails.sizes');
+  if (sizes && sizes.length > 0) {
+    const sources = map(sizes, mapSources);
+    const srcSizes = reduceBreakpoints(sizes);
+
+    return {
+      src: imgSrc,  alt: altText, srcSet: sources.join(', '), sizes: srcSizes.join(', '),
+      ...omit(rest, ['fallback', ...variables]),
+    };
+  }
+
+  return { src: imgSrc,  alt: altText, ...omit(rest, ['fallback', ...variables]) };
+}
