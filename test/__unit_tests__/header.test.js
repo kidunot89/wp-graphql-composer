@@ -5,7 +5,7 @@ import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemo
 import { MemoryRouter } from 'react-router-dom';
 
 import introspectionQueryResultData from '../fragmentTypes.json';
-import { ATTACHMENT_QUERY, HEADER_QUERY, Header, header } from '../../dist';
+import { CUSTOM_LOGO_QUERY, HEADER_QUERY, Header, header } from '../../dist';
 
 afterEach(cleanup);
 
@@ -32,46 +32,43 @@ const mocks = [
     }
   }, {
     request: {
-      query: ATTACHMENT_QUERY,
-      variables: {
-        mediaItemId: 1,
-        id: null,
-        slug: null,
-        uri: null,
-      },
+      query: CUSTOM_LOGO_QUERY,
     },
     result: {
       data: {
-        mediaItemBy: {
-          id: "YXR0YWNobWVudDoxNTk=",
-          altText: 'dummy-image',
-          mediaType: "image",
-          sourceUrl: "https://source.unsplash.com/1250x833",
-          mediaDetails: {
-            sizes: [{
-              width: "150",
-              height: "150",
-              sourceUrl: "https://source.unsplash.com/150x150",
-              __typename: 'MediaSizes',
-            }, {
-              width: "300",
-              height: "200",
-              sourceUrl: "https://source.unsplash.com/300x200",
-              __typename: 'MediaSizes',
-            }, {
-              width: "768",
-              height: "512",
-              sourceUrl: "https://source.unsplash.com/768x512",
-              __typename: 'MediaSizes',
-            }, {
-              width: "1024",
-              height: "682",
-              sourceUrl: "https://source.unsplash.com/1024x682",
-              __typename: 'MediaSizes',
-            }],
-            __typename: 'MediaDetails'
+        themeMods: {
+          customLogo: {
+            id: "YXR0YWNobWVudDoxNTk=",
+            altText: 'dummy-image',
+            mediaType: "image",
+            sourceUrl: "https://source.unsplash.com/1250x833",
+            mediaDetails: {
+              sizes: [{
+                width: "150",
+                height: "150",
+                sourceUrl: "https://source.unsplash.com/150x150",
+                __typename: 'MediaSizes',
+              }, {
+                width: "300",
+                height: "200",
+                sourceUrl: "https://source.unsplash.com/300x200",
+                __typename: 'MediaSizes',
+              }, {
+                width: "768",
+                height: "512",
+                sourceUrl: "https://source.unsplash.com/768x512",
+                __typename: 'MediaSizes',
+              }, {
+                width: "1024",
+                height: "682",
+                sourceUrl: "https://source.unsplash.com/1024x682",
+                __typename: 'MediaSizes',
+              }],
+              __typename: 'MediaDetails'
+            },
+            __typename: 'MediaItem',
           },
-          __typename: 'MediaItem',
+          __typename: 'ThemeMods',
         }
       }
     },
