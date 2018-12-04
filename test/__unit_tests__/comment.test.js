@@ -198,7 +198,7 @@ it(`renders post comments`, async () => {
   const comments = await waitForElement(() => getByTestId(/test-comments/));
   expect(comments).toBeTruthy();
 
-  const count = comments.querySelectorAll('ol>li.comment').length;
+  const count = comments.querySelectorAll('[id^="comment"]').length;
   expect(count).toBe(2);
 });
 
@@ -297,7 +297,7 @@ it(`create a new post comment`, async () => {
   const comments = await waitForElement(() => getByTestId(/test-comments/));
   expect(comments).toBeTruthy();
 
-  let list = comments.querySelectorAll('ol>li.comment');
+  let list = comments.querySelectorAll('[id^="comment"]');
   expect(list.length).toBe(2);
 
   // Fire add event
@@ -339,7 +339,7 @@ it(`updates an existing post comment`, async () => {
   const comments = await waitForElement(() => getByTestId(/test-comments/));
   expect(comments).toBeTruthy();
 
-  const list = comments.querySelectorAll('.comment');
+  const list = comments.querySelectorAll('[id^="comment"]');
   expect(list.length).toBe(3);
 
   // Fire edit event
@@ -354,8 +354,16 @@ it(`updates an existing post comment`, async () => {
   // Fire update event
   fireEvent.click(getByText(/Save Changes/));
 
-  const updatedComment = await waitForElement(() => comments.querySelector('#comment-2 .comment-content'));
-  expect(updatedComment.innerHTML).toEqual(messageTwo);
+  console.log( comments.innerHTML );
+
+  await wait(() =>
+    expect(
+      comments.querySelector('#comments-2 [class^="comment-module_content"]')
+    ).toBeTruthy());
+  
+  expect(
+    comments.querySelector('#comments-2 [class^="comment-module_content"]').innerText
+  ).toEqual(messageTwo)
 });
 
 
@@ -371,7 +379,7 @@ it(`deletes an existing post comment`, async () => {
   const comments = await waitForElement(() => getByTestId(/test-comments/));
   expect(comments).toBeTruthy();
 
-  expect(comments.querySelectorAll('.comment-content').length).toBe(3);
+  expect(comments.querySelectorAll('[id^="comment"]').length).toBe(3);
 
   const target = comments.querySelector('#comment-2');
   expect(target).toBeTruthy();

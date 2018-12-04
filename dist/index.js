@@ -3650,7 +3650,8 @@
           var _this6 = this;
 
           var mutate = this.props.client.mutate;
-          return function () {
+          return function (event) {
+            event.preventDefault();
             var content = _this6.state.workingState[key].content;
             mutate({
               mutation: UPDATE_COMMENT_MUTATION,
@@ -3729,13 +3730,13 @@
             value: context,
             __source: {
               fileName: _jsxFileName$e,
-              lineNumber: 244
+              lineNumber: 245
             },
             __self: this
           }, React__default.createElement(BaseFactory, Object.assign({}, this.props, {
             __source: {
               fileName: _jsxFileName$e,
-              lineNumber: 245
+              lineNumber: 246
             },
             __self: this
           })));
@@ -3840,7 +3841,7 @@
           lineNumber: 57
         },
         __self: this
-      }, "".concat(commentsData.length, " thoughts on ").concat(title)), React__default.createElement("ol", {
+      }, "".concat(commentsData.length, " thoughts on ").concat(title)), React__default.createElement("div", {
         className: styles$7.list,
         __source: {
           fileName: _jsxFileName$f,

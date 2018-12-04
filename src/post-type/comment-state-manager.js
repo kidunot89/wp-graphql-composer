@@ -186,7 +186,8 @@ export const postCommentsStateManager = (BaseComponent) => {
     onUpdate(key, id) {
       const { mutate } = this.props.client;
 
-      return () => {
+      return ( event ) => {
+        event.preventDefault();
         const { workingState: { [key]: { content } } } = this.state;
         mutate({
           mutation: UPDATE_COMMENT_MUTATION,
@@ -206,7 +207,7 @@ export const postCommentsStateManager = (BaseComponent) => {
             post.comments.nodes[index] = comment;
             cache.writeQuery({
               query: POST_COMMENTS_QUERY,
-              data: { post: post }
+              data: { post }
             });
           },
         })

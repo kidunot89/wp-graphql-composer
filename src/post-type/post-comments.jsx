@@ -57,7 +57,7 @@ const postComments = ({
               <h2 className={styles.title}>
                 {`${commentsData.length} thoughts on ${title}`}
               </h2>
-              <ol className={styles.list}>
+              <div className={styles.list}>
                 {map(
                   commentsData, 
                   comment => (
@@ -68,7 +68,7 @@ const postComments = ({
                     />
                   )
                 )}
-              </ol>
+              </div>
             </React.Fragment>
           }
           <footer className={styles.footer}>
