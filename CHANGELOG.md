@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.3.0] Breaking Change
+## [0.3.1] Breaking Change
 ### Added
 - **Introspectation CLI** use `wpg-intro <endpoint> <output>` to run execute an introspection query against `<endpoint>`, and a json file will be save at `<output>` which defaults to the project working directory root.
 
@@ -9,6 +9,8 @@
 
 ### Removed
 - **PostComments** removed due several design flawed. Deprecation stage was skipped on account that the component was broken.
+
+## [0.3.0] - skipped due to issue with git history
 
 ## [0.2.2]
 ### Added
