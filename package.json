@@ -84,7 +84,7 @@
     "start": "(npm run watch & npm run examples:watch)",
     "tester": "jest test --no-cache --watch",
     "test": "jest test --no-cache",
-    "coveralls": "jest test --coverage && cat ./coverage/lcov.info | coveralls"
+    "coveralls": "jest test --coverage --coverageReporters=text-lcov | coveralls"
   },
   "proxy": "http://wpgraphql.example:8000",
   "browserslist": [
