@@ -13,5 +13,6 @@ before_install:
 install:
 - npm install
 script:
+- npm run build
 - npm test
 - npm run coveralls

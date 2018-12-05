@@ -1,7 +1,10 @@
-# What is WP-GraphQL Composer?
-WP-GraphQL Composer is a [React](https://reactjs.org) components library/toolkit that does most of the the legwork for creating a Wordpress theme and plugin powered by [React-Apollo](https://www.apollographql.com/docs/react/).
+# WPGraphQL-Composer
+[![Build Status](https://travis-ci.org/kidunot89/wp-graphql-composer.svg?branch=develop)](https://travis-ci.org/kidunot89/wp-graphql-composer)
+[![Coverage Status](https://coveralls.io/repos/github/kidunot89/wp-graphql-composer/badge.svg?branch=develop)](https://coveralls.io/github/kidunot89/wp-graphql-composer?branch=develop)
 
-The components within this library are make up of reusable [Higher-Order-Components](https://reactjs.org/docs/higher-order-components.html) that are wrapped around a [React Stateless Component](https://reactjs.org/docs/components-and-props.html) using Andrew Clark's [Recompose](https://recompose.docsforhumans.com/) library. This library was created to be an extension of the [WPGraphQL](https://wpgraphql.com/) plugin, and component and their queries won't work without a [GraphQL](https://graphql.org/) server serving a Schema not identical to the created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed *to my knowledge*.
+WP-GraphQL Composer is a library of [React-Apollo](https://www.apollographql.com/docs/react/) components for create [React](https://reactjs.org) apps served by a WordPress site.
+
+The components within this library are make up of reusable [Higher-Order-Components](https://reactjs.org/docs/higher-order-components.html) that are wrapped around a [React Stateless Component](https://reactjs.org/docs/components-and-props.html) using Andrew Clark's [Recompose](https://recompose.docsforhumans.com/) library. This library was created to be an extension of the [WPGraphQL](https://wpgraphql.com/) plugin, and components and their respective queries won't work without a [GraphQL](https://graphql.org/) server serving a schema identical to the one created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed and tested to the extent of WPGraphQL *to my knowledge*.
 
 ## What Does It Offer?
 An easy solution to quickly creating a React-Apollo apps for [WordPress](https://wordpress.org) sites exposed by WPGraphQL
@@ -169,13 +172,12 @@ const ComposedComponent = composer({ view, queries, loading, error, extraHocs, m
 
 ## Components
 - Archives - Schema patch needed. Read more below.
-- Attachment
-- Header - Unusable until WPGraphQL PR#571 merged
+- Attachment - CUSTOM_LOGO_QUERY unusable until WPGraphQL PR#571 merged
+- Header
 - Main - Schema patch needed. Read more below.
 - Menu
 - Page - Schema patch needed. Read more below.
 - Post - Schema patch needed. Read more below.
-- PostComments
 - Login
 - UserControls
 
@@ -342,3 +344,31 @@ function wp_graphql_schema_patch() {
 }
 add_action( 'graphql_register_types', 'function wp_graphql_schema_patch' );
 ```
+
+## Introspection CLI
+This scripts fetches schema fragment data for use with WPProvider to silent `heuristic fragment` warnings.
+Run the script using `wpg-intro <endpoint> <output>`. `<endpoint>` is the WPGraphQL being used by the app and it's required. `<output>` is the path the output json file should be saved to, it defaults to the project working directory root.
+### Example
+```
+import React from 'react';
+import ReactDom from 'react-dom';
+import { HttpLink } from 'apollo-link-http';
+import { WPProvider } from 'wp-graphql-composer';
+import json from './path/to/fragment/file';
+import App from './path/to/app';
+
+const httpLink = new HttpLink({
+  uri: 'http://example.com',
+  credentials: 'same-origin',
+});
+
+ReactDom.render(
+  (
+    <WPProvider link={httpLink} fragmentData={json}>
+      <App />
+    </WPProvider>
+  ),
+  document.getElementById('root');
+);
+```
+
