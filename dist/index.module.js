@@ -6,7 +6,7 @@ import v3 from 'uuid/v3';
 import ReactHtmlParser from 'react-html-parser';
 import moment from 'moment';
 import React, { createFactory } from 'react';
-import _, { each, get, map, omit, isEmpty, filter, sortBy, isNull, findIndex, find } from 'lodash';
+import _, { each, get, map, omit, isEmpty, filter, sortBy, find } from 'lodash';
 import { branch, compose, renderComponent, mapProps, setDisplayName, wrapDisplayName } from 'recompose';
 import { Link, NavLink, Switch, Route } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -2631,417 +2631,6 @@ attachment.compose = queryComposer({
 
 var Attachment = attachment.compose();
 
-var postCommentsInitialState = {
-  editing: {},
-  workingState: {}
-};
-var PostCommentsContext = React.createContext(postCommentsInitialState);
-
-var css$6 = ".comment-module_comment__2hfpu .comment-module_body__1QuP_ .comment-module_content__aaosz a {\n  word-wrap: break-word; }\n\n.comment-module_comment__2hfpu .comment-module_body__1QuP_ .comment-module_content__aaosz .comment-module_bypostauthor__1MxNY {\n  display: block; }\n";
-var styles$4 = {"comment":"comment-module_comment__2hfpu","body":"comment-module_body__1QuP_","content":"comment-module_content__aaosz","bypostauthor":"comment-module_bypostauthor__1MxNY"};
-styleInject(css$6);
-
-var _jsxFileName$a = "/home/geoff/Dev/web/wp-graphql-composer/src/post-type/comment.jsx";
-/**
- * Comment AuthorVCard component
- * 
- * @param {object} props
- * 
- * @returns {React.Component}
- */
-
-var AuthorVCard = function AuthorVCard(_ref) {
-  var userId = _ref.userId,
-      nicename = _ref.nicename,
-      name = _ref.name,
-      avatar = _ref.avatar;
-  var avatarClassName = classnames(styles$4.avatar, "avatar-".concat(userId));
-  return React.createElement("div", {
-    className: styles$4.author,
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 37
-    },
-    __self: this
-  }, avatar ? React.createElement(Attachment, {
-    className: avatarClassName,
-    src: avatar.url,
-    fallback: true,
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 39
-    },
-    __self: this
-  }) : React.createElement(Attachment, {
-    className: "avatar photo",
-    src: "https://secure.gravatar.com/avatar/",
-    fallback: true,
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 44
-    },
-    __self: this
-  }), React.createElement("strong", {
-    className: styles$4.fn,
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 50
-    },
-    __self: this
-  }, nicename ? React.createElement(Link, {
-    to: "/author/".concat(nicename),
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 52
-    },
-    __self: this
-  }, nicename) : name), React.createElement("span", {
-    className: styles$4.says,
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 56
-    },
-    __self: this
-  }, " says:"));
-};
-/**
- * Comment Metadata component
- * 
- * @param {object} props
- * 
- * @returns {React.Component}
- */
-
-
-var Metadata = function Metadata(_ref2) {
-  var date = _ref2.date,
-      editable = _ref2.editable,
-      onEdit = _ref2.onEdit,
-      onDelete = _ref2.onDelete;
-  return React.createElement("div", {
-    className: styles$4.metadata,
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 70
-    },
-    __self: this
-  }, React.createElement("time", {
-    className: styles$4.datetime,
-    dateTime: date,
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 71
-    },
-    __self: this
-  }, moment(date).format('LLL')), editable && React.createElement(React.Fragment, {
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 76
-    },
-    __self: this
-  }, React.createElement("span", {
-    className: "".concat(styles$4.button, " ").concat(styles$4.edit),
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 77
-    },
-    __self: this
-  }, React.createElement("button", {
-    onClick: onEdit,
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 78
-    },
-    __self: this
-  }, "Edit")), React.createElement("span", {
-    className: "".concat(styles$4.button, " ").concat(styles$4.delete),
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 80
-    },
-    __self: this
-  }, React.createElement("button", {
-    onClick: onDelete,
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 81
-    },
-    __self: this
-  }, "Delete"))));
-};
-/**
- * Comment Content component
- * 
- * @param {object} props
- * 
- * @returns {React.Component}
- */
-
-
-var Content = function Content(_ref3) {
-  var content = _ref3.content;
-  return React.createElement("div", {
-    className: styles$4.content,
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 97
-    },
-    __self: this
-  }, ReactHtmlParser(content));
-};
-/**
- * Comment component
- * 
- * @param {object} props
- * 
- * @returns {React.Component} 
- */
-
-
-var comment = function comment(_ref4) {
-  var id = _ref4.id,
-      commentId = _ref4.commentId,
-      type = _ref4.type,
-      content = _ref4.content,
-      date = _ref4.date,
-      modified = _ref4.modified,
-      author = _ref4.author,
-      EditCommentView = _ref4.EditCommentView,
-      added = _ref4.className,
-      Container = _ref4.as,
-      rest = _objectWithoutProperties(_ref4, ["id", "commentId", "type", "content", "date", "modified", "author", "EditCommentView", "className", "as"]);
-
-  // const newCommentKey = `comment-${commentId}-reply`; - TODO...
-  var updateCommentKey = "comment-".concat(commentId, "-edit");
-  return React.createElement(PostCommentsContext.Consumer, {
-    __source: {
-      fileName: _jsxFileName$a,
-      lineNumber: 115
-    },
-    __self: this
-  }, function (_ref5) {
-    var editing = _ref5.editing,
-        edit = _ref5.onEdit,
-        deleted = _ref5.onDelete,
-        userId = _ref5.userId;
-    var onEdit = edit(updateCommentKey, content);
-    var isEditing = editing[updateCommentKey];
-    var onDelete = deleted(id);
-    var className = classnames(styles$4.comment, added); // If editing render form for editing content
-
-    if (isEditing) return React.createElement(Container, {
-      id: "comment-".concat(commentId),
-      className: className,
-      __source: {
-        fileName: _jsxFileName$a,
-        lineNumber: 128
-      },
-      __self: this
-    }, React.createElement(EditCommentView, {
-      id: id,
-      commentKey: updateCommentKey,
-      submitButtonText: "Save Changes",
-      update: true,
-      __source: {
-        fileName: _jsxFileName$a,
-        lineNumber: 129
-      },
-      __self: this
-    })); // else render comment
-
-    return React.createElement(Container, {
-      id: "comment-".concat(commentId),
-      className: className,
-      __source: {
-        fileName: _jsxFileName$a,
-        lineNumber: 140
-      },
-      __self: this
-    }, React.createElement("article", Object.assign({
-      id: "div-comment-".concat(commentId),
-      className: styles$4.body
-    }, rest, {
-      __source: {
-        fileName: _jsxFileName$a,
-        lineNumber: 141
-      },
-      __self: this
-    }), React.createElement("footer", {
-      className: styles$4.meta,
-      __source: {
-        fileName: _jsxFileName$a,
-        lineNumber: 142
-      },
-      __self: this
-    }, React.createElement(AuthorVCard, Object.assign({}, author, {
-      __source: {
-        fileName: _jsxFileName$a,
-        lineNumber: 143
-      },
-      __self: this
-    })), React.createElement(Metadata, {
-      date: date,
-      modified: modified,
-      onEdit: onEdit,
-      onDelete: onDelete,
-      editable: author.userId === userId,
-      __source: {
-        fileName: _jsxFileName$a,
-        lineNumber: 144
-      },
-      __self: this
-    })), React.createElement(Content, {
-      content: content,
-      __source: {
-        fileName: _jsxFileName$a,
-        lineNumber: 152
-      },
-      __self: this
-    })));
-  });
-};
-
-comment.propTypes = {
-  id: propTypes.string.isRequired,
-  commentId: propTypes.number.isRequired,
-  content: propTypes.string.isRequired,
-  EditCommentView: propTypes.func.isRequired,
-  author: propTypes.shape({}),
-  date: propTypes.string,
-  type: propTypes.string,
-  as: propTypes.oneOfType([propTypes.string, propTypes.func]),
-  className: propTypes.string
-};
-comment.defaultProps = {
-  author: {},
-  date: undefined,
-  type: undefined,
-  as: 'div',
-  className: undefined
-};
-
-var css$7 = "";
-var styles$5 = {};
-styleInject(css$7);
-
-var _jsxFileName$b = "/home/geoff/Dev/web/wp-graphql-composer/src/post-type/edit-comment.jsx";
-/**
- * Comment form component
- * 
- * @param {object} props
- * 
- * @returns {React.Component}
- */
-
-var editComment = function editComment(_ref) {
-  var id = _ref.id,
-      commentKey = _ref.commentKey,
-      update = _ref.update,
-      added = _ref.className,
-      submitButtonText = _ref.submitButtonText,
-      rest = _objectWithoutProperties(_ref, ["id", "commentKey", "update", "className", "submitButtonText"]);
-
-  return React.createElement(PostCommentsContext.Consumer, {
-    __source: {
-      fileName: _jsxFileName$b,
-      lineNumber: 31
-    },
-    __self: this
-  }, function (_ref2) {
-    var _ref2$workingState$co = _ref2.workingState[commentKey],
-        author = _ref2$workingState$co.author,
-        authorEmail = _ref2$workingState$co.authorEmail,
-        authorUrl = _ref2$workingState$co.authorUrl,
-        content = _ref2$workingState$co.content,
-        error = _ref2$workingState$co.error,
-        change = _ref2.onChange,
-        onUpdate = _ref2.onUpdate,
-        onCreate = _ref2.onCreate;
-    var onChange = change(commentKey);
-    var onSubmit = update ? onUpdate(commentKey, id) : onCreate(commentKey);
-    var className = classnames(styles$5.form, added);
-    return React.createElement("form", Object.assign({
-      className: className
-    }, rest, {
-      onSubmit: onSubmit,
-      __source: {
-        fileName: _jsxFileName$b,
-        lineNumber: 43
-      },
-      __self: this
-    }), !isNull(author) && React.createElement("input", {
-      type: "text",
-      name: "author",
-      value: author,
-      onChange: onChange,
-      placeholder: "Enter Name",
-      __source: {
-        fileName: _jsxFileName$b,
-        lineNumber: 49
-      },
-      __self: this
-    }), !isNull(authorEmail) && React.createElement("input", {
-      type: "text",
-      name: "authorEmail",
-      value: authorEmail,
-      onChange: onChange,
-      placeholder: "Enter Email",
-      __source: {
-        fileName: _jsxFileName$b,
-        lineNumber: 58
-      },
-      __self: this
-    }), !isNull(authorUrl) && React.createElement("input", {
-      type: "text",
-      name: "authorUrl",
-      value: authorUrl,
-      onChange: onChange,
-      placeholder: "Enter Website",
-      __source: {
-        fileName: _jsxFileName$b,
-        lineNumber: 67
-      },
-      __self: this
-    }), React.createElement("textarea", {
-      name: "content",
-      value: content,
-      onChange: onChange,
-      placeholder: "Enter Message",
-      __source: {
-        fileName: _jsxFileName$b,
-        lineNumber: 75
-      },
-      __self: this
-    }), error && React.createElement("p", {
-      __source: {
-        fileName: _jsxFileName$b,
-        lineNumber: 81
-      },
-      __self: this
-    }, error), React.createElement("button", {
-      type: "submit",
-      __source: {
-        fileName: _jsxFileName$b,
-        lineNumber: 82
-      },
-      __self: this
-    }, submitButtonText));
-  });
-};
-
-editComment.propTypes = {
-  commentKey: propTypes.string.isRequired,
-  id: propTypes.string,
-  submitButtonText: propTypes.string,
-  update: propTypes.bool,
-  className: propTypes.string
-};
-editComment.defaultProps = {
-  update: false,
-  submitButtonText: 'Leave Comment',
-  className: undefined
-};
-
 var pageStateManager = function pageStateManager(BaseComponent) {
   var BaseFactory = React.createFactory(BaseComponent);
 
@@ -3155,14 +2744,14 @@ var postStateManager = function postStateManager(BaseComponent) {
   return PostStateManager;
 };
 
-var css$8 = ".post-module_page__zbhFw .post-module_entry-footer__3Quv9,\n.post-module_post__4EGJK .post-module_entry-footer__3Quv9 {\n  max-width: initial;\n  padding: 0.5em 1.5em 1.5em;\n  margin: 0 auto;\n  border-bottom: none; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 a,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 a {\n    text-decoration: none;\n    transition: color 350ms ease-in; }\n    .post-module_page__zbhFw .post-module_entry-footer__3Quv9 a:hover,\n    .post-module_post__4EGJK .post-module_entry-footer__3Quv9 a:hover {\n      transition: color 550ms ease-out; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_posted-on__2tAv_ .post-module_date__Mfqxh,\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_posted-on__2tAv_ .post-module_modified__3_h3B,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_posted-on__2tAv_ .post-module_date__Mfqxh,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_posted-on__2tAv_ .post-module_modified__3_h3B {\n    position: relative;\n    display: inline-block; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_byline__Ss6NP a,\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a,\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_cat-links__1RxVf a,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_byline__Ss6NP a,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_cat-links__1RxVf a {\n    position: relative;\n    display: inline-block; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_byline__Ss6NP a::before,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_byline__Ss6NP a::before {\n    content: \"\"; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a::before,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a::before {\n    content: \"\"; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_cat-links__1RxVf a::before,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_cat-links__1RxVf a::before {\n    content: \"\"; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a::after,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a::after {\n    content: \", \"; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a:last-of-type::after,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a:last-of-type::after {\n    content: none; }\n";
-var styles$6 = {"page":"post-module_page__zbhFw","entry-footer":"post-module_entry-footer__3Quv9","post":"post-module_post__4EGJK","posted-on":"post-module_posted-on__2tAv_","date":"post-module_date__Mfqxh","modified":"post-module_modified__3_h3B","byline":"post-module_byline__Ss6NP","tags-links":"post-module_tags-links__2imo3","cat-links":"post-module_cat-links__1RxVf"};
-styleInject(css$8);
+var css$6 = ".post-module_page__zbhFw .post-module_entry-footer__3Quv9,\n.post-module_post__4EGJK .post-module_entry-footer__3Quv9 {\n  max-width: initial;\n  padding: 0.5em 1.5em 1.5em;\n  margin: 0 auto;\n  border-bottom: none; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 a,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 a {\n    text-decoration: none;\n    transition: color 350ms ease-in; }\n    .post-module_page__zbhFw .post-module_entry-footer__3Quv9 a:hover,\n    .post-module_post__4EGJK .post-module_entry-footer__3Quv9 a:hover {\n      transition: color 550ms ease-out; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_posted-on__2tAv_ .post-module_date__Mfqxh,\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_posted-on__2tAv_ .post-module_modified__3_h3B,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_posted-on__2tAv_ .post-module_date__Mfqxh,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_posted-on__2tAv_ .post-module_modified__3_h3B {\n    position: relative;\n    display: inline-block; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_byline__Ss6NP a,\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a,\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_cat-links__1RxVf a,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_byline__Ss6NP a,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_cat-links__1RxVf a {\n    position: relative;\n    display: inline-block; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_byline__Ss6NP a::before,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_byline__Ss6NP a::before {\n    content: \"\"; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a::before,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a::before {\n    content: \"\"; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_cat-links__1RxVf a::before,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_cat-links__1RxVf a::before {\n    content: \"\"; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a::after,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a::after {\n    content: \", \"; }\n  .post-module_page__zbhFw .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a:last-of-type::after,\n  .post-module_post__4EGJK .post-module_entry-footer__3Quv9 .post-module_tags-links__2imo3 a:last-of-type::after {\n    content: none; }\n";
+var styles$4 = {"page":"post-module_page__zbhFw","entry-footer":"post-module_entry-footer__3Quv9","post":"post-module_post__4EGJK","posted-on":"post-module_posted-on__2tAv_","date":"post-module_date__Mfqxh","modified":"post-module_modified__3_h3B","byline":"post-module_byline__Ss6NP","tags-links":"post-module_tags-links__2imo3","cat-links":"post-module_cat-links__1RxVf"};
+styleInject(css$6);
 
-var css$9 = ".post-global_alignleft__1Pees,\n.post-global_alignright__3LMtZ {\n  max-width: 636px !important;\n  /* Let's work to make this !important unnecessary */ }\n  .post-global_alignleft__1Pees img,\n  .post-global_alignleft__1Pees figcaption,\n  .post-global_alignright__3LMtZ img,\n  .post-global_alignright__3LMtZ figcaption {\n    max-width: 50%;\n    width: 50%; }\n\n.post-global_alignleft__1Pees figcaption {\n  clear: left; }\n\n.post-global_alignleft__1Pees img,\n.post-global_alignleft__1Pees figcaption {\n  float: left;\n  margin-right: 1.5em; }\n\n.post-global_alignright__3LMtZ figcaption {\n  clear: right; }\n\n.post-global_alignright__3LMtZ img,\n.post-global_alignright__3LMtZ figcaption {\n  float: right;\n  margin-left: 1.5em; }\n\n.post-global_aligncenter__OQ-RF {\n  clear: both;\n  display: block;\n  margin-left: auto;\n  margin-right: auto; }\n\n.post-global_entry-content__1X9N- > * {\n  margin: 36px auto;\n  padding-left: 14px;\n  padding-right: 14px; }\n\n.post-global_entry-content__1X9N- > .post-global_alignwide__1Rc_X {\n  max-width: 1100px; }\n\n.post-global_entry-content__1X9N- > .post-global_alignfull__1D9GG {\n  margin: 1.5em 0;\n  max-width: 100%; }\n\n.post-global_entry-content__1X9N- ul,\n.post-global_entry-content__1X9N- ol {\n  margin: 1.5em auto;\n  list-style-position: outside; }\n\n.post-global_wp-block-image__2J_9v img {\n  display: block; }\n\n.post-global_wp-block-image__2J_9v.post-global_alignleft__1Pees,\n.post-global_wp-block-image__2J_9v.post-global_alignright__3LMtZ {\n  width: 100%; }\n\n.post-global_wp-block-image__2J_9v.post-global_alignfull__1D9GG img {\n  width: 100vw; }\n\n.post-global_wp-block-gallery__3SQQN:not(.post-global_components-placeholder__29EOq) {\n  margin: 1.5em auto; }\n\n.post-global_wp-block-cover-text__1uHHj p {\n  padding: 1.5em 14px; }\n\nul.post-global_wp-block-latest-posts__3mHhL.post-global_alignwide__1Rc_X,\nul.post-global_wp-block-latest-posts__3mHhL.post-global_alignfull__1D9GG,\nul.post-global_wp-block-latest-posts__3mHhL.post-global_is-grid__DJFNK.post-global_alignwide__1Rc_X,\nul.post-global_wp-block-latest-posts__3mHhL.post-global_is-grid__DJFNK.post-global_alignwide__1Rc_X {\n  padding: 0 14px; }\n\n.post-global_wp-block-table__3wXN2 {\n  display: block;\n  overflow-x: auto; }\n\n.post-global_wp-block-table__3wXN2 table {\n  border-collapse: collapse;\n  width: 100%; }\n\n.post-global_wp-block-table__3wXN2 td, .post-global_wp-block-table__3wXN2 th {\n  padding: .5em; }\n\n.post-global_entry-content__1X9N- li {\n  margin-left: 2.5em;\n  margin-bottom: 6px; }\n\n.post-global_entry-content__1X9N- ul ul,\n.post-global_entry-content__1X9N- ol ol,\n.post-global_entry-content__1X9N- ul ol,\n.post-global_entry-content__1X9N- ol ul {\n  margin: 0 auto; }\n\n.post-global_entry-content__1X9N- ul ul li,\n.post-global_entry-content__1X9N- ol ol li,\n.post-global_entry-content__1X9N- ul ol li,\n.post-global_entry-content__1X9N- ol ul li {\n  margin-left: 0; }\n\n.post-global_wp-block-embed__2FVNd.post-global_type-video__35x11 > .post-global_wp-block-embed__wrapper__2c2-q {\n  position: relative;\n  width: 100%;\n  height: 0;\n  padding-top: 56.25%; }\n\n.post-global_wp-block-embed__2FVNd.post-global_type-video__35x11 > .post-global_wp-block-embed__wrapper__2c2-q > iframe {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0; }\n\n.post-global_wp-block-quote__1e2zJ.post-global_is-large__3ZcDU {\n  margin: 0 auto 16px; }\n\n.post-global_wp-block-pullquote__2lMYM > p:first-child {\n  margin-top: 0; }\n\n.post-global_wp-block-separator__2TBte {\n  margin: 3em auto;\n  padding: 0; }\n\n@media screen and (min-width: 768px) {\n  .post-global_wp-block-cover-text__1uHHj p {\n    padding: 1.5em 0; }\n  .post-global_entry-content__1X9N- > * {\n    padding-left: 0px;\n    padding-right: 0px; } }\n\n/*--------------------------------------------------------------\n# Block Color Palette Colors\n--------------------------------------------------------------*/\n.post-global_has-strong-blue-color__3mjyZ {\n  color: #0073aa; }\n\n.post-global_has-strong-blue-background-color__3QUac {\n  background-color: #0073aa; }\n\n.post-global_has-lighter-blue-color__Xkr_d {\n  color: #229fd8; }\n\n.post-global_has-lighter-blue-background-color__2AXXE {\n  background-color: #229fd8; }\n\n.post-global_has-very-light-gray-color__kSGpg {\n  color: #eee; }\n\n.post-global_has-very-light-gray-background-color__D_Grg {\n  background-color: #eee; }\n\n.post-global_has-very-dark-gray-color__2h1b- {\n  color: #444; }\n\n.post-global_has-very-dark-gray-background-color__2KIYH {\n  background-color: #444; }\n";
-styleInject(css$9);
+var css$7 = ".post-global_alignleft__1Pees,\n.post-global_alignright__3LMtZ {\n  max-width: 636px !important;\n  /* Let's work to make this !important unnecessary */ }\n  .post-global_alignleft__1Pees img,\n  .post-global_alignleft__1Pees figcaption,\n  .post-global_alignright__3LMtZ img,\n  .post-global_alignright__3LMtZ figcaption {\n    max-width: 50%;\n    width: 50%; }\n\n.post-global_alignleft__1Pees figcaption {\n  clear: left; }\n\n.post-global_alignleft__1Pees img,\n.post-global_alignleft__1Pees figcaption {\n  float: left;\n  margin-right: 1.5em; }\n\n.post-global_alignright__3LMtZ figcaption {\n  clear: right; }\n\n.post-global_alignright__3LMtZ img,\n.post-global_alignright__3LMtZ figcaption {\n  float: right;\n  margin-left: 1.5em; }\n\n.post-global_aligncenter__OQ-RF {\n  clear: both;\n  display: block;\n  margin-left: auto;\n  margin-right: auto; }\n\n.post-global_entry-content__1X9N- > * {\n  margin: 36px auto;\n  padding-left: 14px;\n  padding-right: 14px; }\n\n.post-global_entry-content__1X9N- > .post-global_alignwide__1Rc_X {\n  max-width: 1100px; }\n\n.post-global_entry-content__1X9N- > .post-global_alignfull__1D9GG {\n  margin: 1.5em 0;\n  max-width: 100%; }\n\n.post-global_entry-content__1X9N- ul,\n.post-global_entry-content__1X9N- ol {\n  margin: 1.5em auto;\n  list-style-position: outside; }\n\n.post-global_wp-block-image__2J_9v img {\n  display: block; }\n\n.post-global_wp-block-image__2J_9v.post-global_alignleft__1Pees,\n.post-global_wp-block-image__2J_9v.post-global_alignright__3LMtZ {\n  width: 100%; }\n\n.post-global_wp-block-image__2J_9v.post-global_alignfull__1D9GG img {\n  width: 100vw; }\n\n.post-global_wp-block-gallery__3SQQN:not(.post-global_components-placeholder__29EOq) {\n  margin: 1.5em auto; }\n\n.post-global_wp-block-cover-text__1uHHj p {\n  padding: 1.5em 14px; }\n\nul.post-global_wp-block-latest-posts__3mHhL.post-global_alignwide__1Rc_X,\nul.post-global_wp-block-latest-posts__3mHhL.post-global_alignfull__1D9GG,\nul.post-global_wp-block-latest-posts__3mHhL.post-global_is-grid__DJFNK.post-global_alignwide__1Rc_X,\nul.post-global_wp-block-latest-posts__3mHhL.post-global_is-grid__DJFNK.post-global_alignwide__1Rc_X {\n  padding: 0 14px; }\n\n.post-global_wp-block-table__3wXN2 {\n  display: block;\n  overflow-x: auto; }\n\n.post-global_wp-block-table__3wXN2 table {\n  border-collapse: collapse;\n  width: 100%; }\n\n.post-global_wp-block-table__3wXN2 td, .post-global_wp-block-table__3wXN2 th {\n  padding: .5em; }\n\n.post-global_entry-content__1X9N- li {\n  margin-left: 2.5em;\n  margin-bottom: 6px; }\n\n.post-global_entry-content__1X9N- ul ul,\n.post-global_entry-content__1X9N- ol ol,\n.post-global_entry-content__1X9N- ul ol,\n.post-global_entry-content__1X9N- ol ul {\n  margin: 0 auto; }\n\n.post-global_entry-content__1X9N- ul ul li,\n.post-global_entry-content__1X9N- ol ol li,\n.post-global_entry-content__1X9N- ul ol li,\n.post-global_entry-content__1X9N- ol ul li {\n  margin-left: 0; }\n\n.post-global_wp-block-embed__2FVNd.post-global_type-video__35x11 > .post-global_wp-block-embed__wrapper__2c2-q {\n  position: relative;\n  width: 100%;\n  height: 0;\n  padding-top: 56.25%; }\n\n.post-global_wp-block-embed__2FVNd.post-global_type-video__35x11 > .post-global_wp-block-embed__wrapper__2c2-q > iframe {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0; }\n\n.post-global_wp-block-quote__1e2zJ.post-global_is-large__3ZcDU {\n  margin: 0 auto 16px; }\n\n.post-global_wp-block-pullquote__2lMYM > p:first-child {\n  margin-top: 0; }\n\n.post-global_wp-block-separator__2TBte {\n  margin: 3em auto;\n  padding: 0; }\n\n@media screen and (min-width: 768px) {\n  .post-global_wp-block-cover-text__1uHHj p {\n    padding: 1.5em 0; }\n  .post-global_entry-content__1X9N- > * {\n    padding-left: 0px;\n    padding-right: 0px; } }\n\n/*--------------------------------------------------------------\n# Block Color Palette Colors\n--------------------------------------------------------------*/\n.post-global_has-strong-blue-color__3mjyZ {\n  color: #0073aa; }\n\n.post-global_has-strong-blue-background-color__3QUac {\n  background-color: #0073aa; }\n\n.post-global_has-lighter-blue-color__Xkr_d {\n  color: #229fd8; }\n\n.post-global_has-lighter-blue-background-color__2AXXE {\n  background-color: #229fd8; }\n\n.post-global_has-very-light-gray-color__kSGpg {\n  color: #eee; }\n\n.post-global_has-very-light-gray-background-color__D_Grg {\n  background-color: #eee; }\n\n.post-global_has-very-dark-gray-color__2h1b- {\n  color: #444; }\n\n.post-global_has-very-dark-gray-background-color__2KIYH {\n  background-color: #444; }\n";
+styleInject(css$7);
 
-var _jsxFileName$c = "/home/geoff/Dev/web/wp-graphql-composer/src/post-type/page.jsx";
+var _jsxFileName$a = "/home/geoff/Dev/web/wp-graphql-composer/src/post-type/page.jsx";
 /**
  * Page view component
  * 
@@ -3181,20 +2770,20 @@ var page = function page(_ref) {
       added = _ref.className,
       rest = _objectWithoutProperties(_ref, ["as", "pageId", "title", "content", "date", "modified", "className"]);
 
-  var className = classnames(styles$6.page, added);
+  var className = classnames(styles$4.page, added);
   return React.createElement(Container, Object.assign({
     id: "page-".concat(pageId),
     className: className
   }, rest, {
     __source: {
-      fileName: _jsxFileName$c,
+      fileName: _jsxFileName$a,
       lineNumber: 41
     },
     __self: this
   }), React.createElement("div", {
     className: "entry-content",
     __source: {
-      fileName: _jsxFileName$c,
+      fileName: _jsxFileName$a,
       lineNumber: 46
     },
     __self: this
@@ -3267,7 +2856,7 @@ page.compose = queryComposer({
 
 var Page = page.compose();
 
-var _jsxFileName$d = "/home/geoff/Dev/web/wp-graphql-composer/src/post-type/post.jsx";
+var _jsxFileName$b = "/home/geoff/Dev/web/wp-graphql-composer/src/post-type/post.jsx";
 /**
  * Post view component
  * 
@@ -3288,13 +2877,13 @@ var post = function post(_ref) {
       added = _ref.className,
       rest = _objectWithoutProperties(_ref, ["featured", "postId", "title", "content", "details", "Attachment", "DetailsComponent", "as", "className"]);
 
-  var className = classnames(styles$6.post, added);
+  var className = classnames(styles$4.post, added);
   return React.createElement(Container, Object.assign({
     id: "post-".concat(postId),
     className: className
   }, rest, {
     __source: {
-      fileName: _jsxFileName$d,
+      fileName: _jsxFileName$b,
       lineNumber: 42
     },
     __self: this
@@ -3304,15 +2893,15 @@ var post = function post(_ref) {
     className: "wp-post-image",
     fallback: true,
     __source: {
-      fileName: _jsxFileName$d,
+      fileName: _jsxFileName$b,
       lineNumber: 47
     },
     __self: this
   }), ReactHtmlParser(content), DetailsComponent && React.createElement(DetailsComponent, Object.assign({
-    className: styles$6.details
+    className: styles$4.details
   }, details, {
     __source: {
-      fileName: _jsxFileName$d,
+      fileName: _jsxFileName$b,
       lineNumber: 54
     },
     __self: this
@@ -3398,546 +2987,6 @@ post.compose = queryComposer({
  */
 
 var Post = post.compose();
-
-var _jsxFileName$e = "/home/geoff/Dev/web/wp-graphql-composer/src/post-type/comment-state-manager.js";
-/**
- * PostCommentStateManager - manages the state for a group of comment components
- * 
- * @param {React.Component} BaseComponent 
- */
-
-var postCommentsStateManager = function postCommentsStateManager(BaseComponent) {
-  var BaseFactory = React.createFactory(BaseComponent);
-
-  var PostCommentsStateManager =
-  /*#__PURE__*/
-  function (_React$Component) {
-    _inherits(PostCommentsStateManager, _React$Component);
-
-    function PostCommentsStateManager(props) {
-      var _this;
-
-      _classCallCheck(this, PostCommentsStateManager);
-
-      _this = _possibleConstructorReturn(this, _getPrototypeOf(PostCommentsStateManager).call(this, props));
-      _this.onChange = _this.onChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-      _this.onCreate = _this.onCreate.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-      _this.onDelete = _this.onDelete.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-      _this.onEdit = _this.onEdit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-      _this.onUpdate = _this.onUpdate.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-      _this.state = postCommentsInitialState;
-      return _this;
-    }
-    /**
-     * Returns onChange event function for comment being edited
-     * 
-     * @returns {func} 
-     */
-
-
-    _createClass(PostCommentsStateManager, [{
-      key: "onChange",
-      value: function onChange(key) {
-        var _this2 = this;
-
-        return function (_ref) {
-          var _ref$target = _ref.target,
-              name = _ref$target.name,
-              value = _ref$target.value;
-          var workingState = _this2.state.workingState;
-          workingState[key][name] = value;
-
-          _this2.setState({
-            workingState: workingState
-          });
-        };
-      }
-      /**
-       * Returns event function for creating new post comment
-       * 
-       * @param {string} - workingState key
-       * @returns {func} 
-       */
-
-    }, {
-      key: "onCreate",
-      value: function onCreate(key) {
-        var _this3 = this;
-
-        var mutate = this.props.client.mutate;
-        return function () {
-          var postId = get(_this3.props, 'data.post.postId');
-          var userId = _this3.props.userId;
-          var _this3$state$workingS = _this3.state.workingState[key],
-              author = _this3$state$workingS.author,
-              authorEmail = _this3$state$workingS.authorEmail,
-              authorUrl = _this3$state$workingS.authorUrl,
-              content = _this3$state$workingS.content;
-          var now = new Date();
-          var date = "".concat(now.getMonth(), "/").concat(now.getDate(), "/").concat(now.getFullYear());
-
-          if (!userId && (!author || !authorEmail)) {
-            var errors = _this3.state.errors;
-            errors['new'] = 'Unregistered users must enter an author name and email to comment';
-
-            _this3.setState({
-              errors: errors
-            });
-
-            return;
-          }
-
-          mutate({
-            mutation: NEW_COMMENT_MUTATION,
-            variables: {
-              author: author,
-              authorEmail: authorEmail,
-              authorUrl: authorUrl,
-              type: null,
-              userId: userId,
-              parent: null,
-              postId: postId,
-              content: content,
-              date: date,
-              clientId: v3("".concat(author).concat(key), v3.URL)
-            },
-            update: function update(cache, _ref2) {
-              var comment = _ref2.data.createComment.comment;
-
-              var _cache$readQuery = cache.readQuery({
-                query: POST_COMMENTS_QUERY,
-                variables: {
-                  id: _this3.props.id
-                }
-              }),
-                  post = _cache$readQuery.post;
-
-              post.comments.nodes.push(comment);
-              cache.writeQuery({
-                query: POST_COMMENTS_QUERY,
-                data: {
-                  post: post
-                }
-              });
-            }
-          }).then(function () {
-            console.log('create mutation success');
-            var _this3$state = _this3.state,
-                editing = _this3$state.editing,
-                workingState = _this3$state.workingState;
-            delete editing[key];
-            delete workingState[key];
-
-            _this3.setState({
-              editing: editing,
-              workingState: workingState
-            });
-          }).catch(function (error) {
-            console.warn('create mutation failed');
-            var workingState = _this3.state.workingState;
-            workingState[key]['error'] = error.message;
-
-            _this3.setState({
-              workingState: workingState
-            });
-          });
-        };
-      }
-      /**
-       * Returns event function for delete existing post comment
-       * 
-       * @param {number} id - Global ID of comment object
-       * @returns {func} 
-       */
-
-    }, {
-      key: "onDelete",
-      value: function onDelete(id) {
-        var _this4 = this;
-
-        var mutate = this.props.client.mutate;
-        return function () {
-          mutate({
-            mutation: DELETE_COMMENT_MUTATION,
-            variables: {
-              id: id,
-              clientId: v3("".concat(id, "delete"), v3.URL)
-            },
-            update: function update(cache, _ref3) {
-              var comment = _ref3.data.deleteComment.comment;
-
-              var _cache$readQuery2 = cache.readQuery({
-                query: POST_COMMENTS_QUERY,
-                variables: {
-                  id: _this4.props.id
-                }
-              }),
-                  post = _cache$readQuery2.post;
-
-              var index = findIndex(post.comments.nodes, function (_ref4) {
-                var id = _ref4.id;
-                return id === comment.id;
-              });
-              post.comments.nodes.splice(index, 1);
-              cache.writeQuery({
-                query: POST_COMMENTS_QUERY,
-                data: {
-                  post: post
-                }
-              });
-            }
-          }).then(function () {
-            console.log('delete mutation success');
-          }).catch(function (error) {
-            console.warn('delete mutation failed');
-            console.warn(error);
-          });
-        };
-      }
-      /**
-       * Returns event function for editing existing post comment
-       * 
-       * @param {number} key - workingState key
-       * @returns {func} 
-       */
-
-    }, {
-      key: "onEdit",
-      value: function onEdit(key) {
-        var _this5 = this;
-
-        var content = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-        var userId = this.props.userId;
-        var author;
-        var authorEmail;
-        var authorUrl;
-
-        if (!userId && content === '') {
-          author = '';
-          authorEmail = '';
-          authorUrl = '';
-        }
-
-        return function () {
-          var _this5$state = _this5.state,
-              editing = _this5$state.editing,
-              workingState = _this5$state.workingState;
-          editing[key] = true;
-          workingState[key] = {
-            author: author,
-            authorEmail: authorEmail,
-            authorUrl: authorUrl,
-            content: content
-          };
-
-          _this5.setState({
-            editing: editing,
-            content: workingState
-          });
-        };
-      }
-      /**
-       * Returns event function for update existing post comment
-       * 
-       * @param {number} key - workingState key
-       * @param {number} id - Global ID of comment object
-       * @returns {func} 
-       */
-
-    }, {
-      key: "onUpdate",
-      value: function onUpdate(key, id) {
-        var _this6 = this;
-
-        var mutate = this.props.client.mutate;
-        return function (event) {
-          event.preventDefault();
-          var content = _this6.state.workingState[key].content;
-          mutate({
-            mutation: UPDATE_COMMENT_MUTATION,
-            variables: {
-              type: null,
-              id: id,
-              content: content,
-              clientId: v3("".concat(id, "update"), v3.URL)
-            },
-            update: function update(cache, _ref5) {
-              var comment = _ref5.data.updateComment.comment;
-
-              var _cache$readQuery3 = cache.readQuery({
-                query: POST_COMMENTS_QUERY,
-                variables: {
-                  id: _this6.props.id
-                }
-              }),
-                  post = _cache$readQuery3.post;
-
-              var index = findIndex(post.comments.nodes, function (_ref6) {
-                var id = _ref6.id;
-                return id === comment.id;
-              });
-              post.comments.nodes[index] = comment;
-              cache.writeQuery({
-                query: POST_COMMENTS_QUERY,
-                data: {
-                  post: post
-                }
-              });
-            }
-          }).then(function () {
-            console.log('update mutation success');
-            var _this6$state = _this6.state,
-                editing = _this6$state.editing,
-                workingState = _this6$state.workingState;
-            delete editing[key];
-            delete workingState[key];
-
-            _this6.setState({
-              editing: editing,
-              workingState: workingState
-            });
-          }).catch(function (error) {
-            console.warn('update mutation failed');
-            var workingState = _this6.state.workingState;
-            workingState[key]['error'] = error.message;
-
-            _this6.setState({
-              workingState: workingState
-            });
-          });
-        };
-      }
-    }, {
-      key: "render",
-      value: function render() {
-        var onChange = this.onChange,
-            onCreate = this.onCreate,
-            onDelete = this.onDelete,
-            onEdit = this.onEdit,
-            onUpdate = this.onUpdate;
-        var userId = this.props.userId;
-
-        var context = _objectSpread({}, this.state, {
-          onChange: onChange,
-          onCreate: onCreate,
-          onDelete: onDelete,
-          onEdit: onEdit,
-          onUpdate: onUpdate,
-          userId: userId
-        });
-
-        return React.createElement(PostCommentsContext.Provider, {
-          value: context,
-          __source: {
-            fileName: _jsxFileName$e,
-            lineNumber: 245
-          },
-          __self: this
-        }, React.createElement(BaseFactory, Object.assign({}, this.props, {
-          __source: {
-            fileName: _jsxFileName$e,
-            lineNumber: 246
-          },
-          __self: this
-        })));
-      }
-    }]);
-
-    return PostCommentsStateManager;
-  }(React.Component);
-
-  PostCommentsStateManager.propTypes = {
-    id: propTypes.string.isRequired,
-    userId: propTypes.number
-  };
-  PostCommentsStateManager.defaultProps = {
-    userId: null
-  };
-
-  {
-    return setDisplayName(wrapDisplayName(BaseComponent, 'postCommentsStateManager'))(PostCommentsStateManager);
-  }
-
-  return PostCommentsStateManager;
-};
-/**
- * Maps props to post-comments
- * @param {*} param0 
- */
-
-var commentsMapper = function commentsMapper(_ref7) {
-  var data = _ref7.data,
-      rest = _objectWithoutProperties(_ref7, ["data"]);
-
-  var postId = get(data, 'post.postId');
-  var commentStatus = get(data, 'post.commentStatus');
-  var commentsData = get(data, 'post.comments.nodes');
-  var newProps = omit(rest, 'userId', 'client');
-  var title = get(data, 'post.title');
-  return _objectSpread({
-    postId: postId,
-    title: title,
-    commentsData: commentsData,
-    open: commentStatus === 'open'
-  }, newProps);
-};
-
-var css$a = "";
-var styles$7 = {};
-styleInject(css$a);
-
-var _jsxFileName$f = "/home/geoff/Dev/web/wp-graphql-composer/src/post-type/post-comments.jsx";
-/**
- * PostComments view component
- * 
- * @param {object} props
- * 
- * @returns {React.Component} 
- */
-
-var postComments = function postComments(_ref) {
-  var commentsData = _ref.commentsData,
-      CommentView = _ref.commentView,
-      EditCommentView = _ref.editCommentView,
-      title = _ref.title,
-      open = _ref.open,
-      postId = _ref.postId,
-      added = _ref.className,
-      Container = _ref.as,
-      rest = _objectWithoutProperties(_ref, ["commentsData", "commentView", "editCommentView", "title", "open", "postId", "className", "as"]);
-
-  return React.createElement(PostCommentsContext.Consumer, {
-    __source: {
-      fileName: _jsxFileName$f,
-      lineNumber: 39
-    },
-    __self: this
-  }, function (_ref2) {
-    var editing = _ref2.editing,
-        edit = _ref2.onEdit;
-    var newCommentKey = 'post-reply';
-    var onEdit = edit(newCommentKey);
-    var isEditing = editing[newCommentKey];
-    var className = classnames(styles$7.area, added);
-    return React.createElement(Container, Object.assign({
-      id: "post-".concat(postId, "-comments"),
-      className: classnames('comment-area', className)
-    }, rest, {
-      __source: {
-        fileName: _jsxFileName$f,
-        lineNumber: 50
-      },
-      __self: this
-    }), commentsData.length && React.createElement(React.Fragment, {
-      __source: {
-        fileName: _jsxFileName$f,
-        lineNumber: 56
-      },
-      __self: this
-    }, React.createElement("h2", {
-      className: styles$7.title,
-      __source: {
-        fileName: _jsxFileName$f,
-        lineNumber: 57
-      },
-      __self: this
-    }, "".concat(commentsData.length, " thoughts on ").concat(title)), React.createElement("div", {
-      className: styles$7.list,
-      __source: {
-        fileName: _jsxFileName$f,
-        lineNumber: 60
-      },
-      __self: this
-    }, map(commentsData, function (comment$$1) {
-      return React.createElement(CommentView, Object.assign({}, comment$$1, {
-        EditCommentView: EditCommentView,
-        key: comment$$1.id,
-        __source: {
-          fileName: _jsxFileName$f,
-          lineNumber: 64
-        },
-        __self: this
-      }));
-    }))), React.createElement("footer", {
-      className: styles$7.footer,
-      __source: {
-        fileName: _jsxFileName$f,
-        lineNumber: 74
-      },
-      __self: this
-    }, !!open && isEditing ? React.createElement(EditCommentView, {
-      commentKey: newCommentKey,
-      __source: {
-        fileName: _jsxFileName$f,
-        lineNumber: 76
-      },
-      __self: this
-    }) : React.createElement("button", {
-      className: styles$7.button,
-      onClick: onEdit,
-      __source: {
-        fileName: _jsxFileName$f,
-        lineNumber: 77
-      },
-      __self: this
-    }, "Add Comment")));
-  });
-};
-
-postComments.propTypes = {
-  commentView: propTypes.func.isRequired,
-  editCommentView: propTypes.func.isRequired,
-  commentsData: propTypes.arrayOf(propTypes.shape({
-    id: propTypes.string.isRequired
-  })),
-  postId: propTypes.number.isRequired,
-  open: propTypes.bool,
-  as: propTypes.oneOfType([propTypes.string, propTypes.func])
-};
-postComments.defaultProps = {
-  open: false,
-  as: 'div'
-};
-/**
- * Creates composer for PostComments component
- */
-
-postComments.compose = queryComposer({
-  view: postComments,
-  commentView: comment,
-  editCommentView: editComment,
-  queries: [{
-    query: POST_COMMENTS_QUERY,
-    config: {
-      options: function options(_ref3) {
-        var id = _ref3.id;
-        return {
-          variables: {
-            id: id
-          },
-          notifyOnNetworkStatusChange: true
-        };
-      }
-    }
-  }],
-  whileLoading: {
-    view: Loading,
-    cond: function cond(props) {
-      return !!get(props, 'data.networkStatus') && get(props, 'data.networkStatus') < 7;
-    }
-  },
-  forError: {
-    view: Error$1
-  },
-  extraHocs: [withApollo, postCommentsStateManager],
-  sharedMapper: commentsMapper
-});
-/**
- * Compose default PostComments Component
- * @var {React.Component} PostComments
- */
-
-var PostComments = postComments.compose();
 
 /**
  * Post-Type Exporter
@@ -4033,7 +3082,7 @@ var archiveMapper = function archiveMapper(_ref3) {
   }, rest);
 };
 
-var _jsxFileName$g = "/home/geoff/Dev/web/wp-graphql-composer/src/archives/post-result.jsx";
+var _jsxFileName$c = "/home/geoff/Dev/web/wp-graphql-composer/src/archives/post-result.jsx";
 var EntryMeta = function EntryMeta(_ref) {
   var author = _ref.author,
       categories = _ref.categories,
@@ -4043,21 +3092,21 @@ var EntryMeta = function EntryMeta(_ref) {
   return React.createElement("div", {
     className: "entry-footer",
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 12
     },
     __self: this
   }, React.createElement("span", {
     className: "posted-on",
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 13
     },
     __self: this
   }, React.createElement("span", {
     className: "screen-reader-text",
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 14
     },
     __self: this
@@ -4065,7 +3114,7 @@ var EntryMeta = function EntryMeta(_ref) {
     className: "date",
     dateTime: date,
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 15
     },
     __self: this
@@ -4073,21 +3122,21 @@ var EntryMeta = function EntryMeta(_ref) {
     className: "modified",
     dateTime: modified,
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 19
     },
     __self: this
   }, "Last updated on: ", moment(modified).format('LLL'))), React.createElement("span", {
     className: "byline",
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 24
     },
     __self: this
   }, React.createElement("span", {
     className: "screen-reader-text",
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 25
     },
     __self: this
@@ -4095,21 +3144,21 @@ var EntryMeta = function EntryMeta(_ref) {
     key: author.id,
     to: "/author/".concat(author.nicename),
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 26
     },
     __self: this
   }, author.nicename)), categories.length > 0 && React.createElement("span", {
     className: "cat-links",
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 29
     },
     __self: this
   }, React.createElement("span", {
     className: "screen-reader-text",
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 30
     },
     __self: this
@@ -4121,7 +3170,7 @@ var EntryMeta = function EntryMeta(_ref) {
       key: id,
       to: "/category/".concat(slug),
       __source: {
-        fileName: _jsxFileName$g,
+        fileName: _jsxFileName$c,
         lineNumber: 32
       },
       __self: this
@@ -4129,14 +3178,14 @@ var EntryMeta = function EntryMeta(_ref) {
   })), tags.length > 0 && React.createElement("span", {
     className: "tags-links",
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 37
     },
     __self: this
   }, React.createElement("span", {
     className: "screen-reader-text",
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 38
     },
     __self: this
@@ -4148,7 +3197,7 @@ var EntryMeta = function EntryMeta(_ref) {
       key: id,
       to: "/tag/".concat(slug),
       __source: {
-        fileName: _jsxFileName$g,
+        fileName: _jsxFileName$c,
         lineNumber: 40
       },
       __self: this
@@ -4182,7 +3231,7 @@ var postResult = function postResult(_ref4) {
     className: className
   }, rest, {
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 73
     },
     __self: this
@@ -4190,7 +3239,7 @@ var postResult = function postResult(_ref4) {
     className: "post-thumbnail",
     to: "/".concat(permalink),
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 79
     },
     __self: this
@@ -4199,20 +3248,20 @@ var postResult = function postResult(_ref4) {
     mediaItemId: featuredImage.mediaItemId,
     fallback: true,
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 80
     },
     __self: this
   })), React.createElement("div", {
     className: "entry-content",
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 87
     },
     __self: this
   }, showContent ? ReactHtmlParser(content) : ReactHtmlParser(excerpt)), React.createElement(EntryMeta, Object.assign({}, meta, {
     __source: {
-      fileName: _jsxFileName$g,
+      fileName: _jsxFileName$c,
       lineNumber: 90
     },
     __self: this
@@ -4254,10 +3303,10 @@ function _templateObject$2() {
 }
 var ARCHIVE_QUERY = gql(_templateObject$2());
 
-var css$b = "/* Extra Small */\n/* Small */\n/* Medium */\n/* Large */\n/* Extra Large */\n";
-styleInject(css$b);
+var css$8 = "/* Extra Small */\n/* Small */\n/* Medium */\n/* Large */\n/* Extra Large */\n";
+styleInject(css$8);
 
-var _jsxFileName$h = "/home/geoff/Dev/web/wp-graphql-composer/src/archives/archive.jsx";
+var _jsxFileName$d = "/home/geoff/Dev/web/wp-graphql-composer/src/archives/archive.jsx";
 /**
  * Archives view component
  * 
@@ -4279,21 +3328,21 @@ var archive$1 = function archive(_ref) {
   var Results = function Results() {
     return React.createElement(React.Fragment, {
       __source: {
-        fileName: _jsxFileName$h,
+        fileName: _jsxFileName$d,
         lineNumber: 42
       },
       __self: this
     }, !noHeader && React.createElement("header", {
       className: "page-header",
       __source: {
-        fileName: _jsxFileName$h,
+        fileName: _jsxFileName$d,
         lineNumber: 44
       },
       __self: this
     }, React.createElement("h1", {
       className: "page-title",
       __source: {
-        fileName: _jsxFileName$h,
+        fileName: _jsxFileName$d,
         lineNumber: 45
       },
       __self: this
@@ -4308,7 +3357,7 @@ var archive$1 = function archive(_ref) {
         Attachment: Attachment$$1
       }), {
         __source: {
-          fileName: _jsxFileName$h,
+          fileName: _jsxFileName$d,
           lineNumber: 49
         },
         __self: this
@@ -4319,13 +3368,13 @@ var archive$1 = function archive(_ref) {
   if (container === true) {
     return React.createElement("div", Object.assign({}, containerProps, {
       __source: {
-        fileName: _jsxFileName$h,
+        fileName: _jsxFileName$d,
         lineNumber: 56
       },
       __self: this
     }), React.createElement(Results, {
       __source: {
-        fileName: _jsxFileName$h,
+        fileName: _jsxFileName$d,
         lineNumber: 57
       },
       __self: this
@@ -4334,13 +3383,13 @@ var archive$1 = function archive(_ref) {
     var Container = container;
     return React.createElement(Container, Object.assign({}, containerProps, {
       __source: {
-        fileName: _jsxFileName$h,
+        fileName: _jsxFileName$d,
         lineNumber: 64
       },
       __self: this
     }), React.createElement(Results, {
       __source: {
-        fileName: _jsxFileName$h,
+        fileName: _jsxFileName$d,
         lineNumber: 65
       },
       __self: this
@@ -4349,7 +3398,7 @@ var archive$1 = function archive(_ref) {
 
   return React.createElement(Results, {
     __source: {
-      fileName: _jsxFileName$h,
+      fileName: _jsxFileName$d,
       lineNumber: 70
     },
     __self: this
@@ -4462,11 +3511,11 @@ var menuInitialState = {
 };
 var MenuContext = React.createContext(menuInitialState);
 
-var css$c = ".menu-item-module_description__32JbP {\n  font-size: 80%; }\n\n.menu-item-module_link__1Qq1O {\n  text-decoration: none; }\n\n.menu-item-module_link__1Qq1O,\n.menu-item-module_text__3ogqT {\n  order: 0;\n  flex-grow: 8;\n  flex-shrink: 0;\n  padding: 1.5em 1em;\n  transition: color 250ms ease-out, background-color 320ms ease-in; }\n";
-var styles$8 = {"description":"menu-item-module_description__32JbP","link":"menu-item-module_link__1Qq1O","text":"menu-item-module_text__3ogqT"};
-styleInject(css$c);
+var css$9 = ".menu-item-module_description__32JbP {\n  font-size: 80%; }\n\n.menu-item-module_link__1Qq1O {\n  text-decoration: none; }\n\n.menu-item-module_link__1Qq1O,\n.menu-item-module_text__3ogqT {\n  order: 0;\n  flex-grow: 8;\n  flex-shrink: 0;\n  padding: 1.5em 1em;\n  transition: color 250ms ease-out, background-color 320ms ease-in; }\n";
+var styles$5 = {"description":"menu-item-module_description__32JbP","link":"menu-item-module_link__1Qq1O","text":"menu-item-module_text__3ogqT"};
+styleInject(css$9);
 
-var _jsxFileName$i = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/menu-item.jsx";
+var _jsxFileName$e = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/menu-item.jsx";
 /**
  * MenuItem Link component
  * 
@@ -4482,30 +3531,30 @@ var Link$1 = function Link$$1(_ref) {
       rest = _objectWithoutProperties(_ref, ["url", "children", "homeUrl"]);
 
   if (!url || url === '#') return React.createElement("span", {
-    className: styles$8.text,
+    className: styles$5.text,
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$e,
       lineNumber: 32
     },
     __self: this
   }, children);
   if (url.startsWith(homeUrl)) return React.createElement(NavLink, Object.assign({
-    className: styles$8.link,
+    className: styles$5.link,
     exact: true,
     to: "".concat(url.substring(homeUrl.length))
   }, rest, {
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$e,
       lineNumber: 38
     },
     __self: this
   }), children);
   return React.createElement("a", Object.assign({
-    className: styles$8.link,
+    className: styles$5.link,
     href: url
   }, rest, {
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$e,
       lineNumber: 44
     },
     __self: this
@@ -4532,13 +3581,13 @@ var menuItem = function menuItem(_ref2) {
 
   return React.createElement(React.Fragment, {
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$e,
       lineNumber: 62
     },
     __self: this
   }, React.createElement(MenuContext.Consumer, {
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$e,
       lineNumber: 63
     },
     __self: this
@@ -4549,14 +3598,14 @@ var menuItem = function menuItem(_ref2) {
       homeUrl: homeUrl
     }), {
       __source: {
-        fileName: _jsxFileName$i,
+        fileName: _jsxFileName$e,
         lineNumber: 65
       },
       __self: this
     }), label, description && React.createElement("div", {
-      className: styles$8.description,
+      className: styles$5.description,
       __source: {
-        fileName: _jsxFileName$i,
+        fileName: _jsxFileName$e,
         lineNumber: 68
       },
       __self: this
@@ -4567,7 +3616,7 @@ var menuItem = function menuItem(_ref2) {
     MenuItem: MenuItem
   }, {
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$e,
       lineNumber: 75
     },
     __self: this
@@ -4630,15 +3679,15 @@ menuItem.compose = queryComposer({
 
 var MenuItem = menuItem.compose();
 
-var css$d = "/**\n * Menu Component Styling\n */\n.menu-module_menu__3UQcd {\n  position: relative;\n  margin: 0 auto;\n  padding: 0;\n  max-width: 100%;\n  list-style: none;\n  display: flex;\n  flex-direction: column; }\n  .menu-module_menu__3UQcd .menu-module_item__1NLo- {\n    display: inline-flex;\n    flex-flow: row wrap;\n    align-content: space-between;\n    justify-content: space-between;\n    width: 100%;\n    padding: 0;\n    margin: 0; }\n    .menu-module_menu__3UQcd .menu-module_item__1NLo-:after {\n      content: \"\";\n      display: table;\n      clear: both; }\n";
+var css$a = "/**\n * Menu Component Styling\n */\n.menu-module_menu__3UQcd {\n  position: relative;\n  margin: 0 auto;\n  padding: 0;\n  max-width: 100%;\n  list-style: none;\n  display: flex;\n  flex-direction: column; }\n  .menu-module_menu__3UQcd .menu-module_item__1NLo- {\n    display: inline-flex;\n    flex-flow: row wrap;\n    align-content: space-between;\n    justify-content: space-between;\n    width: 100%;\n    padding: 0;\n    margin: 0; }\n    .menu-module_menu__3UQcd .menu-module_item__1NLo-:after {\n      content: \"\";\n      display: table;\n      clear: both; }\n";
 var baseStyles = {"menu":"menu-module_menu__3UQcd","item":"menu-module_item__1NLo-"};
-styleInject(css$d);
+styleInject(css$a);
 
-var css$e = ".sub-menu-module_dropdown__vNhpq {\n  flex-basis: auto;\n  flex-grow: 1;\n  flex-shrink: 1;\n  margin: auto;\n  position: relative;\n  width: 3em;\n  height: 3em;\n  padding: 1em;\n  background: transparent;\n  border: none; }\n\n.sub-menu-module_menu__VggfG {\n  margin-left: 0.8em;\n  padding: 0;\n  flex-basis: 100%;\n  order: 2;\n  overflow: hidden;\n  max-height: 0;\n  transition: max-height 550ms ease-out; }\n  .sub-menu-module_menu__VggfG.sub-menu-module_on__opD6y {\n    transition: max-height 3s ease-out;\n    max-height: 100vh; }\n  .sub-menu-module_menu__VggfG:before {\n    content: \"\";\n    display: table;\n    clear: both; }\n";
-var styles$9 = {"dropdown":"sub-menu-module_dropdown__vNhpq","menu":"sub-menu-module_menu__VggfG","on":"sub-menu-module_on__opD6y"};
-styleInject(css$e);
+var css$b = ".sub-menu-module_dropdown__vNhpq {\n  flex-basis: auto;\n  flex-grow: 1;\n  flex-shrink: 1;\n  margin: auto;\n  position: relative;\n  width: 3em;\n  height: 3em;\n  padding: 1em;\n  background: transparent;\n  border: none; }\n\n.sub-menu-module_menu__VggfG {\n  margin-left: 0.8em;\n  padding: 0;\n  flex-basis: 100%;\n  order: 2;\n  overflow: hidden;\n  max-height: 0;\n  transition: max-height 550ms ease-out; }\n  .sub-menu-module_menu__VggfG.sub-menu-module_on__opD6y {\n    transition: max-height 3s ease-out;\n    max-height: 100vh; }\n  .sub-menu-module_menu__VggfG:before {\n    content: \"\";\n    display: table;\n    clear: both; }\n";
+var styles$6 = {"dropdown":"sub-menu-module_dropdown__vNhpq","menu":"sub-menu-module_menu__VggfG","on":"sub-menu-module_on__opD6y"};
+styleInject(css$b);
 
-var _jsxFileName$j = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/sub-menu.jsx";
+var _jsxFileName$f = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/sub-menu.jsx";
 /**
  * SubMenu view component
  */
@@ -4671,8 +3720,8 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var className = classnames(baseStyles.menu, styles$9.menu, _defineProperty({}, styles$9.on, this.state.isCollapsed));
-      var dropdownClassName = classnames(styles$9.dropdown, _defineProperty({}, styles$9.on, this.state.isCollapsed));
+      var className = classnames(baseStyles.menu, styles$6.menu, _defineProperty({}, styles$6.on, this.state.isCollapsed));
+      var dropdownClassName = classnames(styles$6.dropdown, _defineProperty({}, styles$6.on, this.state.isCollapsed));
       var isCollapsed = this.state.isCollapsed;
 
       var _this$props = this.props,
@@ -4683,7 +3732,7 @@ function (_React$Component) {
 
       return React.createElement(React.Fragment, {
         __source: {
-          fileName: _jsxFileName$j,
+          fileName: _jsxFileName$f,
           lineNumber: 51
         },
         __self: this
@@ -4692,16 +3741,16 @@ function (_React$Component) {
         "aria-expanded": isCollapsed,
         onClick: this.toggle,
         __source: {
-          fileName: _jsxFileName$j,
+          fileName: _jsxFileName$f,
           lineNumber: 52
         },
         __self: this
       }, React.createElement(Icon, {
-        className: styles$9.icon,
+        className: styles$6.icon,
         name: "arrow_drop_down",
         dark: true,
         __source: {
-          fileName: _jsxFileName$j,
+          fileName: _jsxFileName$f,
           lineNumber: 57
         },
         __self: this
@@ -4709,7 +3758,7 @@ function (_React$Component) {
         className: className
       }, rest, {
         __source: {
-          fileName: _jsxFileName$j,
+          fileName: _jsxFileName$f,
           lineNumber: 59
         },
         __self: this
@@ -4719,13 +3768,13 @@ function (_React$Component) {
             cssClasses = _ref.cssClasses,
             r = _objectWithoutProperties(_ref, ["id", "menuItemId", "cssClasses"]);
 
-        var itemClassName = classnames.apply(void 0, [baseStyles.item, styles$9.item].concat(_toConsumableArray(cssClasses), ["menu-item-".concat(menuItemId)]));
+        var itemClassName = classnames.apply(void 0, [baseStyles.item, styles$6.item].concat(_toConsumableArray(cssClasses), ["menu-item-".concat(menuItemId)]));
         return React.createElement("li", {
           id: "menu-item-".concat(menuItemId),
           className: itemClassName,
           key: id,
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$f,
             lineNumber: 69
           },
           __self: this
@@ -4736,7 +3785,7 @@ function (_React$Component) {
           SubMenu: SubMenu
         }), {
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$f,
             lineNumber: 74
           },
           __self: this
@@ -4779,7 +3828,7 @@ subMenu.compose = baseComposer({
 
 var SubMenu = subMenu.compose();
 
-var _jsxFileName$k = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/state-manager.js";
+var _jsxFileName$g = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/state-manager.js";
 var menuStateManager = function menuStateManager(BaseComponent) {
   var BaseFactory = React.createFactory(BaseComponent);
 
@@ -4815,13 +3864,13 @@ var menuStateManager = function menuStateManager(BaseComponent) {
             homeUrl: homeUrl
           },
           __source: {
-            fileName: _jsxFileName$k,
+            fileName: _jsxFileName$g,
             lineNumber: 25
           },
           __self: this
         }, React.createElement(BaseFactory, Object.assign({}, newProps, {
           __source: {
-            fileName: _jsxFileName$k,
+            fileName: _jsxFileName$g,
             lineNumber: 26
           },
           __self: this
@@ -4839,7 +3888,7 @@ var menuStateManager = function menuStateManager(BaseComponent) {
   return MenuStateManager;
 };
 
-var _jsxFileName$l = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/menu.jsx";
+var _jsxFileName$h = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/menu.jsx";
 /**
  * Menu view component
  * 
@@ -4863,7 +3912,7 @@ var menu = function menu(_ref) {
     className: className
   }, rest, {
     __source: {
-      fileName: _jsxFileName$l,
+      fileName: _jsxFileName$h,
       lineNumber: 36
     },
     __self: this
@@ -4879,7 +3928,7 @@ var menu = function menu(_ref) {
       className: itemClassName,
       key: id,
       __source: {
-        fileName: _jsxFileName$l,
+        fileName: _jsxFileName$h,
         lineNumber: 46
       },
       __self: this
@@ -4890,7 +3939,7 @@ var menu = function menu(_ref) {
       MenuItem: MenuItem$$1
     }), {
       __source: {
-        fileName: _jsxFileName$l,
+        fileName: _jsxFileName$h,
         lineNumber: 51
       },
       __self: this
@@ -5038,10 +4087,10 @@ function _templateObject$4() {
 }
 var HEADER_QUERY = gql(_templateObject$4());
 
-var css$f = "/**\n * HEADER COMPONENT\n */\n.header_app-header__1T7Ws {\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: flex-end;\n  padding-right: 2em; }\n\n.header_app-header__1T7Ws > * {\n  margin: 0em auto 1em; }\n\n.header_app-header__1T7Ws .header_site-branding__2yqBG {\n  display: inline-flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 2em 4em 1.25em; }\n\n.header_app-header__1T7Ws .header_site-branding__2yqBG .header_site-logo__1zZZQ {\n  margin: 0 auto; }\n\n.header_app-header__1T7Ws .header_site-branding__2yqBG .header_site-title__2g7Ck {\n  font-size: 2em; }\n\n.header_app-header__1T7Ws .header_site-branding__2yqBG .header_site-description__RcEO_ {\n  font-size: 1.9em; }\n";
-styleInject(css$f);
+var css$c = "/**\n * HEADER COMPONENT\n */\n.header_app-header__1T7Ws {\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: flex-end;\n  padding-right: 2em; }\n\n.header_app-header__1T7Ws > * {\n  margin: 0em auto 1em; }\n\n.header_app-header__1T7Ws .header_site-branding__2yqBG {\n  display: inline-flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 2em 4em 1.25em; }\n\n.header_app-header__1T7Ws .header_site-branding__2yqBG .header_site-logo__1zZZQ {\n  margin: 0 auto; }\n\n.header_app-header__1T7Ws .header_site-branding__2yqBG .header_site-title__2g7Ck {\n  font-size: 2em; }\n\n.header_app-header__1T7Ws .header_site-branding__2yqBG .header_site-description__RcEO_ {\n  font-size: 1.9em; }\n";
+styleInject(css$c);
 
-var _jsxFileName$m = "/home/geoff/Dev/web/wp-graphql-composer/src/header/header.jsx";
+var _jsxFileName$i = "/home/geoff/Dev/web/wp-graphql-composer/src/header/header.jsx";
 /**
  * Header view component
  * 
@@ -5063,7 +4112,7 @@ var header$1 = function header(_ref) {
     role: "banner"
   }, rest, {
     __source: {
-      fileName: _jsxFileName$m,
+      fileName: _jsxFileName$i,
       lineNumber: 32
     },
     __self: this
@@ -5071,7 +4120,7 @@ var header$1 = function header(_ref) {
     id: "masthead",
     className: "site-branding",
     __source: {
-      fileName: _jsxFileName$m,
+      fileName: _jsxFileName$i,
       lineNumber: 33
     },
     __self: this
@@ -5085,7 +4134,7 @@ var header$1 = function header(_ref) {
       padding: '2em'
     },
     __source: {
-      fileName: _jsxFileName$m,
+      fileName: _jsxFileName$i,
       lineNumber: 34
     },
     __self: this
@@ -5093,27 +4142,27 @@ var header$1 = function header(_ref) {
     to: "/",
     "data-testid": "home-link",
     __source: {
-      fileName: _jsxFileName$m,
+      fileName: _jsxFileName$i,
       lineNumber: 44
     },
     __self: this
   }, React.createElement("h1", {
     className: "site-title",
     __source: {
-      fileName: _jsxFileName$m,
+      fileName: _jsxFileName$i,
       lineNumber: 44
     },
     __self: this
   }, title)), React.createElement("h1", {
     className: "site-description",
     __source: {
-      fileName: _jsxFileName$m,
+      fileName: _jsxFileName$i,
       lineNumber: 45
     },
     __self: this
   }, React.createElement("small", {
     __source: {
-      fileName: _jsxFileName$m,
+      fileName: _jsxFileName$i,
       lineNumber: 45
     },
     __self: this
@@ -5121,7 +4170,7 @@ var header$1 = function header(_ref) {
     id: "main-navigation",
     className: "app-navigation",
     __source: {
-      fileName: _jsxFileName$m,
+      fileName: _jsxFileName$i,
       lineNumber: 47
     },
     __self: this
@@ -5169,7 +4218,7 @@ var Header = header$1.compose();
 
 // Header component exporter
 
-var _jsxFileName$n = "/home/geoff/Dev/web/wp-graphql-composer/src/main/router.js";
+var _jsxFileName$j = "/home/geoff/Dev/web/wp-graphql-composer/src/main/router.js";
 var mapLoopProps = function mapLoopProps(_ref) {
   var data = _ref.data,
       rest = _objectWithoutProperties(_ref, ["data"]);
@@ -5200,7 +4249,7 @@ var defaultRoutes = function defaultRoutes(_ref2) {
 
     return React.createElement(Switch, Object.assign({}, rest, {
       __source: {
-        fileName: _jsxFileName$n,
+        fileName: _jsxFileName$j,
         lineNumber: 18
       },
       __self: this
@@ -5212,7 +4261,7 @@ var defaultRoutes = function defaultRoutes(_ref2) {
           return React.createElement(Page, {
             id: pageOnFront,
             __source: {
-              fileName: _jsxFileName$n,
+              fileName: _jsxFileName$j,
               lineNumber: 25
             },
             __self: this
@@ -5224,14 +4273,14 @@ var defaultRoutes = function defaultRoutes(_ref2) {
           noHeader: true,
           showContent: true,
           __source: {
-            fileName: _jsxFileName$n,
+            fileName: _jsxFileName$j,
             lineNumber: 27
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$n,
+        fileName: _jsxFileName$j,
         lineNumber: 23
       },
       __self: this
@@ -5247,14 +4296,14 @@ var defaultRoutes = function defaultRoutes(_ref2) {
             year: year
           },
           __source: {
-            fileName: _jsxFileName$n,
+            fileName: _jsxFileName$j,
             lineNumber: 38
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$n,
+        fileName: _jsxFileName$j,
         lineNumber: 31
       },
       __self: this
@@ -5274,14 +4323,14 @@ var defaultRoutes = function defaultRoutes(_ref2) {
             day: day
           },
           __source: {
-            fileName: _jsxFileName$n,
+            fileName: _jsxFileName$j,
             lineNumber: 52
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$n,
+        fileName: _jsxFileName$j,
         lineNumber: 43
       },
       __self: this
@@ -5299,14 +4348,14 @@ var defaultRoutes = function defaultRoutes(_ref2) {
             year: year
           },
           __source: {
-            fileName: _jsxFileName$n,
+            fileName: _jsxFileName$j,
             lineNumber: 65
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$n,
+        fileName: _jsxFileName$j,
         lineNumber: 57
       },
       __self: this
@@ -5318,14 +4367,14 @@ var defaultRoutes = function defaultRoutes(_ref2) {
           first: limit,
           where: params,
           __source: {
-            fileName: _jsxFileName$n,
+            fileName: _jsxFileName$j,
             lineNumber: 74
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$n,
+        fileName: _jsxFileName$j,
         lineNumber: 71
       },
       __self: this
@@ -5337,14 +4386,14 @@ var defaultRoutes = function defaultRoutes(_ref2) {
           first: limit,
           where: params,
           __source: {
-            fileName: _jsxFileName$n,
+            fileName: _jsxFileName$j,
             lineNumber: 82
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$n,
+        fileName: _jsxFileName$j,
         lineNumber: 79
       },
       __self: this
@@ -5356,14 +4405,14 @@ var defaultRoutes = function defaultRoutes(_ref2) {
           first: limit,
           where: params,
           __source: {
-            fileName: _jsxFileName$n,
+            fileName: _jsxFileName$j,
             lineNumber: 90
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$n,
+        fileName: _jsxFileName$j,
         lineNumber: 87
       },
       __self: this
@@ -5375,14 +4424,14 @@ var defaultRoutes = function defaultRoutes(_ref2) {
           first: limit,
           where: params,
           __source: {
-            fileName: _jsxFileName$n,
+            fileName: _jsxFileName$j,
             lineNumber: 99
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$n,
+        fileName: _jsxFileName$j,
         lineNumber: 95
       },
       __self: this
@@ -5393,14 +4442,14 @@ var defaultRoutes = function defaultRoutes(_ref2) {
         return React.createElement(Archive, {
           first: limit,
           __source: {
-            fileName: _jsxFileName$n,
+            fileName: _jsxFileName$j,
             lineNumber: 110
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$n,
+        fileName: _jsxFileName$j,
         lineNumber: 106
       },
       __self: this
@@ -5414,7 +4463,7 @@ var defaultRoutes = function defaultRoutes(_ref2) {
         if (post_id) return React.createElement(Post, {
           postId: post_id,
           __source: {
-            fileName: _jsxFileName$n,
+            fileName: _jsxFileName$j,
             lineNumber: 121
           },
           __self: this
@@ -5422,14 +4471,14 @@ var defaultRoutes = function defaultRoutes(_ref2) {
         if (postname) return React.createElement(Post, {
           slug: postname,
           __source: {
-            fileName: _jsxFileName$n,
+            fileName: _jsxFileName$j,
             lineNumber: 122
           },
           __self: this
         });else throw new Error('Post not found');
       },
       __source: {
-        fileName: _jsxFileName$n,
+        fileName: _jsxFileName$j,
         lineNumber: 116
       },
       __self: this
@@ -5440,14 +4489,14 @@ var defaultRoutes = function defaultRoutes(_ref2) {
         return React.createElement(Page, {
           uri: params[0],
           __source: {
-            fileName: _jsxFileName$n,
+            fileName: _jsxFileName$j,
             lineNumber: 133
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$n,
+        fileName: _jsxFileName$j,
         lineNumber: 131
       },
       __self: this
@@ -5504,11 +4553,11 @@ function _templateObject$5() {
 }
 var LOOP_QUERY = gql(_templateObject$5());
 
-var css$g = ".main-module_main__20LrB {\n  max-width: 100vw;\n  margin: 0 auto;\n  overflow-x: hidden; }\n";
-var styles$a = {"main":"main-module_main__20LrB"};
-styleInject(css$g);
+var css$d = ".main-module_main__20LrB {\n  max-width: 100vw;\n  margin: 0 auto;\n  overflow-x: hidden; }\n";
+var styles$7 = {"main":"main-module_main__20LrB"};
+styleInject(css$d);
 
-var _jsxFileName$o = "/home/geoff/Dev/web/wp-graphql-composer/src/main/main.jsx";
+var _jsxFileName$k = "/home/geoff/Dev/web/wp-graphql-composer/src/main/main.jsx";
 /**
  * Main view component
  * 
@@ -5527,13 +4576,13 @@ var main = function main(_ref) {
       topChildren = _ref.topChildren,
       rest = _objectWithoutProperties(_ref, ["Archive", "children", "className", "Page", "Post", "Routes", "topChildren"]);
 
-  var className = classnames(styles$a.main, added);
+  var className = classnames(styles$7.main, added);
   return React.createElement("main", Object.assign({
     role: "main",
     className: className
   }, rest, {
     __source: {
-      fileName: _jsxFileName$o,
+      fileName: _jsxFileName$k,
       lineNumber: 37
     },
     __self: this
@@ -5543,7 +4592,7 @@ var main = function main(_ref) {
     Post: Post$$1
   }, {
     __source: {
-      fileName: _jsxFileName$o,
+      fileName: _jsxFileName$k,
       lineNumber: 39
     },
     __self: this
@@ -5594,5 +4643,5 @@ var Main = main.compose();
  * Default Template Exporter
  */
 
-export { compileClassName, createClient, WPProvider, whileLoading, errorHandler, forError, composeQuery, utilComposer, baseComposer, queryComposer, loading, Loading, progressMapper, error, Error$1 as Error, errorMapper, Icon, VIEWER_QUERY, LOGIN_MUTATION, login$1 as login, Login, userControls$1 as userControls, UserControls, CUSTOM_LOGO_QUERY, ATTACHMENT_QUERY, PAGE_QUERY, PAGE_BY_QUERY, POST_COMMENTS_QUERY, POST_QUERY, POST_BY_QUERY, DELETE_COMMENT_MUTATION, NEW_COMMENT_MUTATION, UPDATE_COMMENT_MUTATION, attachment, Attachment, comment, editComment, page, Page, post, Post, postComments, PostComments, archive$1 as archive, Archive, ARCHIVE_QUERY, MENU_QUERY, MENU_WHERE_QUERY, MENU_ITEM_QUERY, menuInitialState, MenuContext, menu, Menu, menuItem, MenuItem, Link$1 as Link, subMenu, SubMenu, header$1 as header, Header, headerMapper, HEADER_QUERY, main, Main, mapLoopProps, defaultRoutes, routesProcessor, LOOP_QUERY };
+export { compileClassName, createClient, WPProvider, whileLoading, errorHandler, forError, composeQuery, utilComposer, baseComposer, queryComposer, loading, Loading, progressMapper, error, Error$1 as Error, errorMapper, Icon, VIEWER_QUERY, LOGIN_MUTATION, login$1 as login, Login, userControls$1 as userControls, UserControls, CUSTOM_LOGO_QUERY, ATTACHMENT_QUERY, PAGE_QUERY, PAGE_BY_QUERY, POST_COMMENTS_QUERY, POST_QUERY, POST_BY_QUERY, DELETE_COMMENT_MUTATION, NEW_COMMENT_MUTATION, UPDATE_COMMENT_MUTATION, attachment, Attachment, page, Page, post, Post, archive$1 as archive, Archive, ARCHIVE_QUERY, MENU_QUERY, MENU_WHERE_QUERY, MENU_ITEM_QUERY, menuInitialState, MenuContext, menu, Menu, menuItem, MenuItem, Link$1 as Link, subMenu, SubMenu, header$1 as header, Header, headerMapper, HEADER_QUERY, main, Main, mapLoopProps, defaultRoutes, routesProcessor, LOOP_QUERY };
 //# sourceMappingURL=index.module.js.map

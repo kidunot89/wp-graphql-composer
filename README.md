@@ -169,13 +169,12 @@ const ComposedComponent = composer({ view, queries, loading, error, extraHocs, m
 
 ## Components
 - Archives - Schema patch needed. Read more below.
-- Attachment
-- Header - Unusable until WPGraphQL PR#571 merged
+- Attachment - CUSTOM_LOGO_QUERY unusable until WPGraphQL PR#571 merged
+- Header
 - Main - Schema patch needed. Read more below.
 - Menu
 - Page - Schema patch needed. Read more below.
 - Post - Schema patch needed. Read more below.
-- PostComments
 - Login
 - UserControls
 
@@ -342,3 +341,31 @@ function wp_graphql_schema_patch() {
 }
 add_action( 'graphql_register_types', 'function wp_graphql_schema_patch' );
 ```
+
+## Introspection CLI
+This scripts fetches schema fragment data for use with WPProvider to silent `heuristic fragment` warnings.
+Run the script using `wpg-intro <endpoint> <output>`. `<endpoint>` is the WPGraphQL being used by the app and it's required. `<output>` is the path the output json file should be saved to, it defaults to the project working directory root.
+### Example
+```
+import React from 'react';
+import ReactDom from 'react-dom';
+import { HttpLink } from 'apollo-link-http';
+import { WPProvider } from 'wp-graphql-composer';
+import json from './path/to/fragment/file';
+import App from './path/to/app';
+
+const httpLink = new HttpLink({
+  uri: 'http://example.com',
+  credentials: 'same-origin',
+});
+
+ReactDom.render(
+  (
+    <WPProvider link={httpLink} fragmentData={json}>
+      <App />
+    </WPProvider>
+  ),
+  document.getElementById('root');
+);
+```
+
