@@ -4071,7 +4071,7 @@ var headerMapper = function headerMapper(_ref) {
 
   var title = get(data, 'allSettings.generalSettingsTitle');
   var description = get(data, 'allSettings.generalSettingsDescription');
-  var url = get(data, 'allSettings.homeUrl');
+  var url = get(data, 'allSettings.generalSettingsUrl');
   var logo = get(data, 'themeMods.customLogo');
   return _objectSpread({
     title: title,
@@ -4082,7 +4082,7 @@ var headerMapper = function headerMapper(_ref) {
 };
 
 function _templateObject$4() {
-  var data = _taggedTemplateLiteral(["\n  query HeaderQuery {\n    allSettings {\n      generalSettingsTitle\n      generalSettingsDescription\n      homeUrl\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  query HeaderQuery {\n    allSettings {\n      generalSettingsTitle\n      generalSettingsDescription\n      generalSettingsUrl\n    }\n  }\n"]);
 
   _templateObject$4 = function _templateObject() {
     return data;

@@ -4071,7 +4071,7 @@
 
     var title = _.get(data, 'allSettings.generalSettingsTitle');
     var description = _.get(data, 'allSettings.generalSettingsDescription');
-    var url = _.get(data, 'allSettings.homeUrl');
+    var url = _.get(data, 'allSettings.generalSettingsUrl');
     var logo = _.get(data, 'themeMods.customLogo');
     return _objectSpread({
       title: title,
@@ -4082,7 +4082,7 @@
   };
 
   function _templateObject$4() {
-    var data = _taggedTemplateLiteral(["\n  query HeaderQuery {\n    allSettings {\n      generalSettingsTitle\n      generalSettingsDescription\n      homeUrl\n    }\n  }\n"]);
+    var data = _taggedTemplateLiteral(["\n  query HeaderQuery {\n    allSettings {\n      generalSettingsTitle\n      generalSettingsDescription\n      generalSettingsUrl\n    }\n  }\n"]);
 
     _templateObject$4 = function _templateObject() {
       return data;
