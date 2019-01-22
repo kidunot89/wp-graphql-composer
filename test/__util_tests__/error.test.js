@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, cleanup } from 'react-testing-library';
 
-import { Error, Icon } from '../../dist';
+import { Error, Icon } from '../../src';
 
 afterEach(cleanup);
 process.env.DEBUG_MODE = true;

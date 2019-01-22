@@ -3,7 +3,7 @@ import { render, cleanup, waitForElement, fireEvent } from 'react-testing-librar
 import { MockedProvider } from 'react-apollo/test-utils';
 import v3 from 'uuid/v3';
 
-import { Login, login, UserControls, userControls, LOGIN_MUTATION, VIEWER_QUERY } from '../../dist';
+import { Login, login, UserControls, userControls, LOGIN_MUTATION, VIEWER_QUERY } from '../../src';
 
 // test-utils.js
 class LocalStorageMock {

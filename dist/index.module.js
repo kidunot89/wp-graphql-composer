@@ -68,11 +68,16 @@ var createClient = function createClient(httpLink, fragmentData) {
 
 
   var authMiddleware = new ApolloLink(function (operation, forward) {
-    operation.setContext({
-      headers: {
-        authorization: localStorage.getItem('user-token') || null
-      }
-    });
+    var userToken = localStorage.getItem('user-token');
+
+    if (userToken) {
+      operation.setContext({
+        headers: {
+          authorization: userToken
+        }
+      });
+    }
+
     return forward(operation);
   });
   return new ApolloClient({
@@ -90,7 +95,7 @@ var WPProvider = function WPProvider(_ref) {
     client: client,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 38
+      lineNumber: 41
     },
     __self: this
   }, children);
@@ -4113,7 +4118,7 @@ var header$1 = function header(_ref) {
   }, rest, {
     __source: {
       fileName: _jsxFileName$i,
-      lineNumber: 32
+      lineNumber: 31
     },
     __self: this
   }), React.createElement("div", {
@@ -4121,7 +4126,7 @@ var header$1 = function header(_ref) {
     className: "site-branding",
     __source: {
       fileName: _jsxFileName$i,
-      lineNumber: 33
+      lineNumber: 32
     },
     __self: this
   }, React.createElement(Attachment$$1, {
@@ -4135,35 +4140,27 @@ var header$1 = function header(_ref) {
     },
     __source: {
       fileName: _jsxFileName$i,
-      lineNumber: 34
+      lineNumber: 33
     },
     __self: this
-  }), React.createElement(Link, {
-    to: "/",
-    "data-testid": "home-link",
-    __source: {
-      fileName: _jsxFileName$i,
-      lineNumber: 44
-    },
-    __self: this
-  }, React.createElement("h1", {
+  }), React.createElement("h1", {
     className: "site-title",
     __source: {
       fileName: _jsxFileName$i,
-      lineNumber: 44
+      lineNumber: 43
     },
     __self: this
-  }, title)), React.createElement("h1", {
+  }, title), React.createElement("h1", {
     className: "site-description",
     __source: {
       fileName: _jsxFileName$i,
-      lineNumber: 45
+      lineNumber: 44
     },
     __self: this
   }, React.createElement("small", {
     __source: {
       fileName: _jsxFileName$i,
-      lineNumber: 45
+      lineNumber: 44
     },
     __self: this
   }, description))), React.createElement("div", {
@@ -4171,7 +4168,7 @@ var header$1 = function header(_ref) {
     className: "app-navigation",
     __source: {
       fileName: _jsxFileName$i,
-      lineNumber: 47
+      lineNumber: 46
     },
     __self: this
   }, children));

@@ -4,7 +4,6 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 /**
  * Internal dependencies
@@ -41,7 +40,7 @@ const header = ({ url, title, description, children, Attachment, ...rest }) => {
             padding: '2em',
           }}
         />
-        <Link to="/" data-testid="home-link"><h1 className="site-title">{title}</h1></Link>
+        <h1 className="site-title">{title}</h1>
         <h1 className="site-description"><small>{description}</small></h1>
       </div>
       <div id="main-navigation" className="app-navigation">
