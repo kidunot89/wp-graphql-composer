@@ -15,7 +15,7 @@ import {
   error,
   progressMapper,
   errorMapper
-} from '../dist';
+} from '../src';
 
 afterEach(cleanup);
 
