@@ -15,7 +15,7 @@ import {
   menuItem,
   subMenu,
   Link,
-} from '../../dist';
+} from '../../src';
 
 afterEach(cleanup);
 
@@ -310,7 +310,7 @@ it(`renders a menu by id`, async () => {
   expect(wordpress).toBeTruthy();
   expect(wordpress.getAttribute('href')).toEqual('https://wordpress.org');
 
-  const sub = testMenu.querySelector('[class^="sub-menu"]');
+  const sub = testMenu.querySelector('.menu');
   expect(sub).toBeTruthy();
 
   const google = await waitForElement(() => getByText(/Google/));
@@ -359,7 +359,7 @@ it(`renders a menu by location`, async () => {
   expect(wordpress).toBeTruthy();
   expect(wordpress.getAttribute('href')).toEqual('https://wordpress.org');
 
-  const sub = testMenu.querySelector('[class^="sub-menu"]');
+  const sub = testMenu.querySelector('.menu');
   expect(sub).toBeTruthy();
 
   const google = await waitForElement(() => getByText(/Google/));

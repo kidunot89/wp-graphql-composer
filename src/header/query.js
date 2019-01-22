@@ -5,7 +5,7 @@ export const HEADER_QUERY = gql`
     allSettings {
       generalSettingsTitle
       generalSettingsDescription
-      homeUrl
+      generalSettingsUrl
     }
   }
 `;

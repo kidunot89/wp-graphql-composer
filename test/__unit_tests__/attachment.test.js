@@ -2,7 +2,7 @@ import React from 'react';
 import { render, cleanup, waitForElement, wait } from 'react-testing-library';
 import { MockedProvider } from 'react-apollo/test-utils';
 
-import { CUSTOM_LOGO_QUERY, ATTACHMENT_QUERY, Attachment, attachment } from '../../dist';
+import { CUSTOM_LOGO_QUERY, ATTACHMENT_QUERY, Attachment, attachment } from '../../src';
 
 afterEach(cleanup);
 
@@ -59,7 +59,7 @@ it(`renders mock image at different sizes while maintaining the image's aspect r
 
   let image = await waitForElement(() => getByAltText(/dummy-image/));
   expect(image).toBeTruthy();
-  expect(image.getAttribute('class')).toEqual('dummy-image');
+  expect(image.classList).toContain('dummy-image');
   expect(image.getAttribute('srcSet'))
     .toEqual('https://source.unsplash.com/150x150 150w, https://source.unsplash.com/300x200 300w, https://source.unsplash.com/768x512 768w, https://source.unsplash.com/1024x682 1024w');
 
@@ -128,7 +128,7 @@ it(`render theme custom logo`, async() => {
 
   let image = await waitForElement(() => getByAltText(/dummy-image/));
   expect(image).toBeTruthy();
-  expect(image.getAttribute('class')).toEqual('dummy-image');
+  expect(image.classList).toContain('dummy-image');
   expect(image.getAttribute('srcSet'))
     .toEqual('https://source.unsplash.com/150x150 150w, https://source.unsplash.com/300x200 300w, https://source.unsplash.com/768x512 768w, https://source.unsplash.com/1024x682 1024w');
 

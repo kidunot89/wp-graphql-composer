@@ -1,4 +1,13 @@
 # Changelog
+## [0.3.2]
+### Changes
+- **README.md** updated.
+- **WPProvider** refactored.
+
+### Fixes
+- **Jest runs against distribution instead of source code** see more [here](https://github.com/kidunot89/wp-graphql-composer/issues/18)
+- **Hard-coded meta data in Archive and Main tests** see more [here](https://github.com/kidunot89/wp-graphql-composer/issues/17)
+- **Move certain packages to peerDependencies & devDependencies** see more [here](https://github.com/kidunot89/wp-graphql-composer/issues/16)
 
 ## [0.3.1] Breaking Change
 ### Added
@@ -43,7 +52,7 @@ Example use with default Attachment stack: `<Attachment customLogo />`.
 
 ## [0.1.10]
 ### Deprecated
-- **`wp-graphql-compose` CLI ** code related to the command line interface `wp-graphql-compose` is official deprecated and its recommend that you use [Oil-Based Boilerplate](https://github.com/kidunot89/oil-based-boilerplate) instead. `wp-graphql-compose` CLI will be remove in 0.2.x
+- **wp-graphql-compose CLI ** code related to the command line interface `wp-graphql-compose` is official deprecated and its recommend that you use [Oil-Based Boilerplate](https://github.com/kidunot89/oil-based-boilerplate) instead. `wp-graphql-compose` CLI will be remove in 0.2.x
 
 ## [0.1.9 and below]
 ### Added

@@ -6,7 +6,7 @@ import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemo
 import { MemoryRouter } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser';
 
-import { Archive, archive, ARCHIVE_QUERY } from '../../dist';
+import { Archive, archive, ARCHIVE_QUERY } from '../../src';
 import introspectionQueryResultData from '../fragmentTypes.json';
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
@@ -21,15 +21,18 @@ const contentThree = '';
 const contentFour = '';
 const contentFive = '';
 
+const year = new Date().getFullYear();
+const lastYear = year - 1;
+
 const firstThree = [
   {
     id: "cG9zdDoxNjA=",
     postId: 160,
     content: contentOne,
     excerpt: contentOne,
-    permalink: "/2018/04/20/weed-day",
-    date: "2018-04-20 08:54:25",
-    modified: "2018-04-22 08:54:25",
+    permalink: `/${year}/04/20/weed-day`,
+    date: `${year}-04-20 08:54:25`,
+    modified: `${year}-04-22 08:54:25`,
     title: "Happy Weed Day!",
     featuredImage: null,
     tags: {
@@ -98,9 +101,9 @@ const firstThree = [
     postId: 157,
     content: contentTwo,
     excerpt: contentTwo,
-    permalink: "/2018/04/16/dank-coming-soon",
-    date: "2018-04-16 08:54:25",
-    modified: "2018-04-23 08:54:25",
+    permalink: `/${year}/04/16/dank-coming-soon`,
+    date: `${year}-04-16 08:54:25`,
+    modified: `${year}-04-23 08:54:25`,
     title: "Four days from the day of dank!",
     featuredImage: null,
     tags: {
@@ -142,9 +145,9 @@ const firstThree = [
     postId: 156,
     content: contentThree,
     excerpt: contentThree,
-    permalink: "/2018/04/12/new-project",
-    date: "2018-04-12 08:54:25",
-    modified: "2018-04-12 08:54:25",
+    permalink: `/${lastYear}/04/12/new-project`,
+    date: `${lastYear}-04-12 08:54:25`,
+    modified: `${lastYear}-04-12 08:54:25`,
     title: "New project!",
     featuredImage: null,
     tags: {
@@ -217,8 +220,8 @@ const mocks = [
               postId: 152,
               content: contentFour,
               excerpt: contentFour,
-              permalink: "/2018/03/29/meditate",
-              date: "2018-03-29 08:54:25",
+              permalink: `/${year}/03/29/meditate`,
+              date: `${year}-03-29 08:54:25`,
               modified: null,
               title: "Why you should try meditating",
               featuredImage: null,
@@ -262,9 +265,9 @@ const mocks = [
               postId: 149,
               content: contentFive,
               excerpt: contentFive,
-              permalink: "/2018/03/10/learn-react",
-              date: "2018-03-10 08:54:25",
-              modified: "2018-03-12 08:54:25",
+              permalink: `/${year}/03/10/learn-react`,
+              date: `${year}-03-10 08:54:25`,
+              modified: `${year}-03-12 08:54:25`,
               title: "Learn React!",
               featuredImage: null,
               tags: {
@@ -385,7 +388,7 @@ const mocks = [
         tag: null,
         day: 5,
         month: 4,
-        year: 2018,
+        year,
         author: null,
         search: null,
       }
@@ -410,7 +413,7 @@ const mocks = [
         tag: null,
         day: null,
         month: 4,
-        year: 2018,
+        year,
         author: null,
         search: null,
       }
@@ -435,7 +438,7 @@ const mocks = [
         tag: null,
         day: null,
         month: null,
-        year: 2017,
+        year: lastYear,
         author: null,
         search: null,
       }
@@ -558,7 +561,7 @@ it(`renders archive of first five posts by day`, async () => {
   const { getByTestId, getByText } = render(
     <MockedProvider mocks={mocks} cache={cache} addTypename>
       <MemoryRouter>
-        <Archive first={5} where={{ month: 4, year: 2018, day: 5 }} {...containerProps} />
+        <Archive first={5} where={{ month: 4, year, day: 5 }} {...containerProps} />
       </MemoryRouter>
     </MockedProvider>
   );
@@ -568,7 +571,7 @@ it(`renders archive of first five posts by day`, async () => {
   expect(results).toBeTruthy();
 
   // Confirms keywords
-  const header = getByText(/Posts made April 5, 2018/);
+  const header = getByText(`Posts made April 5, ${year}`);
   expect(header).toBeTruthy();
 
   // Confirms result count
@@ -622,7 +625,7 @@ it(`renders archive of first five posts by month with a custom view layer compon
   const { getByTestId, getByText } = render(
     <MockedProvider mocks={mocks} cache={cache} addTypename>
       <MemoryRouter>
-        <CustomArchive first={5} where={{ month: 4, year: 2018 }} data-testid="test-archive" />
+        <CustomArchive first={5} where={{ month: 4, year }} data-testid="test-archive" />
       </MemoryRouter>
     </MockedProvider>
   );
@@ -632,7 +635,7 @@ it(`renders archive of first five posts by month with a custom view layer compon
   expect(results).toBeTruthy();
 
   // Confirms keywords
-  const header = getByText(/Posts made April 2018/);
+  const header = getByText(`Posts made April ${year}`);
   expect(header).toBeTruthy();
 
   // Confirms result count
@@ -645,7 +648,7 @@ it(`renders archive of first five posts by year`, async () => {
   const { getByTestId, getByText } = render(
     <MockedProvider mocks={mocks} cache={cache} addTypename>
       <MemoryRouter>
-        <Archive first={5} where={{ year: 2017 }} {...containerProps} />
+        <Archive first={5} where={{ year: lastYear }} {...containerProps} />
       </MemoryRouter>
     </MockedProvider>
   );

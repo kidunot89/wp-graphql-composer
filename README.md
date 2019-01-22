@@ -2,104 +2,77 @@
 [![Build Status](https://travis-ci.org/kidunot89/wp-graphql-composer.svg?branch=develop)](https://travis-ci.org/kidunot89/wp-graphql-composer)
 [![Coverage Status](https://coveralls.io/repos/github/kidunot89/wp-graphql-composer/badge.svg?branch=develop)](https://coveralls.io/github/kidunot89/wp-graphql-composer?branch=develop)
 
-WP-GraphQL Composer is a library of [React-Apollo](https://www.apollographql.com/docs/react/) components for create [React](https://reactjs.org) apps served by a WordPress site.
+WP-GraphQL Composer is a library of [React-Apollo](https://www.apollographql.com/docs/react/) components for creating [React](https://reactjs.org) apps served by a WordPress site.
 
-The components within this library are make up of reusable [Higher-Order-Components](https://reactjs.org/docs/higher-order-components.html) that are wrapped around a [React Stateless Component](https://reactjs.org/docs/components-and-props.html) using Andrew Clark's [Recompose](https://recompose.docsforhumans.com/) library. This library was created to be an extension of the [WPGraphQL](https://wpgraphql.com/) plugin, and components and their respective queries won't work without a [GraphQL](https://graphql.org/) server serving a schema identical to the one created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed and tested to the extent of WPGraphQL *to my knowledge*.
+This library was created to be an extension of the [WPGraphQL](https://wpgraphql.com/) plugin, and components and their respective queries won't work without a [GraphQL](https://graphql.org/) server serving a schema identical to the one created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed and tested to the extent of WPGraphQL *to my knowledge*.
 
-## What Does It Offer?
-An easy solution to quickly creating a React-Apollo apps for [WordPress](https://wordpress.org) sites exposed by WPGraphQL
+## The Goal
+This component library is meant to serve a different purpose than most component libraries. The focus of the library is the minimize the logic workload of creating a React-Apollo app from a [WPGraphQL](https://wpgraphql.com/)-served endpoint. This is made possible by stitching together state/logic management components and view component using the [Recompose](https://github.com/acdlite/recompose) library. Each component can be customized heavily using there `.compose()` function. View the **[Creating New Composers](#creating-new-composers)** for more detail. If you view any of the following examples you'll notice the components have minimal styling. The components are designed to be used as boilerplates.
 
 ## Getting Started
-Run the command npm install wp-graphql-composer in a your React app directory.
-Import `HttpLink` from `apollo-link-http` and `WPProvider` from `wp-graphql-composer`
-And wrap you root component in a WPProvider component like so.
-
+Run the command `npm install wp-graphql-composer` in a the project directory of the Apollo-React app directory.
+Import `HttpLink` from `apollo-link-http` and `WPProvider` from `wp-graphql-composer` and wrap you root component in a `WPProvider` component. `WPProvider` is a wrapper component for `ApolloProvider`. It handles authentication middleware and reads JWT user tokens from HTML5 localStorage.
 ```
+  import React from "react";
+  import ReactDOM from "react-dom";
+  import { HttpLink } from "apollo-link-http";
+  import { Menu, WPProvider } from "wp-graphql-composer";
+
   // Create Link
   const httpLink = new HttpLink({ uri: '/graphql', credentials: 'same-origin' })
-  
-  // Create or import App
-  const App = () => (
-    <div className="app">
-      {/* Menu is another component from the wp-graphql-composer package */}
-      <Menu location="PRIMARY" />
-    </div>
-  );
 
   // Note link prop
-  render(
+  ReactDOM.render(
     <WPProvider link={httpLink}>
-      <App />
+      <div className="theme">
+        <Header>
+          <Menu location="PRIMARY" />
+          <Login />
+        </Header>
+        <Main />
+      </div>
     </WPProvider>
   );
 ```
 
-## Component Usage
-Simply import a component and pass the required props.
-
+## Composing Custom Components
+The following guide is a simple example of creating a custom `Menu` component with the menu composer. 
+1. Start by importing `menu`, `menuItem`, and `subItem` view components from `wp-graphql-composer`, as well as `isEmpty` and `map` from `lodash`.
 ```
-  const App = () => (
-    <div className="app">
-      <Header>
-        <Menu location="PRIMARY" />
-        <Login />
-      </Header>
-    </div>
-  );
-
-  render(
-    <WPProvider>
-      <App />
-    </WPProvider>
-  );
+...
+import { menu, menuItem, subItem } from 'wp-graphql-composer';
+import { isEmpty, map } from 'lodash';
 ```
-
-## Modifying Pre-Composed Components
-1. To create a new template for say the `Menu` component, import `menu`, `menuItem`, and `subItem` view components from `wp-graphql-composer`.
-`import { menu, menuItem, subItem } from 'wp-graphql-composer';`
-2. Next create new components to be the new view layers for the menu, menu item, and sub menu components. You don't have to change all three for but I am just to show how its done.
+2. Next create new components to be the new view layers for the menu, menu item, and sub menu components. It's not required that all three components recomposed, but it is being done in the example for reference. 
 ```
-  const subMenuView = ({ MenuItem, SubMenu, items, ...rest }) => (
-    <ol data-testid="custom-submenu" {...rest}>
-      {_.map(items, ({ id, menuItemId, cssClasses, ...r}) => (
-        <li key={id}>
-          <MenuItem
-            className={\`menuItem \${cssClasses.join(' ')}\`}
-            id={id}
-            {...{ ...r, MenuItem, SubMenu }}
-          />
+  const subMenuView = ( { MenuItem, items } ) => (
+    <ul className="sub-menu">
+      { _.map( items, ( { id, url, label,  } ) => (
+        <li key={ id }>
+          <a href={ url }>{ label }</a>
         </li>
-      ))}
-    </ol>
+      ) ) }
+    </ul>
   );
 
-  const menuItemView = ({ url, label, items, SubMenu, MenuItem, description, ...rest }) => (
+  const menuItemView = ( { url, label, items, SubMenu, } ) => (
     <React.Fragment>
-      <Link {...{ ...rest, url }}>{label}</Link>
-      {!_.isEmpty(items) && (
-        <SubMenu
-          className="sub-menu"
-          {...{ items, SubMenu, MenuItem}}
-        />
-      )}
+      <a className="menu-item" href={ url }>{ label }</a>
+      { !_.isEmpty( items ) && <SubMenu items={ items } /> }
     </React.Fragment>
   );
 
-  const customMenuView = ({ slug, className, items, MenuItem, SubMenu, ...rest }) => (
-    <div id={\`menu-\${slug}\`} className={className} {...rest}>
-      {_.map(items, ({ id, menuItemId, cssClasses, ...r}) => (
-        <div key={id} className="menu-item">
-          <MenuItem
-            className={\`menuItem \${cssClasses.join(' ')}\`}
-            id={id}
-            {...{ ...r, MenuItem, SubMenu }}
-          />
+  const customMenuView = ( { items, MenuItem, SubMenu } ) => (
+    <nav className="menu">
+      { _.map( items, ( { id, ...r } ) => (
+        <div key={ id } className="menu-item">
+          <MenuItem { ...r } />
         </div>
-      ))}
-    </div>
+      ) ) }
+    </nav>
   );
 ```
-3. Last lastly use the `compose` function on each of the imported components to compose a new `CustomMenu` Component.
+3. Last use the `compose` function on each of the imported components to compose a new `CustomMenu` Component.
 ```
   const SubMenu = subMenu.compose({ view: subMenuView });
   const MenuItem = menuItem.compose({ view: menuItemView });
@@ -109,18 +82,25 @@ Simply import a component and pass the required props.
     SubMenu
   });
 
-  const App = () => (
-    <div className="app">
+  ReactDOM.render(
+    <WPProvider {...}>
       <CustomMenu location="SOCIAL" />
-    </div>
-  );
-
-  render(
-    <WPProvider>
-      <App />
     </WPProvider>
   );
 ```
+The following view component have a `compose` functions.
+- **archives**
+- **header**
+- **main**
+- **menu**
+- **attachment**
+- **page**
+- **post**
+- **login**
+- **userControls**
+- **error**
+- **loading**
+And customizing them is generally the same with a few key differences in the logic/state handling layers. Read more about the composer function below.
 
 ## Creating New Composers
 You can create a completely new composer function using the helper composer functions in `lib/composers`. There are two primary functions made `baseComposer` and `queryComposer`. They are similar but their uses are little different.
@@ -347,28 +327,30 @@ add_action( 'graphql_register_types', 'function wp_graphql_schema_patch' );
 
 ## Introspection CLI
 This scripts fetches schema fragment data for use with WPProvider to silent `heuristic fragment` warnings.
-Run the script using `wpg-intro <endpoint> <output>`. `<endpoint>` is the WPGraphQL being used by the app and it's required. `<output>` is the path the output json file should be saved to, it defaults to the project working directory root.
+
+### Setup
+Before using the script you have to install two dependencies. Run the following
+`npm install --save-dev chalk node-fetch`.
+
+### Usage
+Run the script using `wpg-intro <endpoint> <output>`. `<endpoint>` is the WPGraphQL endpoint being used by the app and it's required. `<output>` is the path the output json file should be saved to, it defaults to the project working directory root.
+
 ### Example
+To use introspection data with the `WPProvider` component, import introspection json file as a module and set it to `WPProvider` as the `fragmentData` prop.
 ```
-import React from 'react';
-import ReactDom from 'react-dom';
-import { HttpLink } from 'apollo-link-http';
+...
 import { WPProvider } from 'wp-graphql-composer';
 import json from './path/to/fragment/file';
-import App from './path/to/app';
 
-const httpLink = new HttpLink({
-  uri: 'http://example.com',
-  credentials: 'same-origin',
-});
+...
 
-ReactDom.render(
+ReactDOM.render(
   (
     <WPProvider link={httpLink} fragmentData={json}>
-      <App />
+      ...
     </WPProvider>
   ),
-  document.getElementById('root');
+  document.getElementById('root'),
 );
 ```
 

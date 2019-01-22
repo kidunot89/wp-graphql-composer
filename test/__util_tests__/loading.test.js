@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, cleanup } from 'react-testing-library';
 
-import { Icon, Loading } from '../../dist';
+import { Icon, Loading } from '../../src';
 
 afterEach(cleanup);
 

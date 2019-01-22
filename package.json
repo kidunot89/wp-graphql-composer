@@ -1,7 +1,7 @@
 {
   "name": "wp-graphql-composer",
-  "version": "0.3.1",
-  "description": "A light-weight framework for developing wordpress React-powered WordPress plugin and themes",
+  "version": "0.3.2",
+  "description": "A light-weight React component library for developing React apps served by WPGraphQL servers",
   "keywords": [
     "wp-graphql",
     "wordpress",
@@ -33,19 +33,22 @@
     "bin"
   ],
   "dependencies": {
+    "moment": "^2.22.2",
+    "react-html-parser": "^2.0.2"
+  },
+  "peerDependencies": {
     "apollo-boost": "^0.1.20",
     "chalk": "^2.4.1",
     "graphql": "^14.0.2",
-    "moment": "^2.22.2",
     "node-fetch": "^2.3.0",
     "react": "^16.6.3",
     "react-apollo": "^2.2.4",
     "react-dom": "^16.6.3",
-    "react-html-parser": "^2.0.2",
     "react-router-dom": "^4.3.1",
     "recompose": "^0.30.0"
   },
   "devDependencies": {
+    "apollo-boost": "^0.1.20",
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",
     "@babel/plugin-external-helpers": "^7.0.0",
@@ -55,15 +58,24 @@
     "babel-jest": "^23.6.0",
     "babel-preset-react-app": "^6.1.0",
     "babel-register": "^6.26.0",
+    "chalk": "^2.4.1",
     "classnames": "^2.2.6",
     "coveralls": "^3.0.2",
     "css-loader": "^1.0.1",
     "eslint": "^5.9.0",
+    "graphql": "^14.0.2",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^23.6.0",
+    "node-fetch": "^2.3.0",
     "node-sass": "^4.10.0",
     "postcss-scss": "^2.0.0",
+    "react": "^16.6.3",
+    "react-apollo": "^2.2.4",
+    "react-dom": "^16.6.3",
+    "react-router-dom": "^4.3.1",
     "react-test-renderer": "^16.6.3",
     "react-testing-library": "^5.2.3",
+    "recompose": "^0.30.0",
     "rollup": "^0.67.3",
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.2.0",
@@ -76,16 +88,6 @@
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2"
   },
-  "scripts": {
-    "build": "rollup -c",
-    "watch": "rollup -c -w",
-    "examples:build": "cd \"./examples\" && \"./node_modules/.bin/webpack\"",
-    "examples:watch": "cd \"./examples\" && \"./node_modules/.bin/webpack-dev-server\"",
-    "start": "(npm run watch & npm run examples:watch)",
-    "tester": "jest test --no-cache --watch",
-    "test": "jest test --no-cache",
-    "coveralls": "jest test --coverage --coverageReporters=text-lcov | coveralls"
-  },
   "proxy": "http://wpgraphql.example:8000",
   "browserslist": [
     ">0.2%",
@@ -95,6 +97,17 @@
   ],
   "jest": {
     "coverageDirectory": "./coverage/",
-    "collectCoverage": true
+    "collectCoverage": true,
+    "moduleNameMapper": {
+      "\\.(?:scss|css|sass)$": "identity-obj-proxy"
+    }
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "start": "rollup -c -w",
+    "prepublish": "rm -rf ./dist && npm run build",
+    "tester": "jest test --no-cache --watch",
+    "test": "jest test --no-cache",
+    "coveralls": "jest test --coverage --coverageReporters=text-lcov | coveralls"
   }
 }

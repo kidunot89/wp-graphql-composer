@@ -5,7 +5,7 @@ import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemo
 import { MemoryRouter } from 'react-router-dom';
 
 import introspectionQueryResultData from '../fragmentTypes.json';
-import { CUSTOM_LOGO_QUERY, HEADER_QUERY, Header, header } from '../../dist';
+import { CUSTOM_LOGO_QUERY, HEADER_QUERY, Header, header } from '../../src';
 
 afterEach(cleanup);
 
@@ -21,7 +21,7 @@ const mocks = [
         allSettings: {
           generalSettingsTitle: 'ChumBucket',
           generalSettingsDescription: 'Eat here, dammit!!',
-          homeUrl: 'https://buccogrease.net',
+          generalSettingsUrl: 'https://buccogrease.net',
           __typename: 'Settings'
         },
         themeMods: {
@@ -91,11 +91,10 @@ it(`renders a header component with a logo, title, and description loaded with m
   const title = await waitForElement(() => getByText('ChumBucket'));
   expect(title).toBeTruthy();
   expect(getByText('Eat here, dammit!!')).toBeTruthy();
-  expect(getByTestId('home-link')).toBeTruthy();
 
   const image = await waitForElement(() => getByAltText(/ChumBucket/));
   expect(image).toBeTruthy();
-  expect(image.getAttribute('class')).toEqual('custom-logo');
+  expect(image.classList).toContain('custom-logo');
   expect(image.getAttribute('srcSet'))
     .toEqual('https://source.unsplash.com/150x150 150w, https://source.unsplash.com/300x200 300w, https://source.unsplash.com/768x512 768w, https://source.unsplash.com/1024x682 1024w');
 

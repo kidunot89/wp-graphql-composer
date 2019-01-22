@@ -4,7 +4,7 @@ import ReactHtmlParser from 'react-html-parser';
 import { render, cleanup, waitForElement } from 'react-testing-library';
 import { MockedProvider } from 'react-apollo/test-utils';
 
-import { POST_QUERY, POST_BY_QUERY, Post, post } from '../../dist';
+import { POST_QUERY, POST_BY_QUERY, Post, post } from '../../src';
 
 afterEach(cleanup);
 

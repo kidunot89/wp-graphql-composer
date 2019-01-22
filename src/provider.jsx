@@ -14,11 +14,14 @@ export const createClient = (httpLink, fragmentData) => {
 
   // Add the authorization to the headers
   const authMiddleware = new ApolloLink((operation, forward) => {
-    operation.setContext({
-      headers: {
-        authorization: localStorage.getItem('user-token') || null,
-      } 
-    });
+    const userToken = localStorage.getItem('user-token');
+    if ( userToken ) {
+      operation.setContext({
+        headers: {
+          authorization: userToken,
+        } 
+      });
+    }
 
     return forward(operation);
   });

@@ -13,7 +13,7 @@ import {
   PAGE_QUERY,
   PAGE_BY_QUERY,
   POST_BY_QUERY,
-} from '../../dist';
+} from '../../src';
 
 afterEach(cleanup);
 
@@ -615,7 +615,7 @@ it(`navigates to an posts archive by year`, async () => {
   expect(mainElement).toBeTruthy();
 
   // Confirms Content
-  const content = await waitForElement(() => getByText(/Posts made this year/));
+  const content = await waitForElement(() => getByText(/Posts made this year|Posts made last year|Posts made in 2018/));
   expect(content).toBeTruthy();
 });
 
