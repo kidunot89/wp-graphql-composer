@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/kidunot89/wp-graphql-composer.svg?branch=develop)](https://travis-ci.org/kidunot89/wp-graphql-composer)
 [![Coverage Status](https://coveralls.io/repos/github/kidunot89/wp-graphql-composer/badge.svg?branch=develop)](https://coveralls.io/github/kidunot89/wp-graphql-composer?branch=develop)
 
-WP-GraphQL Composer is a library of [React-Apollo](https://www.apollographql.com/docs/react/) components for create [React](https://reactjs.org) apps served by a WordPress site.
+WP-GraphQL Composer is a library of [React-Apollo](https://www.apollographql.com/docs/react/) components for creating [React](https://reactjs.org) apps served by a WordPress site.
 
 This library was created to be an extension of the [WPGraphQL](https://wpgraphql.com/) plugin, and components and their respective queries won't work without a [GraphQL](https://graphql.org/) server serving a schema identical to the one created by the plugin. I'd recommend using it because no other GraphQL server for WordPress has been developed and tested to the extent of WPGraphQL *to my knowledge*.
 
@@ -35,52 +35,44 @@ Import `HttpLink` from `apollo-link-http` and `WPProvider` from `wp-graphql-comp
   );
 ```
 
-## Customizing Components
-1. To create a new template for say the `Menu` component, import `menu`, `menuItem`, and `subItem` view components from `wp-graphql-composer`.
-`import { menu, menuItem, subItem } from 'wp-graphql-composer';`
-2. Next create new components to be the new view layers for the menu, menu item, and sub menu components. You don't have to change all three for but I am just to show how its done.
+## Composing Custom Components
+The following guide is a simple example of creating a custom `Menu` component with the menu composer. 
+1. Start by importing `menu`, `menuItem`, and `subItem` view components from `wp-graphql-composer`, as well as `isEmpty` and `map` from `lodash`.
 ```
-  const subMenuView = ({ MenuItem, SubMenu, items, ...rest }) => (
-    <ol data-testid="custom-submenu" {...rest}>
-      {_.map(items, ({ id, menuItemId, cssClasses, ...r}) => (
-        <li key={id}>
-          <MenuItem
-            className={\`menuItem \${cssClasses.join(' ')}\`}
-            id={id}
-            {...{ ...r, MenuItem, SubMenu }}
-          />
+...
+import { menu, menuItem, subItem } from 'wp-graphql-composer';
+import { isEmpty, map } from 'lodash';
+```
+2. Next create new components to be the new view layers for the menu, menu item, and sub menu components. It's not required that all three components recomposed, but it is being done in the example for reference. 
+```
+  const subMenuView = ( { MenuItem, items } ) => (
+    <ul className="sub-menu">
+      { _.map( items, ( { id, url, label,  } ) => (
+        <li key={ id }>
+          <a href={ url }>{ label }</a>
         </li>
-      ))}
-    </ol>
+      ) ) }
+    </ul>
   );
 
-  const menuItemView = ({ url, label, items, SubMenu, MenuItem, description, ...rest }) => (
+  const menuItemView = ( { url, label, items, SubMenu, } ) => (
     <React.Fragment>
-      <Link {...{ ...rest, url }}>{label}</Link>
-      {!_.isEmpty(items) && (
-        <SubMenu
-          className="sub-menu"
-          {...{ items, SubMenu, MenuItem}}
-        />
-      )}
+      <a className="menu-item" href={ url }>{ label }</a>
+      { !_.isEmpty( items ) && <SubMenu items={ items } /> }
     </React.Fragment>
   );
 
-  const customMenuView = ({ slug, className, items, MenuItem, SubMenu, ...rest }) => (
-    <div id={\`menu-\${slug}\`} className={className} {...rest}>
-      {_.map(items, ({ id, menuItemId, cssClasses, ...r}) => (
-        <div key={id} className="menu-item">
-          <MenuItem
-            className={\`menuItem \${cssClasses.join(' ')}\`}
-            id={id}
-            {...{ ...r, MenuItem, SubMenu }}
-          />
+  const customMenuView = ( { items, MenuItem, SubMenu } ) => (
+    <nav className="menu">
+      { _.map( items, ( { id, ...r } ) => (
+        <div key={ id } className="menu-item">
+          <MenuItem { ...r } />
         </div>
-      ))}
-    </div>
+      ) ) }
+    </nav>
   );
 ```
-3. Last lastly use the `compose` function on each of the imported components to compose a new `CustomMenu` Component.
+3. Last use the `compose` function on each of the imported components to compose a new `CustomMenu` Component.
 ```
   const SubMenu = subMenu.compose({ view: subMenuView });
   const MenuItem = menuItem.compose({ view: menuItemView });
@@ -90,18 +82,25 @@ Import `HttpLink` from `apollo-link-http` and `WPProvider` from `wp-graphql-comp
     SubMenu
   });
 
-  const App = () => (
-    <div className="app">
+  ReactDOM.render(
+    <WPProvider {...}>
       <CustomMenu location="SOCIAL" />
-    </div>
-  );
-
-  render(
-    <WPProvider>
-      <App />
     </WPProvider>
   );
 ```
+The following view component have a `compose` functions.
+- **archives**
+- **header**
+- **main**
+- **menu**
+- **attachment**
+- **page**
+- **post**
+- **login**
+- **userControls**
+- **error**
+- **loading**
+And customizing them is generally the same with a few key differences in the logic/state handling layers. Read more about the composer function below.
 
 ## Creating New Composers
 You can create a completely new composer function using the helper composer functions in `lib/composers`. There are two primary functions made `baseComposer` and `queryComposer`. They are similar but their uses are little different.
