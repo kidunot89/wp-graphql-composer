@@ -171,7 +171,7 @@ export const baseComposer = ({
     error = defaultForError,
     mapper = defaultMapper,
     extraHocs = defaultExtraHocs,
-    ...rest,
+    ...rest
   } = {}) => compose(
     whileLoading(loading),
     forError(error),
@@ -200,7 +200,7 @@ export const queryComposer = ({
   forError: defaultForError,
   sharedMapper: defaultSharedMapper = p => p,
   extraHocs: defaultExtraHocs = [],
-  ...extraDefaults,
+  ...extraDefaults
 }) =>
   ({
     view = defaultView,
@@ -209,7 +209,7 @@ export const queryComposer = ({
     error = defaultForError,
     sharedMapper = defaultSharedMapper,
     extraHocs = defaultExtraHocs,
-    ...rest,
+    ...rest
   } = {}) => compose(
     composeQuery(queries),
     whileLoading(loading),

@@ -21,7 +21,7 @@ const mocks = [
         allSettings: {
           generalSettingsTitle: 'ChumBucket',
           generalSettingsDescription: 'Eat here, dammit!!',
-          homeUrl: 'https://buccogrease.net',
+          generalSettingsUrl: 'https://buccogrease.net',
           __typename: 'Settings'
         },
         themeMods: {
@@ -91,7 +91,6 @@ it(`renders a header component with a logo, title, and description loaded with m
   const title = await waitForElement(() => getByText('ChumBucket'));
   expect(title).toBeTruthy();
   expect(getByText('Eat here, dammit!!')).toBeTruthy();
-  expect(getByTestId('home-link')).toBeTruthy();
 
   const image = await waitForElement(() => getByAltText(/ChumBucket/));
   expect(image).toBeTruthy();
