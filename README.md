@@ -210,6 +210,26 @@ The default routing function is designed to mimics WordPress' default pretty per
   const Main = main.compose({ view });
 ```
 
+### Attachment
+Renders images stored in the WP media library 
+
+#### Props
+
+#### Notes
+-CUSTOM_LOGO_QUERY unusable until WPGraphQL PR#571 merged*
+
+### Page
+Renders component using WP Page data
+
+#### Notes
+- Schema patch needed for use. Read more [below](#schema-patch).
+
+### Post
+Renders component using WP Post data
+
+#### Notes
+- Schema patch needed for use. Read more [below](#schema-patch).
+
 ### Archives
 Queries a list of WP Posts based on props provided.
 
@@ -226,35 +246,11 @@ Queries a list of WP Posts based on props provided.
 #### Notes
 - Schema patch needed. Read more [below](#schema-patch).
 
-### Attachment
-Renders images stored in the WP media library 
-
-#### Props
-
-#### Notes
--CUSTOM_LOGO_QUERY unusable until WPGraphQL PR#571 merged*
-
 ### Header
 Renders Site Info(Title and Description)
 
 ### Menu
 Renders component using WP Menu data
-
-#### Props
-
-### Page
-Renders component using WP Page data
-
-#### Props
-
-#### Notes
-- Schema patch needed for use. Read more [below](#schema-patch).
-
-### Post
-Renders component using WP Post data
-
-#### Notes
-- Schema patch needed for use. Read more [below](#schema-patch).
 
 ### Login
 Handles user login using `login` mutation provided by the [WPGraphQL-JWT-Authenication]() plugin and the authenication middleware managed by the `WPProvider` component. This means that in order for this component to work the **WPGraphQL-JWT-Authenication** must be installed and activated on the WordPress site behind the GraphQL endpoint.
