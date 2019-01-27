@@ -88,11 +88,12 @@ import { isEmpty, map } from 'lodash';
     </WPProvider>
   );
 ```
-The following view component have a `compose` functions.
+The following view components have a `compose` functions.
 - **archives**
 - **header**
 - **main**
 - **menu**
+- **menuItem**
 - **attachment**
 - **page**
 - **post**
@@ -100,6 +101,7 @@ The following view component have a `compose` functions.
 - **userControls**
 - **error**
 - **loading**
+
 And customizing them is generally the same with a few key differences in the logic/state handling layers. Read more about the composer function below.
 
 ## Creating New Composers
