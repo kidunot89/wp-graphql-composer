@@ -216,7 +216,7 @@ Renders images stored in the WP media library
 #### Props
 
 #### Notes
--CUSTOM_LOGO_QUERY unusable until WPGraphQL PR#571 merged*
+- `CUSTOM_LOGO_QUERY` unusable until WPGraphQL PR#571 merged*
 
 ### Page
 Renders component using WP Page data
