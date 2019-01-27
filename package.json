@@ -1,6 +1,6 @@
 {
   "name": "wp-graphql-composer",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "A light-weight React component library for developing React apps served by WPGraphQL servers",
   "keywords": [
     "wp-graphql",
