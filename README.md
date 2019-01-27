@@ -215,12 +215,12 @@ Queries a list of WP Posts based on props provided.
 
 #### Props
 - **where** *object/shape* filter parameters
-..- **category** *string* post category
-..- **tag** *string* post tag
-..- **year** *integer* year post created
-..- **month** *integer* month post created
-..- **author** *string* post author
-..- **search** *string* post search
+  - **category** *string* post category
+  - **tag** *string* post tag
+  - **year** *integer* year post created
+  - **month** *integer* month post created
+  - **author** *string* post author
+  - **search** *string* post search
 - **first** *integer* post count limit
 
 #### Notes
