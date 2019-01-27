@@ -72,7 +72,7 @@ import { isEmpty, map } from 'lodash';
     </nav>
   );
 ```
-3. Last use the `compose` function on each of the imported components to compose a new `CustomMenu` Component.
+3. Last use the `composer` assigned to `compose` on each of the imported view components to compose a new `CustomMenu` Component.
 ```
   const SubMenu = subMenu.compose({ view: subMenuView });
   const MenuItem = menuItem.compose({ view: menuItemView });
@@ -88,7 +88,7 @@ import { isEmpty, map } from 'lodash';
     </WPProvider>
   );
 ```
-The following view components have a `compose` functions.
+The following view components have a `composer`.
 - **archives**
 - **header**
 - **main**
@@ -102,12 +102,117 @@ The following view components have a `compose` functions.
 - **error**
 - **loading**
 
-And customizing them is generally the same with a few key differences in the logic/state handling layers. Read more about the composer function below.
+And customizing them is generally the same with a few key differences in the logic/state handling layers. Read more about the `composers` below.
 
-## Creating New Composers
-You can create a completely new composer function using the helper composer functions in `lib/composers`. There are two primary functions made `baseComposer` and `queryComposer`. They are similar but their uses are little different.
+## What is a Composer?
+A Composer is component *factory* made up of higher-order component stitched together with **[compose](https://github.com/acdlite/recompose/blob/master/docs/API.md#compose)** from the **[Recompose](https://github.com/acdlite/recompose)** library.
 
-`baseComposer` - composers created from the function create a composer wrapped in an loading component, errorComponent, and propMapper. Example below.
+### How does it work?
+```
+  // attachment.jsx
+  ...
+  /**
+   * Internal dependencies
+   */
+  import { Error, Loading } from '../utils'; 
+  import { queryComposer } from '../composers';
+  import { CUSTOM_LOGO_QUERY, ATTACHMENT_QUERY } from './query';
+  import { customLogoMapper, attachmentMapper } from './attachment-mapper';
+
+  ...
+
+  attachment.compose = queryComposer({
+    view: attachment, 
+    whileLoading: { view: Loading },
+    forError: { view: Error, type: '404-image' },
+    queries: [
+      {
+        query: CUSTOM_LOGO_QUERY,
+        cond: ({ customLogo }) => !!customLogo,
+        mapper: customLogoMapper,
+      },
+      {
+        query: ATTACHMENT_QUERY,
+        cond: ({ customLogo }) => !customLogo,
+        mapper: attachmentMapper,
+        config: {
+          options: ({ id, mediaItemId, slug, uri }) => ({ id, mediaItemId, slug, uri }),
+          skip: ({ id, mediaItemId, slug, uri }) => !id && !mediaItemId && !slug && !uri
+        }
+      },
+    ],
+  });
+
+  const Attachment = attachment.compose();
+
+  export { attachment, Attachment };
+```
+
+The above snippet is the definition for the [Attachment](#attachment) composer.
+
+The first thing you should notice is the `queryComposer` function.
+```
+  attachment.compose = queryComposer({ ... });
+```
+`queryComposer` is one of two functions provided for creating composers. The other is `baseComposer` which is almost identical to `queryComposer` except is doesn't have a `queries` property. The both accept an object as the parameter. The use cases are simple. Use `queryComposer` when you need Apollo/GraphQL logic, otherwise use `baseComposer`. The `Error` and `Loading` composers are created using `baseComposer`.
+
+The next is the first three properties of the options object.
+```
+  view: attachment, 
+  whileLoading: { view: Loading },
+  forError: { view: Error, type: '404-image' },
+```
+`view`, `whileLoading`, and `forError`. These properties define **loading**, **error**, and **view** layers of the factory.
+- **view** *Component* - view layer component rendered after all other layers have been processed and component has left the loading state and no errors have been thrown.
+- **whileLoading** *object* - the first Higher-Order-Component called in composers created by the `baseComposer` and second after `queries` in the `queryComposer`. It renders an alternative component base upon a conditional statement. Its takes an object with two properties as the parameter.
+  - **view** *Component* - component rendered when `cond` returns *truthy* value.
+  - **cond** *function* *optional - conditional to determine if component is in a loading state or not. Component `props` object is provided as a parameter. It defaults to `props => !!props.data.loading`.
+- **forError** *object* - Higher-Order-Component called after `whileLoading`. It handles errors thrown in the **query** layer HOC before its called and catches any error thrown in the layers called after it. And like `whileLoading` it takes an object with properties as the parameter.
+  - **view** *Component* - component rendered when error thrown.
+  - **cond** *function* *optional - conditional to determine if error was flagged in layer called before the error layer. Component `props` object is provided as a parameter. It defaults to `props => (!!props[errorProp] || !!props.error)`.
+  - **errorProp** *string* *optional - path to prop used as `errorProp` in `cond`. Defaults to `data.error.message`.
+  - **type** *string** *optional - error type flagged when `cond` returns *truthy* value.
+
+The last key thing to note is the `queries` property. 
+```
+  queries: [
+    {
+      query: CUSTOM_LOGO_QUERY,
+      cond: ({ customLogo }) => !!customLogo,
+      mapper: customLogoMapper,
+    },
+    {
+      query: ATTACHMENT_QUERY,
+      cond: ({ customLogo }) => !customLogo,
+      mapper: attachmentMapper,
+      config: {
+        options: ({ id, mediaItemId, slug, uri }) => ({ id, mediaItemId, slug, uri }),
+        skip: ({ id, mediaItemId, slug, uri }) => !id && !mediaItemId && !slug && !uri
+      }
+    },
+  ],
+```
+This is one of two properties unique to the `queryComposer` and it's the most complex. 
+- **queries** *array* array of query configurations to be used by the resulting component. The configurations take for properies.
+  - **query** *gql* - query to be requested
+  - **cond** *function* *optional - conditional function to determine if `query` should be used based upon prop provided. Ex. `props => !!props.id`.
+  - **config** *object* *optional - configuration use by ReactApollo's [graphql]() higher-order component
+  - **mapper** *function* *optional - props mapper function called after query is successful and loading state has been passed.
+
+Also, take in account that the first configuration with a `cond` that returns true is the configurations used.
+
+There are a few more properties, you can find out more about in the next section. Try a remember the composers layer hierachy shown below and everything should work out.
+
+```
+// QueryComposer
+...queries(loading(error(queryMapper(...defaultExtraHocs(...extraHocs(sharedMapper(view)))))))
+
+// BaseComposer
+loading(error(...defaultExtraHocs(...extraHocs(mapper(view)))))
+```
+
+## Composers
+`baseComposer` - composers created from the function create a composer wrapped in an loading state higher-order-component, error handling higher-order-component, and a props mapper.
 
 ```
 const composer = baseComposer({

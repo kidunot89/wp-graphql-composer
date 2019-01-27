@@ -104,9 +104,9 @@ export const forError = ({
   );
 
 /**
- * @typedef QueryCondition
- * @property {func} cond - condition function ex. (props) -> !!props.id
+ * @typedef QueryCondition 
  * @property {gql} query - query to be request
+ * @property {func} cond - condition function ex. (props) -> !!props.id
  * @property {object} config - graphql(query, config)
  * @property {func} mapper - props mapper function
  */
@@ -148,7 +148,7 @@ export const utilComposer = ({
 /**
  * Returns composer function that creates a component 
  * wrapped multiple components for handling rudimentary
- * Loading->Error->mapper(view)
+ * Loading->Error->mapper->...extraHocs(view)
  * 
  * @param {React.Component} view - default properties for view layer component
  * @param {object} whileLoading - default properties for loading component

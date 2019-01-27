@@ -33,10 +33,6 @@ export const router = (routesView) => (BaseComponent) => {
     limit,
     ...rest
   }) => {
-    if (!structure) {
-      throw new Error('Pretty permalinks must be on');
-    }
-
     const Routes = routesView({
       limit, 
       pageOnFront, 

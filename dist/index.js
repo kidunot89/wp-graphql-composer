@@ -391,9 +391,9 @@
     }));
   };
   /**
-   * @typedef QueryCondition
-   * @property {func} cond - condition function ex. (props) -> !!props.id
+   * @typedef QueryCondition 
    * @property {gql} query - query to be request
+   * @property {func} cond - condition function ex. (props) -> !!props.id
    * @property {object} config - graphql(query, config)
    * @property {func} mapper - props mapper function
    */
@@ -439,7 +439,7 @@
   /**
    * Returns composer function that creates a component 
    * wrapped multiple components for handling rudimentary
-   * Loading->Error->mapper(view)
+   * Loading->Error->mapper->...extraHocs(view)
    * 
    * @param {React.Component} view - default properties for view layer component
    * @param {object} whileLoading - default properties for loading component
@@ -4510,10 +4510,6 @@
             categoryBase = _ref2.categoryBase,
             limit = _ref2.limit,
             rest = _objectWithoutProperties(_ref2, ["pageForPostsSlug", "pageOnFront", "structure", "tagBase", "categoryBase", "limit"]);
-
-        if (!structure) {
-          throw new Error('Pretty permalinks must be on');
-        }
 
         var Routes = routesView({
           limit: limit,
