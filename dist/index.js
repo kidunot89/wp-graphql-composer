@@ -1,15 +1,15 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('apollo-client'), require('apollo-link'), require('apollo-cache-inmemory'), require('react-apollo'), require('uuid/v3'), require('react-html-parser'), require('moment'), require('react'), require('lodash'), require('recompose'), require('react-router-dom'), require('apollo-boost')) :
-  typeof define === 'function' && define.amd ? define(['exports', 'apollo-client', 'apollo-link', 'apollo-cache-inmemory', 'react-apollo', 'uuid/v3', 'react-html-parser', 'moment', 'react', 'lodash', 'recompose', 'react-router-dom', 'apollo-boost'], factory) :
-  (factory((global.WPGraphQLComposer = {}),global['apollo-client'],global['apollo-link'],global['apollo-cache-inmemory'],global['react-apollo'],global.v3,global['react-html-parser'],global.moment,global.React,global._,global.recompose,global['react-router-dom'],global['apollo-boost']));
-}(this, (function (exports,ApolloClient,apolloLink,apolloCacheInmemory,reactApollo,v3,ReactHtmlParser,moment,React,_,recompose,reactRouterDom,apolloBoost) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('apollo-client'), require('apollo-link'), require('apollo-cache-inmemory'), require('react-apollo'), require('uuid/v3'), require('react-html-parser'), require('moment'), require('react-router-dom'), require('lodash'), require('recompose'), require('apollo-boost'), require('react')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'apollo-client', 'apollo-link', 'apollo-cache-inmemory', 'react-apollo', 'uuid/v3', 'react-html-parser', 'moment', 'react-router-dom', 'lodash', 'recompose', 'apollo-boost', 'react'], factory) :
+  (factory((global.WPGraphQLComposer = {}),global['apollo-client'],global['apollo-link'],global['apollo-cache-inmemory'],global['react-apollo'],global.v3,global['react-html-parser'],global.moment,global['react-router-dom'],global._,global.recompose,global['apollo-boost'],global.React));
+}(this, (function (exports,ApolloClient,apolloLink,apolloCacheInmemory,reactApollo,v3,ReactHtmlParser,moment,reactRouterDom,_,recompose,apolloBoost,React) { 'use strict';
 
   ApolloClient = ApolloClient && ApolloClient.hasOwnProperty('default') ? ApolloClient['default'] : ApolloClient;
   v3 = v3 && v3.hasOwnProperty('default') ? v3['default'] : v3;
   ReactHtmlParser = ReactHtmlParser && ReactHtmlParser.hasOwnProperty('default') ? ReactHtmlParser['default'] : ReactHtmlParser;
   moment = moment && moment.hasOwnProperty('default') ? moment['default'] : moment;
-  var React__default = 'default' in React ? React['default'] : React;
   var ___default = 'default' in _ ? _['default'] : _;
+  var React__default = 'default' in React ? React['default'] : React;
 
   function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
@@ -2294,38 +2294,8 @@
    * User Exporter
    */
 
-  function _templateObject10() {
-    var data = _taggedTemplateLiteral(["\n  mutation UpdateCommentMutation(\n    $type: String,\n    $id: ID!,\n    $content: String!,\n    $date: String!,\n    $clientId: String!,\n  ) {\n    updateComment(input: {\n      type: $type,\n      id: $id,\n      content: $content,\n      date: $date,\n      clientMutationId: $clientId\n    }) {\n      clientMutationId\n      comment {\n        id,\n        commentId,\n        type,\n        content,\n        date\n        author {\n          ... on CommentAuthor {\n            id\n            name\n          },\n          ... on User {\n            id\n            nicename\n          }\n        }\n      }\n    }\n  }\n"]);
-
-    _templateObject10 = function _templateObject10() {
-      return data;
-    };
-
-    return data;
-  }
-
-  function _templateObject9() {
-    var data = _taggedTemplateLiteral(["\n  mutation NewCommentMutation(\n    $author: String,\n    $authorEmail: String,\n    $authorUrl: String,\n    $type: String,\n    $userId: Int,\n    $parent: String,\n    $postId: Int,\n    $content: String!,\n    $date: String!,\n    $clientId: String!,\n  ) {\n    createComment(input: {\n      author: $author,\n      authorEmail: $authorEmail,\n      authorUrl: $authorUrl,\n      type: $type,\n      userId: $userId,\n      parent: $parent,\n      postId: $postId,\n      content: $content,\n      date: $date,\n      clientMutationId: $clientId\n    }) {\n      clientMutationId\n      comment {\n        id,\n        commentId,\n        type,\n        content,\n        date\n        author {\n          ... on CommentAuthor {\n            id\n            name\n          },\n          ... on User {\n            id\n            nicename\n          }\n        }\n      }\n    }\n  }\n"]);
-
-    _templateObject9 = function _templateObject9() {
-      return data;
-    };
-
-    return data;
-  }
-
-  function _templateObject8() {
-    var data = _taggedTemplateLiteral(["\n  mutation DeleteCommentMutation($clientId: String!, $id: ID!) {\n    deleteComment(input: { id: $id, clientMutationId: $clientId }) {\n      clientMutationId\n      comment {\n        id\n      }\n    }\n  }\n"]);
-
-    _templateObject8 = function _templateObject8() {
-      return data;
-    };
-
-    return data;
-  }
-
   function _templateObject7() {
-    var data = _taggedTemplateLiteral(["\n  query PostQuery($postId: ID, $slug: String, $uri: String) {\n    postBy(postId: $postId, slug: $slug, uri: $uri) {\n      id\n      postId\n      slug\n      uri\n      content\n      date\n      modified\n      title\n      permalink\n      author {\n        id\n        userId\n        nicename\n        avatar {\n          url\n          foundAvatar\n        }\n      }\n      categories {\n        nodes {\n          id\n          name\n        }\n      }\n      tags {\n        nodes {\n          id\n          name\n        }\n      }\n      featuredImage {\n        id\n      }\n    }\n  }\n"]);
+    var data = _taggedTemplateLiteral(["\n  query PostQuery($postId: Int, $slug: String, $uri: String) {\n    postBy(postId: $postId, slug: $slug, uri: $uri) {\n      id\n      postId\n      slug\n      uri\n      content\n      date\n      modified\n      title\n      permalink\n      author {\n        id\n        userId\n        nicename\n        avatar {\n          url\n          foundAvatar\n        }\n      }\n      categories {\n        nodes {\n          id\n          name\n        }\n      }\n      tags {\n        nodes {\n          id\n          name\n        }\n      }\n      featuredImage {\n        id\n      }\n    }\n  }\n"]);
 
     _templateObject7 = function _templateObject7() {
       return data;
@@ -2355,7 +2325,7 @@
   }
 
   function _templateObject4() {
-    var data = _taggedTemplateLiteral(["\n  query PageByQuery($uri: String, $pageId: ID) {\n    pageBy(uri: $uri, pageId: $pageId) {\n      id\n      uri\n      pageId\n      title\n      content\n      date\n      modified\n    }\n  }\n"]);
+    var data = _taggedTemplateLiteral(["\n  query PageByQuery($uri: String, $pageId: Int) {\n    pageBy(uri: $uri, pageId: $pageId) {\n      id\n      uri\n      pageId\n      title\n      content\n      date\n      modified\n    }\n  }\n"]);
 
     _templateObject4 = function _templateObject4() {
       return data;
@@ -2404,13 +2374,6 @@
   var POST_COMMENTS_QUERY = apolloBoost.gql(_templateObject5());
   var POST_QUERY = apolloBoost.gql(_templateObject6());
   var POST_BY_QUERY = apolloBoost.gql(_templateObject7());
-  /**
-   * Mutations
-   */
-
-  var DELETE_COMMENT_MUTATION = apolloBoost.gql(_templateObject8());
-  var NEW_COMMENT_MUTATION = apolloBoost.gql(_templateObject9());
-  var UPDATE_COMMENT_MUTATION = apolloBoost.gql(_templateObject10());
 
   /**
    * Maps image source for srcSet attribute
@@ -4215,39 +4178,38 @@
 
   // Header component exporter
 
-  var _jsxFileName$j = "/home/geoff/Dev/web/wp-graphql-composer/src/main/router.js";
-  var mapLoopProps = function mapLoopProps(_ref) {
-    var data = _ref.data,
-        rest = _objectWithoutProperties(_ref, ["data"]);
+  var _jsxFileName$j = "/home/geoff/Dev/web/wp-graphql-composer/src/main/wp-routing.js";
+  /**
+   * Renders routes using react-router-dom to mimic WordPress routing.
+   * 
+   * @return { React.Component }
+   */
 
-    var pageForPostsSlug = _.get(data, 'allSettings.pageForPosts');
-    var pageOnFront = _.get(data, 'allSettings.pageOnFront');
-    var structure = _.get(data, 'allSettings.permalinkStructure');
-    var limit = _.get(data, 'allSettings.readingSettingsPostsPerPage');
-    return _objectSpread({
-      pageForPostsSlug: pageForPostsSlug,
-      pageOnFront: pageOnFront,
-      structure: structure,
-      limit: limit
-    }, rest);
-  };
-  var defaultRoutes = function defaultRoutes(_ref2) {
-    var limit = _ref2.limit,
-        pageOnFront = _ref2.pageOnFront,
-        postsPath = _ref2.postsPath,
-        pageForPostsSlug = _ref2.pageForPostsSlug;
-    return function (_ref3) {
-      var Archive = _ref3.Archive,
-          Page = _ref3.Page,
-          Post = _ref3.Post,
-          frontChildren = _ref3.frontChildren,
-          children = _ref3.children,
-          rest = _objectWithoutProperties(_ref3, ["Archive", "Page", "Post", "frontChildren", "children"]);
+  var wpRoutes = function wpRoutes(_ref) {
+    var limit = _ref.limit,
+        pageOnFront = _ref.pageOnFront,
+        structure = _ref.structure,
+        pageForPostsSlug = _ref.pageForPostsSlug,
+        categoryBase = _ref.categoryBase,
+        tagBase = _ref.tagBase;
+    return function (_ref2) {
+      var Archive = _ref2.archive,
+          Page = _ref2.page,
+          Post = _ref2.post,
+          frontChildren = _ref2.frontChildren,
+          children = _ref2.children,
+          rest = _objectWithoutProperties(_ref2, ["archive", "page", "post", "frontChildren", "children"]);
 
+      // Formats path-to-regex expression from permalink structure
+      if (!structure) {
+        throw new Error('Pretty permalinks must be on');
+      }
+
+      var postsPath = structure.replace(/%([A-z]+)%/g, ':$1').replace(/:(monthnum|day|hour|minute|second)/g, ':$1(\\d{2})').replace(/:(post_id)/g, ':$1(\\d{3})').replace(/:(year)/g, ':$1(\\d{4})');
       return React__default.createElement(reactRouterDom.Switch, Object.assign({}, rest, {
         __source: {
           fileName: _jsxFileName$j,
-          lineNumber: 18
+          lineNumber: 41
         },
         __self: this
       }), frontChildren, React__default.createElement(reactRouterDom.Route, {
@@ -4259,7 +4221,7 @@
               id: pageOnFront,
               __source: {
                 fileName: _jsxFileName$j,
-                lineNumber: 25
+                lineNumber: 48
               },
               __self: this
             });
@@ -4271,21 +4233,21 @@
             showContent: true,
             __source: {
               fileName: _jsxFileName$j,
-              lineNumber: 27
+              lineNumber: 50
             },
             __self: this
           });
         },
         __source: {
           fileName: _jsxFileName$j,
-          lineNumber: 23
+          lineNumber: 46
         },
         __self: this
       }), React__default.createElement(reactRouterDom.Route, {
         exact: true,
         path: "/:year(\\d{4})",
-        render: function render(_ref4) {
-          var params = _ref4.match.params;
+        render: function render(_ref3) {
+          var params = _ref3.match.params;
           var year = parseInt(params.year, 10);
           return React__default.createElement(Archive, {
             first: limit,
@@ -4294,21 +4256,21 @@
             },
             __source: {
               fileName: _jsxFileName$j,
-              lineNumber: 38
+              lineNumber: 61
             },
             __self: this
           });
         },
         __source: {
           fileName: _jsxFileName$j,
-          lineNumber: 31
+          lineNumber: 54
         },
         __self: this
       }), React__default.createElement(reactRouterDom.Route, {
         exact: true,
         path: "/:year(\\d{4})/:monthnum(\\d{2})/:day(\\d{2})",
-        render: function render(_ref5) {
-          var params = _ref5.match.params;
+        render: function render(_ref4) {
+          var params = _ref4.match.params;
           var day = parseInt(params.day, 10);
           var year = parseInt(params.year, 10);
           var month = parseInt(params.monthnum, 10);
@@ -4321,21 +4283,21 @@
             },
             __source: {
               fileName: _jsxFileName$j,
-              lineNumber: 52
+              lineNumber: 75
             },
             __self: this
           });
         },
         __source: {
           fileName: _jsxFileName$j,
-          lineNumber: 43
+          lineNumber: 66
         },
         __self: this
       }), React__default.createElement(reactRouterDom.Route, {
         exact: true,
         path: "/:year(\\d{4})/:monthnum(\\d{2})",
-        render: function render(_ref6) {
-          var params = _ref6.match.params;
+        render: function render(_ref5) {
+          var params = _ref5.match.params;
           var year = parseInt(params.year, 10);
           var month = parseInt(params.monthnum, 10);
           return React__default.createElement(Archive, {
@@ -4346,18 +4308,37 @@
             },
             __source: {
               fileName: _jsxFileName$j,
-              lineNumber: 65
+              lineNumber: 88
             },
             __self: this
           });
         },
         __source: {
           fileName: _jsxFileName$j,
-          lineNumber: 57
+          lineNumber: 80
         },
         __self: this
       }), React__default.createElement(reactRouterDom.Route, {
-        path: "/category/:category",
+        path: "/".concat(categoryBase && categoryBase !== '' ? categoryBase : 'category', "/:category"),
+        render: function render(_ref6) {
+          var params = _ref6.match.params;
+          return React__default.createElement(Archive, {
+            first: limit,
+            where: params,
+            __source: {
+              fileName: _jsxFileName$j,
+              lineNumber: 97
+            },
+            __self: this
+          });
+        },
+        __source: {
+          fileName: _jsxFileName$j,
+          lineNumber: 94
+        },
+        __self: this
+      }), React__default.createElement(reactRouterDom.Route, {
+        path: "/".concat(tagBase && tagBase !== '' ? tagBase : 'tag', "/:tag"),
         render: function render(_ref7) {
           var params = _ref7.match.params;
           return React__default.createElement(Archive, {
@@ -4365,18 +4346,18 @@
             where: params,
             __source: {
               fileName: _jsxFileName$j,
-              lineNumber: 74
+              lineNumber: 105
             },
             __self: this
           });
         },
         __source: {
           fileName: _jsxFileName$j,
-          lineNumber: 71
+          lineNumber: 102
         },
         __self: this
       }), React__default.createElement(reactRouterDom.Route, {
-        path: "/tag/:tag",
+        path: "/author/:author",
         render: function render(_ref8) {
           var params = _ref8.match.params;
           return React__default.createElement(Archive, {
@@ -4384,18 +4365,18 @@
             where: params,
             __source: {
               fileName: _jsxFileName$j,
-              lineNumber: 82
+              lineNumber: 113
             },
             __self: this
           });
         },
         __source: {
           fileName: _jsxFileName$j,
-          lineNumber: 79
+          lineNumber: 110
         },
         __self: this
       }), React__default.createElement(reactRouterDom.Route, {
-        path: "/author/:author",
+        path: "/search/:search",
         render: function render(_ref9) {
           var params = _ref9.match.params;
           return React__default.createElement(Archive, {
@@ -4403,33 +4384,14 @@
             where: params,
             __source: {
               fileName: _jsxFileName$j,
-              lineNumber: 90
+              lineNumber: 122
             },
             __self: this
           });
         },
         __source: {
           fileName: _jsxFileName$j,
-          lineNumber: 87
-        },
-        __self: this
-      }), React__default.createElement(reactRouterDom.Route, {
-        path: "/search/:search",
-        render: function render(_ref10) {
-          var params = _ref10.match.params;
-          return React__default.createElement(Archive, {
-            first: limit,
-            where: params,
-            __source: {
-              fileName: _jsxFileName$j,
-              lineNumber: 99
-            },
-            __self: this
-          });
-        },
-        __source: {
-          fileName: _jsxFileName$j,
-          lineNumber: 95
+          lineNumber: 118
         },
         __self: this
       }), pageForPostsSlug & React__default.createElement(reactRouterDom.Route, {
@@ -4440,53 +4402,6 @@
             first: limit,
             __source: {
               fileName: _jsxFileName$j,
-              lineNumber: 110
-            },
-            __self: this
-          });
-        },
-        __source: {
-          fileName: _jsxFileName$j,
-          lineNumber: 106
-        },
-        __self: this
-      }), React__default.createElement(reactRouterDom.Route, {
-        exact: true,
-        path: postsPath,
-        render: function render(_ref11) {
-          var params = _ref11.match.params;
-          var post_id = params.post_id,
-              postname = params.postname;
-          if (post_id) return React__default.createElement(Post, {
-            postId: post_id,
-            __source: {
-              fileName: _jsxFileName$j,
-              lineNumber: 121
-            },
-            __self: this
-          });
-          if (postname) return React__default.createElement(Post, {
-            slug: postname,
-            __source: {
-              fileName: _jsxFileName$j,
-              lineNumber: 122
-            },
-            __self: this
-          });else throw new Error('Post not found');
-        },
-        __source: {
-          fileName: _jsxFileName$j,
-          lineNumber: 116
-        },
-        __self: this
-      }), children, React__default.createElement(reactRouterDom.Route, {
-        path: "/(.*)",
-        render: function render(_ref12) {
-          var params = _ref12.match.params;
-          return React__default.createElement(Page, {
-            uri: params[0],
-            __source: {
-              fileName: _jsxFileName$j,
               lineNumber: 133
             },
             __self: this
@@ -4494,36 +4409,118 @@
         },
         __source: {
           fileName: _jsxFileName$j,
-          lineNumber: 131
+          lineNumber: 129
+        },
+        __self: this
+      }), React__default.createElement(reactRouterDom.Route, {
+        exact: true,
+        path: postsPath,
+        render: function render(_ref10) {
+          var params = _ref10.match.params;
+          var post_id = params.post_id,
+              postname = params.postname;
+          if (post_id) return React__default.createElement(Post, {
+            postId: post_id,
+            __source: {
+              fileName: _jsxFileName$j,
+              lineNumber: 144
+            },
+            __self: this
+          });
+          if (postname) return React__default.createElement(Post, {
+            slug: postname,
+            __source: {
+              fileName: _jsxFileName$j,
+              lineNumber: 145
+            },
+            __self: this
+          });else throw new Error('Post not found');
+        },
+        __source: {
+          fileName: _jsxFileName$j,
+          lineNumber: 139
+        },
+        __self: this
+      }), children, React__default.createElement(reactRouterDom.Route, {
+        path: "/(.*)",
+        render: function render(_ref11) {
+          var params = _ref11.match.params;
+          return React__default.createElement(Page, {
+            uri: params[0],
+            __source: {
+              fileName: _jsxFileName$j,
+              lineNumber: 156
+            },
+            __self: this
+          });
+        },
+        __source: {
+          fileName: _jsxFileName$j,
+          lineNumber: 154
         },
         __self: this
       }));
     };
   };
-  var routesProcessor = function routesProcessor(routesView) {
+
+  wpRoutes.propTypes = {
+    limit: propTypes.number,
+    pageOnFront: propTypes.string,
+    structure: propTypes.string.isRequired,
+    pageForPostsSlug: propTypes.string,
+    categoryBase: propTypes.string,
+    tagBase: propTypes.string
+  };
+  wpRoutes.defaultProps = {
+    limit: 10,
+    pageOnFront: undefined,
+    pageForPostsSlug: undefined,
+    categoryBase: undefined,
+    tagBase: undefined
+  };
+
+  var mapLoopProps = function mapLoopProps(_ref) {
+    var data = _ref.data,
+        rest = _objectWithoutProperties(_ref, ["data"]);
+
+    var pageForPostsSlug = _.get(data, 'allSettings.readingSettingsPageForPosts');
+    var pageOnFront = _.get(data, 'allSettings.readingSettingsPageOnFront');
+    var structure = _.get(data, 'allSettings.permalinkSettingsStructure');
+    var tagBase = _.get(data, 'allSettings.permalinkSettingsTagBase');
+    var categoryBase = _.get(data, 'allSettings.permalinkSettingsCategoryBase');
+    var limit = _.get(data, 'allSettings.readingSettingsPostsPerPage');
+    return _objectSpread({
+      pageForPostsSlug: pageForPostsSlug,
+      pageOnFront: pageOnFront,
+      structure: structure,
+      tagBase: tagBase,
+      categoryBase: categoryBase,
+      limit: limit
+    }, rest);
+  };
+  var router = function router(routesView) {
     return function (BaseComponent) {
       var BaseFactory = React.createFactory(BaseComponent);
 
-      var RoutesProcessor = function RoutesProcessor(_ref13) {
-        var pageForPostsSlug = _ref13.pageForPostsSlug,
-            pageOnFront = _ref13.pageOnFront,
-            structure = _ref13.structure,
-            limit = _ref13.limit,
-            Archive = _ref13.Archive,
-            Post = _ref13.Post,
-            Page = _ref13.Page,
-            rest = _objectWithoutProperties(_ref13, ["pageForPostsSlug", "pageOnFront", "structure", "limit", "Archive", "Post", "Page"]);
+      var RoutesProcessor = function RoutesProcessor(_ref2) {
+        var pageForPostsSlug = _ref2.pageForPostsSlug,
+            pageOnFront = _ref2.pageOnFront,
+            structure = _ref2.structure,
+            tagBase = _ref2.tagBase,
+            categoryBase = _ref2.categoryBase,
+            limit = _ref2.limit,
+            rest = _objectWithoutProperties(_ref2, ["pageForPostsSlug", "pageOnFront", "structure", "tagBase", "categoryBase", "limit"]);
 
         if (!structure) {
           throw new Error('Pretty permalinks must be on');
-        } // Format post-type path from permalink structure
+        }
 
-
-        var postsPath = structure.replace(/%([A-z]+)%/g, ':$1').replace(/:(monthnum|day|hour|minute|second)/g, ':$1(\\d{2})').replace(/:(post_id)/g, ':$1(\\d{3})').replace(/:(year)/g, ':$1(\\d{4})');
         var Routes = routesView({
           limit: limit,
           pageOnFront: pageOnFront,
-          postsPath: postsPath,
+          structure: structure,
+          tagBase: tagBase,
+          categoryBase: categoryBase,
           pageForPostsSlug: pageForPostsSlug
         });
         return BaseFactory(_objectSpread({
@@ -4540,7 +4537,7 @@
   };
 
   function _templateObject$5() {
-    var data = _taggedTemplateLiteral(["\n  query LoopQuery {\n    allSettings {\n      pageForPosts\n      pageOnFront\n      permalinkStructure\n      readingSettingsPostsPerPage\n    }\n  }\n"]);
+    var data = _taggedTemplateLiteral(["\n  query LoopQuery {\n    allSettings {\n      readingSettingsPageForPosts\n      readingSettingsPageOnFront\n      readingSettingsPostsPerPage\n      permalinkSettingsStructure\n      permalinkSettingsTagBase\n      permalinkSettingsCategoryBase\n    }\n  }\n"]);
 
     _templateObject$5 = function _templateObject() {
       return data;
@@ -4580,20 +4577,19 @@
     }, rest, {
       __source: {
         fileName: _jsxFileName$k,
-        lineNumber: 37
+        lineNumber: 38
       },
       __self: this
-    }), topChildren, React__default.createElement(Routes, Object.assign({
-      Archive: Archive$$1,
-      Page: Page$$1,
-      Post: Post$$1
-    }, {
+    }), topChildren, React__default.createElement(Routes, {
+      archive: Archive$$1,
+      page: Page$$1,
+      post: Post$$1,
       __source: {
         fileName: _jsxFileName$k,
-        lineNumber: 39
+        lineNumber: 40
       },
       __self: this
-    })), children);
+    }), children);
   };
 
   main.propTypes = {
@@ -4625,7 +4621,7 @@
     forError: {
       view: Error$1
     },
-    extraHocs: [routesProcessor(defaultRoutes)]
+    extraHocs: [router(wpRoutes)]
   });
   /**
    * Compose default Main Component
@@ -4670,9 +4666,6 @@
   exports.POST_COMMENTS_QUERY = POST_COMMENTS_QUERY;
   exports.POST_QUERY = POST_QUERY;
   exports.POST_BY_QUERY = POST_BY_QUERY;
-  exports.DELETE_COMMENT_MUTATION = DELETE_COMMENT_MUTATION;
-  exports.NEW_COMMENT_MUTATION = NEW_COMMENT_MUTATION;
-  exports.UPDATE_COMMENT_MUTATION = UPDATE_COMMENT_MUTATION;
   exports.attachment = attachment;
   exports.Attachment = Attachment;
   exports.page = page;
@@ -4698,12 +4691,12 @@
   exports.Header = Header;
   exports.headerMapper = headerMapper;
   exports.HEADER_QUERY = HEADER_QUERY;
+  exports.wpRouting = wpRoutes;
+  exports.mapLoopProps = mapLoopProps;
+  exports.router = router;
+  exports.LOOP_QUERY = LOOP_QUERY;
   exports.main = main;
   exports.Main = Main;
-  exports.mapLoopProps = mapLoopProps;
-  exports.defaultRoutes = defaultRoutes;
-  exports.routesProcessor = routesProcessor;
-  exports.LOOP_QUERY = LOOP_QUERY;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

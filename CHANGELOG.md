@@ -1,6 +1,8 @@
 # Changelog
 ## [0.3.2]
 ### Changes
+- **Main** default routing function renamed and moved to `wpRouting` and moved to [./src/main/wp-routing.js](https://github.com/kidunot89/wp-graphql-composer/blob/develop/src/main/wp-routing.js).
+- **routeProcessor** renamed to `router`.
 - **README.md** updated.
 - **WPProvider** refactored.
 

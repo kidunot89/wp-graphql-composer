@@ -1,4 +1,5 @@
 // Main component exporter
-export * from './main';
-export * from './router' 
+export { default as wpRouting } from './wp-routing';
+export * from './router';
 export * from './query';
+export * from './main';

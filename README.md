@@ -151,15 +151,89 @@ const ComposedComponent = composer({ view, queries, loading, error, extraHocs, m
 ```
 
 ## Components
-- Archives - Schema patch needed. Read more below.
-- Attachment - CUSTOM_LOGO_QUERY unusable until WPGraphQL PR#571 merged
-- Header
-- Main - Schema patch needed. Read more below.
-- Menu
-- Page - Schema patch needed. Read more below.
-- Post - Schema patch needed. Read more below.
-- Login
-- UserControls
+### WPProvider
+
+#### Props
+- **link** *Apollo HttpLink* 
+- **fragmentData** *object/shape*
+
+### Main
+Handles routing by querying for WordPress reading and permalink setting and passing it on to a routing function that process the data and returns a Routing Component that is provided to the view component as prop named `Routes`. The routing function can be substituted for custom Routing setup. The default routing function is designed to mimics WordPress' default pretty permalink and has two key requirements.
+- Pretty permalinks must be enabled on the WordPress site serving the WPGraphQL server.
+- `react-router-dom` package be installed.
+
+#### WPRouting Component props
+- **archive** *Component* component for handling WP Archive routes including `tag` and `category` paths
+- **page** *Component* component for handling WP Page routes
+- **post** *Component* component for handling WP Post routes
+- **frontChildren** *any* for inserting extra routes at the start of `react-router-dom` **Switch** component.
+- **children** *any* for inserting extra routes before the catch-all route of `react-router-dom` **Switch** component.
+
+#### Custom view component example using Routes
+```
+  import React from 'react';
+  import { main } from 'wp-graphql-composer';
+  
+  const view = ({ Archive, Page, Post, Routes, ...rest }) => {
+    return (
+      <main className="main" {...rest}>
+        <Routes archive={Archive} page={Page} post={Post}>
+          <Route exact path="/books/:id" component={Book} />
+        <Routes>
+      </main>
+    );
+  };
+
+  const Main = main.compose({ view });
+```
+
+### Archives
+Queries a list of WP Posts based on props provided.
+
+#### Props
+- **where** *object/shape* filter parameters
+..- **category** *string* post category
+..- **tag** *string* post tag
+..- **year** *integer* year post created
+..- **month** *integer* month post created
+..- **author** *string* post author
+..- **search** *string* post search
+- **first** *integer* post count limit
+
+#### Notes
+- Schema patch needed. Read more [below](#schema-patch).
+
+### Attachment
+Renders images stored in the WP media library 
+
+#### Props
+
+#### Notes
+-CUSTOM_LOGO_QUERY unusable until WPGraphQL PR#571 merged*
+
+### Header
+Renders Site Info(Title and Description)
+
+### Menu
+#### Props
+
+### Page
+#### Props
+
+#### Notes
+- Schema patch needed. Read more [below](#schema-patch).
+
+### Post
+#### Props
+
+#### Notes
+- Schema patch needed. Read more [below](#schema-patch).
+
+### Login
+#### Props
+
+### UserControls
+#### Props
 
 ## Util Components
 - Error

@@ -59,7 +59,7 @@ export const PAGE_QUERY = gql`
 `;
 
 export const PAGE_BY_QUERY = gql`
-  query PageByQuery($uri: String, $pageId: ID) {
+  query PageByQuery($uri: String, $pageId: Int) {
     pageBy(uri: $uri, pageId: $pageId) {
       id
       uri
@@ -150,7 +150,7 @@ export const POST_QUERY = gql`
 `;
 
 export const POST_BY_QUERY = gql`
-  query PostQuery($postId: ID, $slug: String, $uri: String) {
+  query PostQuery($postId: Int, $slug: String, $uri: String) {
     postBy(postId: $postId, slug: $slug, uri: $uri) {
       id
       postId
@@ -184,104 +184,6 @@ export const POST_BY_QUERY = gql`
       }
       featuredImage {
         id
-      }
-    }
-  }
-`;
-
-/**
- * Mutations
- */
-export const DELETE_COMMENT_MUTATION = gql`
-  mutation DeleteCommentMutation($clientId: String!, $id: ID!) {
-    deleteComment(input: { id: $id, clientMutationId: $clientId }) {
-      clientMutationId
-      comment {
-        id
-      }
-    }
-  }
-`;
-
-export const NEW_COMMENT_MUTATION = gql`
-  mutation NewCommentMutation(
-    $author: String,
-    $authorEmail: String,
-    $authorUrl: String,
-    $type: String,
-    $userId: Int,
-    $parent: String,
-    $postId: Int,
-    $content: String!,
-    $date: String!,
-    $clientId: String!,
-  ) {
-    createComment(input: {
-      author: $author,
-      authorEmail: $authorEmail,
-      authorUrl: $authorUrl,
-      type: $type,
-      userId: $userId,
-      parent: $parent,
-      postId: $postId,
-      content: $content,
-      date: $date,
-      clientMutationId: $clientId
-    }) {
-      clientMutationId
-      comment {
-        id,
-        commentId,
-        type,
-        content,
-        date
-        author {
-          ... on CommentAuthor {
-            id
-            name
-          },
-          ... on User {
-            id
-            nicename
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const UPDATE_COMMENT_MUTATION = gql`
-  mutation UpdateCommentMutation(
-    $type: String,
-    $id: ID!,
-    $content: String!,
-    $date: String!,
-    $clientId: String!,
-  ) {
-    updateComment(input: {
-      type: $type,
-      id: $id,
-      content: $content,
-      date: $date,
-      clientMutationId: $clientId
-    }) {
-      clientMutationId
-      comment {
-        id,
-        commentId,
-        type,
-        content,
-        date
-        author {
-          ... on CommentAuthor {
-            id
-            name
-          },
-          ... on User {
-            id
-            nicename
-          }
-        }
       }
     }
   }
