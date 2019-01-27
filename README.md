@@ -196,7 +196,7 @@ This is one of two properties unique to the `queryComposer` and it's the most co
 - **queries** *array* array of query configurations to be used by the resulting component. The configurations take for properies.
   - **query** *gql* - query to be requested
   - **cond** *function* *optional - conditional function to determine if `query` should be used based upon prop provided. Ex. `props => !!props.id`.
-  - **config** *object* *optional - configuration use by ReactApollo's [graphql]() higher-order component
+  - **config** *object* *optional - configuration use by **Apollo**'s [graphql](https://www.apollographql.com/docs/react/api/react-apollo.html#graphql) higher-order component
   - **mapper** *function* *optional - props mapper function called after query is successful and loading state has been passed.
 
 Also, take in account that the first configuration with a `cond` that returns true is the configurations used.
