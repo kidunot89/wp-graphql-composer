@@ -152,15 +152,38 @@ const ComposedComponent = composer({ view, queries, loading, error, extraHocs, m
 
 ## Components
 ### WPProvider
+Handles setting up an `ApolloProvider` and authenication middleware for using **[WPGraphQL JWT Authentication](https://github.com/wp-graphql/wp-graphql-jwt-authentication)**
 
 #### Props
-- **link** *Apollo HttpLink* 
-- **fragmentData** *object/shape*
+- **link** *Apollo HttpLink* HttpLink object used designating the GraphQL server information
+- **fragmentData** *object/shape* - GraphQL server information used to describe query info. See more [below](#introspection-cli).
+
+#### Example
+```
+  import React from react;
+  import ReactDOM from 'react-dom';
+  import { HttpLink } from 'apollo-link-http';
+  import { WPProvider } from 'wp-graphql-composer';
+
+  const httpLink = new HttpLink({
+      uri: endpoint,
+      credentials: 'same-origin',
+  });
+
+  ReactDOM.render (
+    <WPProvider link={ httpLink }>
+      { children }
+    </WPProvider>
+  );
+```
 
 ### Main
-Handles routing by querying for WordPress reading and permalink setting and passing it on to a routing function that process the data and returns a Routing Component that is provided to the view component as prop named `Routes`. The routing function can be substituted for custom Routing setup. The default routing function is designed to mimics WordPress' default pretty permalink and has two key requirements.
+Handles routing by querying for WordPress reading and permalink setting and passing it on to a routing function that process the data and returns a Routing Component that is provided to the view component as prop named `Routes`. The routing function can be substituted for a custom Routing setup. 
+
+#### Notes
+The default routing function is designed to mimics WordPress' default pretty permalink and has two key requirements.
 - Pretty permalinks must be enabled on the WordPress site serving the WPGraphQL server.
-- `react-router-dom` package be installed.
+- `react-router-dom` package be installed and *Main* is wrapped in a `BrowserRouter`, `HashRouter` or the like.
 
 #### WPRouting Component props
 - **archive** *Component* component for handling WP Archive routes including `tag` and `category` paths
@@ -173,7 +196,7 @@ Handles routing by querying for WordPress reading and permalink setting and pass
 ```
   import React from 'react';
   import { main } from 'wp-graphql-composer';
-  
+
   const view = ({ Archive, Page, Post, Routes, ...rest }) => {
     return (
       <main className="main" {...rest}>
@@ -215,25 +238,26 @@ Renders images stored in the WP media library
 Renders Site Info(Title and Description)
 
 ### Menu
+Renders component using WP Menu data
+
 #### Props
 
 ### Page
+Renders component using WP Page data
+
 #### Props
 
 #### Notes
-- Schema patch needed. Read more [below](#schema-patch).
+- Schema patch needed for use. Read more [below](#schema-patch).
 
 ### Post
-#### Props
+Renders component using WP Post data
 
 #### Notes
-- Schema patch needed. Read more [below](#schema-patch).
+- Schema patch needed for use. Read more [below](#schema-patch).
 
 ### Login
-#### Props
-
-### UserControls
-#### Props
+Handles user login using `login` mutation provided by the [WPGraphQL-JWT-Authenication]() plugin and the authenication middleware managed by the `WPProvider` component. This means that in order for this component to work the **WPGraphQL-JWT-Authenication** must be installed and activated on the WordPress site behind the GraphQL endpoint.
 
 ## Util Components
 - Error
@@ -286,63 +310,6 @@ use \WPGraphQL\Data\DataSource;
 
 function wp_graphql_schema_patch() {
   register_graphql_fields( 'Settings', [
-    /** 
-     * Defines the page_on_front setting
-     */
-    'pageOnFront' => [
-      'type' => 'ID',
-      'description' => __( 'The page that should be displayed on the front page' ),
-      'resolve' => function() {
-        $id = get_option( 'page_on_front', null );
-        return ! empty( $id ) ? Relay::toGlobalId( 'page', $id ) : null;
-      },
-    ],
-
-    /** 
-     * Defines the page_for_posts setting
-     */
-    'pageForPosts' => [
-      'type' => 'String',
-      'description' => __( 'The page that displays posts' ),
-      'resolve' => function() {
-        $id = get_option( 'page_for_posts' );
-        return ! empty( $id ) ? DataSource::resolve_post_object( $id, 'page' )->post_name : null;
-      },
-    ],
-
-    /** 
-     * Defines the show_avatar setting
-     */
-    'showAvatars' => [
-      'type' => 'Boolean',
-      'description' => __( 'Avatar Display' ),
-      'resolve' => function() {
-        return get_option( 'show_avatars', false );
-      },
-    ],
-
-    /** 
-     * Defines the users_can_register setting
-     */
-    'usersCanRegister' => [
-      'type' => 'Boolean',
-      'description' => __( 'Anyone can register' ),
-      'resolve' => function() {
-        return get_option( 'users_can_register', false );
-      },
-    ],
-
-    /** 
-     * Defines the permalink_structure setting
-     */
-    'permalinkStructure' => [
-      'type' => 'String',
-      'description' => __( 'The structure of the blog\'s permalinks.' ),
-      'resolve' => function() {
-        return get_option( 'permalink_structure' );
-      },
-    ],
-
     /** 
      * Defines the home_url setting
      */
