@@ -156,7 +156,7 @@ The first thing you should notice is the `queryComposer` function.
 ```
 `queryComposer` is one of two functions provided for creating composers. The other is `baseComposer` which is almost identical to `queryComposer` except is doesn't have a `queries` property. The both accept an object as the parameter. The use cases are simple. Use `queryComposer` when you need Apollo/GraphQL logic, otherwise use `baseComposer`. The `Error` and `Loading` composers are created using `baseComposer`.
 
-The next is the first three properties of the options object.
+The next is the first three properties of the object parameter.
 ```
   view: attachment, 
   whileLoading: { view: Loading },
@@ -193,7 +193,7 @@ The last key thing to note is the `queries` property.
   ],
 ```
 This is one of two properties unique to the `queryComposer` and it's the most complex. 
-- **queries** *array* array of query configurations to be used by the resulting component. The configurations take for properies.
+- **queries** *array* - array of query configurations to be used by the resulting component. The configurations take for properies.
   - **query** *gql* - query to be requested
   - **cond** *function* *optional - conditional function to determine if `query` should be used based upon prop provided. Ex. `props => !!props.id`.
   - **config** *object* *optional - configuration use by **Apollo**'s [graphql](https://www.apollographql.com/docs/react/api/react-apollo.html#graphql) higher-order component
