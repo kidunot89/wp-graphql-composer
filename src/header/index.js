@@ -1,4 +1,4 @@
 // Header component exporter
 export * from './header';
-export * from './header-mapper';
+export * from './mapper';
 export * from './query';

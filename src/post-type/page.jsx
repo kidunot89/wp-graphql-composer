@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import { Error, Loading } from '../utils'; 
 import { queryComposer } from '../composers';
 import { PAGE_QUERY, PAGE_BY_QUERY } from './query';
-import { pageStateManager } from './state-manager';
+import { pageStateManager } from './state-managers';
 
 /**
  * SCSS Module

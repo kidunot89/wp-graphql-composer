@@ -10,7 +10,7 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import { utilComposer } from '../composers';
+import { baseComposer } from '../composers';
 import errorMapper from './process-errors';
 
 /**
@@ -65,7 +65,7 @@ error.defaultProps = {
 /**
  * Creates composer for error component
  */
-error.compose = utilComposer({ defaultView: error, defaultMapper: errorMapper });
+error.compose = baseComposer({ view: error, mapper: errorMapper });
 const Error = error.compose();
 
 export {

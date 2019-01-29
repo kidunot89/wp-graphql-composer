@@ -4,53 +4,11 @@ import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemo
 import { ApolloProvider, graphql, withApollo } from 'react-apollo';
 import v3 from 'uuid/v3';
 import ReactHtmlParser from 'react-html-parser';
-import moment from 'moment';
-import { Link, NavLink, Switch, Route } from 'react-router-dom';
-import _, { each, get, map, omit, isEmpty, filter, sortBy, find } from 'lodash';
+import { NavLink, Switch, Route } from 'react-router-dom';
+import _, { each, get, map, omit, isEmpty, find, filter, sortBy } from 'lodash';
 import { branch, compose, renderComponent, mapProps, setDisplayName, wrapDisplayName } from 'recompose';
 import { gql } from 'apollo-boost';
 import React, { createFactory } from 'react';
-
-function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-    _typeof = function _typeof(obj) {
-      return _typeof2(obj);
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-    };
-  }
-
-  return _typeof(obj);
-}
-
-/**
- * Return compiled className prop
- * 
- * @param {object} props - component props 
- * @param {string} root - base class 
- * @param  {...string} classes - boolean props to be converted to class names
- */
-
-var compileClassName = function compileClassName(props) {
-  var root = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-  var className = root;
-
-  for (var _len = arguments.length, classes = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-    classes[_key - 2] = arguments[_key];
-  }
-
-  each(classes, function (cN) {
-    if (_typeof(cN) === 'object') {
-      if (!!get(props, cN.name)) className = "".concat(className, " ").concat(cN.className);
-    } else if (!!get(props, cN)) className = "".concat(className, " ").concat(cN);
-  });
-  if (!!props.className) className = "".concat(className, " ").concat(props.className);
-  return className;
-};
 
 var _jsxFileName = "/home/geoff/Dev/web/wp-graphql-composer/src/provider.jsx";
 var createClient = function createClient(httpLink, fragmentData) {
@@ -211,6 +169,22 @@ function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
   return Constructor;
+}
+
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+    _typeof = function _typeof(obj) {
+      return _typeof2(obj);
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+    };
+  }
+
+  return _typeof(obj);
 }
 
 function _assertThisInitialized(self) {
@@ -423,9 +397,9 @@ var composeQuery = function composeQuery(queries) {
  * @param {func} defaultMapper 
  */
 
-var utilComposer = function utilComposer(_ref5) {
-  var defaultView = _ref5.defaultView,
-      defaultMapper = _ref5.defaultMapper;
+var baseComposer = function baseComposer(_ref5) {
+  var defaultView = _ref5.view,
+      defaultMapper = _ref5.mapper;
   return function () {
     var _ref6 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         _ref6$view = _ref6.view,
@@ -449,7 +423,7 @@ var utilComposer = function utilComposer(_ref5) {
  * @param {*} extraDefaults - default extra props passed to the view layer component
  */
 
-var baseComposer = function baseComposer(_ref7) {
+var standardComposer = function standardComposer(_ref7) {
   var defaultView = _ref7.view,
       defaultWhileLoading = _ref7.whileLoading,
       defaultForError = _ref7.forError,
@@ -1547,9 +1521,9 @@ loading.defaultProps = {
  * Creates composer for loading component
  */
 
-loading.compose = utilComposer({
-  defaultView: loading,
-  defaultMapper: progressMapper
+loading.compose = baseComposer({
+  view: loading,
+  mapper: progressMapper
 });
 var Loading = loading.compose();
 
@@ -1732,9 +1706,9 @@ error.defaultProps = {
  * Creates composer for error component
  */
 
-error.compose = utilComposer({
-  defaultView: error,
-  defaultMapper: errorMapper
+error.compose = baseComposer({
+  view: error,
+  mapper: errorMapper
 });
 var Error$1 = error.compose();
 
@@ -1783,8 +1757,8 @@ var loginFormHandler = (function () {
 
     var LoginFormHandler =
     /*#__PURE__*/
-    function (_React$Component) {
-      _inherits(LoginFormHandler, _React$Component);
+    function (_React$PureComponent) {
+      _inherits(LoginFormHandler, _React$PureComponent);
 
       function LoginFormHandler(props) {
         var _this;
@@ -1930,7 +1904,7 @@ var loginFormHandler = (function () {
       }]);
 
       return LoginFormHandler;
-    }(React.Component);
+    }(React.PureComponent);
 
     {
       return setDisplayName(wrapDisplayName(BaseComponent, 'loginFormHandler'))(LoginFormHandler);
@@ -1946,8 +1920,8 @@ var userStatusHandler = (function () {
 
     var UserStatusHandler =
     /*#__PURE__*/
-    function (_React$Component) {
-      _inherits(UserStatusHandler, _React$Component);
+    function (_React$PureComponent) {
+      _inherits(UserStatusHandler, _React$PureComponent);
 
       function UserStatusHandler(props) {
         var _this;
@@ -2014,7 +1988,7 @@ var userStatusHandler = (function () {
       }]);
 
       return UserStatusHandler;
-    }(React.Component);
+    }(React.PureComponent);
 
     {
       return setDisplayName(wrapDisplayName(BaseComponent, 'userStatusHandler'))(UserStatusHandler);
@@ -2294,8 +2268,93 @@ var Login = login$1.compose();
  * User Exporter
  */
 
+var postPropsMapper = function postPropsMapper(post) {
+  var featured = get(post, 'featuredImage.id');
+  var details = {
+    author: get(post, 'author'),
+    categories: get(post, 'categories.nodes'),
+    date: get(post, 'date'),
+    modified: get(post, 'modified'),
+    tags: get(post, 'tags.nodes')
+  };
+  return _objectSpread({
+    details: details,
+    featured: featured
+  }, omit(post, ['author', 'categories', 'featuredImage', 'tags', 'date', 'modified']));
+};
+var monthNames = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+var thisYear = new Date().getFullYear();
+
+var getTermName = function getTermName(term_slug, results) {
+  var taxonomy = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'tags';
+  var allTerms = get(results, "[0].details.".concat(taxonomy));
+  var term = find(allTerms, function (_ref) {
+    var slug = _ref.slug;
+    return slug === term_slug;
+  });
+  return term.name;
+};
+/**
+ * Return archive header based on query variables
+ * @param {object} where  
+ * @param {number} resultCount 
+ */
+
+
+var getHeader = function getHeader(_ref2, results) {
+  var category = _ref2.category,
+      tag = _ref2.tag,
+      day = _ref2.day,
+      month = _ref2.month,
+      year = _ref2.year,
+      author = _ref2.author,
+      search = _ref2.search;
+
+  switch (true) {
+    case results.length === 0:
+      return 'No posts found';
+
+    case !!category:
+      return "Posts categorized in ".concat(getTermName(category, results, 'categories'));
+
+    case !!tag:
+      return "Posts tagged in ".concat(getTermName(tag, results));
+
+    case !!year && !!month && !!day:
+      return "Posts made ".concat(monthNames[month], " ").concat(day, ", ").concat(year);
+
+    case !!year && !!month:
+      return "Posts made ".concat(monthNames[month], " ").concat(year);
+
+    case !!year:
+      return thisYear === year ? 'Posts made this year' : thisYear - 1 === year ? 'Posts made last year' : "Posts made in ".concat(year);
+
+    case !!author:
+      return "Posts made by ".concat(author);
+
+    case !!search:
+      return "Searching \"".concat(search, "\"");
+
+    default:
+      return 'Recent Posts';
+  }
+};
+
+var archiveMapper = function archiveMapper(_ref3) {
+  var data = _ref3.data,
+      first = _ref3.first,
+      rest = _objectWithoutProperties(_ref3, ["data", "first"]);
+
+  var resultsData = map(get(data, 'posts.nodes'), postPropsMapper);
+  var header = getHeader(data.variables, resultsData);
+  return _objectSpread({
+    header: header,
+    resultsData: resultsData
+  }, rest);
+};
+
 function _templateObject7() {
-  var data = _taggedTemplateLiteral(["\n  query PostQuery($postId: Int, $slug: String, $uri: String) {\n    postBy(postId: $postId, slug: $slug, uri: $uri) {\n      id\n      postId\n      slug\n      uri\n      content\n      date\n      modified\n      title\n      permalink\n      author {\n        id\n        userId\n        nicename\n        avatar {\n          url\n          foundAvatar\n        }\n      }\n      categories {\n        nodes {\n          id\n          name\n        }\n      }\n      tags {\n        nodes {\n          id\n          name\n        }\n      }\n      featuredImage {\n        id\n      }\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  query ArchiveQuery(\n      $first: Int,\n      $category: String,\n      $tag: String,\n      $year: Int,\n      $month: Int,\n      $day: Int,\n      $author: String,\n      $search: String\n    ) {\n    posts(\n      first: $first,\n      where: {\n        categoryName: $category,\n        tag: $tag,\n        authorName: $author,\n        dateQuery: { year: $year, month: $month, day: $day },\n        search: $search\n      }\n    ) {\n      nodes {\n        id\n        postId\n        excerpt\n        content\n        date\n        modified\n        title\n        permalink\n        featuredImage {\n          id\n          mediaItemId\n          title\n          altText\n          sourceUrl\n        }\n        tags {\n          nodes {\n            id\n            name\n            slug\n          }\n        }\n        categories {\n          nodes {\n            id\n            name\n            slug\n          }\n        }\n        author {\n          id\n          userId\n          nicename\n          avatar {\n            url\n            foundAvatar\n          }\n        }\n      }\n    }\n  }\n"]);
 
   _templateObject7 = function _templateObject7() {
     return data;
@@ -2305,7 +2364,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  var data = _taggedTemplateLiteral(["\n  query PostQuery($id: ID!) {\n    post(id: $id) {\n      id\n      postId\n      slug\n      uri\n      content\n      date\n      modified\n      title\n      permalink\n      author {\n        id\n        userId\n        nicename\n        avatar {\n          url\n          foundAvatar\n        }\n      }\n      categories {\n        nodes {\n          id\n          name\n        }\n      }\n      tags {\n        nodes {\n          id\n          name\n        }\n      }\n      featuredImage {\n        id\n        mediaItemId\n        title\n        altText\n        sourceUrl\n      }\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  query PostQuery($postId: Int, $slug: String, $uri: String) {\n    postBy(postId: $postId, slug: $slug, uri: $uri) {\n      id\n      postId\n      slug\n      uri\n      content\n      date\n      modified\n      title\n      permalink\n      author {\n        id\n        userId\n        nicename\n        avatar {\n          url\n          foundAvatar\n        }\n      }\n      categories {\n        nodes {\n          id\n          name\n        }\n      }\n      tags {\n        nodes {\n          id\n          name\n        }\n      }\n      featuredImage {\n        id\n        mediaItemId\n        title\n        altText\n        sourceUrl\n      }\n    }\n  }\n"]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -2315,7 +2374,7 @@ function _templateObject6() {
 }
 
 function _templateObject5() {
-  var data = _taggedTemplateLiteral(["\n  query PostCommentsQuery($id: ID!) {\n    post(id: $id) {\n      id\n      postId\n      title\n      commentStatus\n      comments{\n        nodes {\n          id\n          commentId\n          type\n          content\n          date\n          author{\n            ... on User {\n              id\n              userId\n              nicename\n              avatar {\n                url\n              }\n            }\n            ... on CommentAuthor {\n              id\n              name\n            }\n          }\n        }\n      }\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  query PostQuery($id: ID!) {\n    post(id: $id) {\n      id\n      postId\n      slug\n      uri\n      content\n      date\n      modified\n      title\n      permalink\n      author {\n        id\n        userId\n        nicename\n        avatar {\n          url\n          foundAvatar\n        }\n      }\n      categories {\n        nodes {\n          id\n          name\n        }\n      }\n      tags {\n        nodes {\n          id\n          name\n        }\n      }\n      featuredImage {\n        id\n        mediaItemId\n        title\n        altText\n        sourceUrl\n      }\n    }\n  }\n"]);
 
   _templateObject5 = function _templateObject5() {
     return data;
@@ -2371,9 +2430,9 @@ var CUSTOM_LOGO_QUERY = gql(_templateObject$1());
 var ATTACHMENT_QUERY = gql(_templateObject2$1());
 var PAGE_QUERY = gql(_templateObject3());
 var PAGE_BY_QUERY = gql(_templateObject4());
-var POST_COMMENTS_QUERY = gql(_templateObject5());
-var POST_QUERY = gql(_templateObject6());
-var POST_BY_QUERY = gql(_templateObject7());
+var POST_QUERY = gql(_templateObject5());
+var POST_BY_QUERY = gql(_templateObject6());
+var ARCHIVE_QUERY = gql(_templateObject7());
 
 /**
  * Maps image source for srcSet attribute
@@ -2604,8 +2663,8 @@ var pageStateManager = function pageStateManager(BaseComponent) {
 
   var PageStateManager =
   /*#__PURE__*/
-  function (_React$Component) {
-    _inherits(PageStateManager, _React$Component);
+  function (_React$PureComponent) {
+    _inherits(PageStateManager, _React$PureComponent);
 
     function PageStateManager() {
       _classCallCheck(this, PageStateManager);
@@ -2641,7 +2700,7 @@ var pageStateManager = function pageStateManager(BaseComponent) {
     }]);
 
     return PageStateManager;
-  }(React.Component);
+  }(React.PureComponent);
 
   {
     return setDisplayName(wrapDisplayName(BaseComponent, 'pageStateManager'))(PageStateManager);
@@ -2654,8 +2713,8 @@ var postStateManager = function postStateManager(BaseComponent) {
 
   var PostStateManager =
   /*#__PURE__*/
-  function (_React$Component2) {
-    _inherits(PostStateManager, _React$Component2);
+  function (_React$PureComponent2) {
+    _inherits(PostStateManager, _React$PureComponent2);
 
     function PostStateManager() {
       _classCallCheck(this, PostStateManager);
@@ -2684,26 +2743,12 @@ var postStateManager = function postStateManager(BaseComponent) {
             rest = _objectWithoutProperties(_this$props4, ["data"]);
 
         var post = get(data, 'post') || get(data, 'postBy');
-        var featured = get(post, 'featuredImage.id');
-        var details = {
-          author: get(post, 'author'),
-          categories: get(post, 'categories.nodes'),
-          date: get(post, 'date'),
-          modified: get(post, 'modified'),
-          tags: get(post, 'tags.nodes')
-        };
-
-        var newProps = _objectSpread({
-          details: details,
-          featured: featured
-        }, omit(post, ['author', 'categories', 'featuredImage', 'tags', 'date', 'modified']), rest);
-
-        return BaseFactory(newProps);
+        return BaseFactory(_objectSpread({}, postPropsMapper(post), rest));
       }
     }]);
 
     return PostStateManager;
-  }(React.Component);
+  }(React.PureComponent);
 
   {
     return setDisplayName(wrapDisplayName(BaseComponent, 'postStateManager'))(PostStateManager);
@@ -2839,11 +2884,11 @@ var post = function post(_ref) {
       title = _ref.title,
       content = _ref.content,
       details = _ref.details,
-      Attachment$$1 = _ref.Attachment,
-      DetailsComponent = _ref.DetailsComponent,
+      Attachment$$1 = _ref.attachmentView,
+      Details = _ref.detailsView,
       Container = _ref.as,
       added = _ref.className,
-      rest = _objectWithoutProperties(_ref, ["featured", "postId", "title", "content", "details", "Attachment", "DetailsComponent", "as", "className"]);
+      rest = _objectWithoutProperties(_ref, ["featured", "postId", "title", "content", "details", "attachmentView", "detailsView", "as", "className"]);
 
   var className = classnames(styles$4.post, added);
   return React.createElement(Container, Object.assign({
@@ -2852,32 +2897,31 @@ var post = function post(_ref) {
   }, rest, {
     __source: {
       fileName: _jsxFileName$b,
-      lineNumber: 42
+      lineNumber: 47
     },
     __self: this
-  }), React.createElement(Attachment$$1, {
+  }), Attachment$$1 && React.createElement(Attachment$$1, {
     id: featured,
     "data-attachment-id": featured,
     className: "wp-post-image",
     fallback: true,
     __source: {
       fileName: _jsxFileName$b,
-      lineNumber: 47
+      lineNumber: 52
     },
     __self: this
-  }), ReactHtmlParser(content), DetailsComponent && React.createElement(DetailsComponent, Object.assign({
+  }), ReactHtmlParser(content), Details && React.createElement(Details, Object.assign({
     className: styles$4.details
   }, details, {
     __source: {
       fileName: _jsxFileName$b,
-      lineNumber: 54
+      lineNumber: 59
     },
     __self: this
   })));
 };
 
 post.propTypes = {
-  Attachment: propTypes.func.isRequired,
   featured: propTypes.number,
   postId: propTypes.number.isRequired,
   title: propTypes.string,
@@ -2904,7 +2948,7 @@ post.defaultProps = {
 
 post.compose = queryComposer({
   view: post,
-  Attachment: Attachment,
+  attachmentView: Attachment,
   queries: [{
     cond: function cond(_ref2) {
       var postId = _ref2.postId,
@@ -2956,325 +3000,10 @@ post.compose = queryComposer({
 
 var Post = post.compose();
 
-/**
- * Post-Type Exporter
- */
-
-var monthNames = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-var thisYear = new Date().getFullYear();
-
-var getTermName = function getTermName(term_slug, results) {
-  var taxonomy = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'tags';
-  var allTerms = get(results, "[0].meta.".concat(taxonomy));
-  var term = find(allTerms, function (_ref) {
-    var slug = _ref.slug;
-    return slug === term_slug;
-  });
-  return term.name;
-};
-/**
- * Return archive header based on query variables
- * @param {object} where  
- * @param {number} resultCount 
- */
-
-
-var getHeader = function getHeader(_ref2, results) {
-  var category = _ref2.category,
-      tag = _ref2.tag,
-      day = _ref2.day,
-      month = _ref2.month,
-      year = _ref2.year,
-      author = _ref2.author,
-      search = _ref2.search;
-
-  switch (true) {
-    case results.length === 0:
-      return 'No posts found';
-
-    case !!category:
-      return "Posts categorized in ".concat(getTermName(category, results, 'categories'));
-
-    case !!tag:
-      return "Posts tagged in ".concat(getTermName(tag, results));
-
-    case !!year && !!month && !!day:
-      return "Posts made ".concat(monthNames[month], " ").concat(day, ", ").concat(year);
-
-    case !!year && !!month:
-      return "Posts made ".concat(monthNames[month], " ").concat(year);
-
-    case !!year:
-      return thisYear === year ? 'Posts made this year' : thisYear - 1 === year ? 'Posts made last year' : "Posts made in ".concat(year);
-
-    case !!author:
-      return "Posts made by ".concat(author);
-
-    case !!search:
-      return "Searching \"".concat(search, "\"");
-
-    default:
-      return 'Recent Posts';
-  }
-};
-
-var archiveMapper = function archiveMapper(_ref3) {
-  var data = _ref3.data,
-      first = _ref3.first,
-      rest = _objectWithoutProperties(_ref3, ["data", "first"]);
-
-  var rawResults = get(data, 'posts.nodes');
-  var resultsData = map(rawResults, function (_ref4) {
-    var author = _ref4.author,
-        categories = _ref4.categories,
-        tags = _ref4.tags,
-        date = _ref4.date,
-        modified = _ref4.modified,
-        __typename = _ref4.__typename,
-        rest = _objectWithoutProperties(_ref4, ["author", "categories", "tags", "date", "modified", "__typename"]);
-
-    return _objectSpread({}, rest, {
-      meta: {
-        author: author,
-        categories: get(categories, 'nodes'),
-        tags: get(tags, 'nodes'),
-        date: date,
-        modified: modified
-      }
-    });
-  });
-  var header = getHeader(data.variables, resultsData);
-  return _objectSpread({
-    header: header,
-    resultsData: resultsData
-  }, rest);
-};
-
-var _jsxFileName$c = "/home/geoff/Dev/web/wp-graphql-composer/src/archives/post-result.jsx";
-var EntryMeta = function EntryMeta(_ref) {
-  var author = _ref.author,
-      categories = _ref.categories,
-      tags = _ref.tags,
-      date = _ref.date,
-      modified = _ref.modified;
-  return React.createElement("div", {
-    className: "entry-footer",
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 12
-    },
-    __self: this
-  }, React.createElement("span", {
-    className: "posted-on",
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 13
-    },
-    __self: this
-  }, React.createElement("span", {
-    className: "screen-reader-text",
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 14
-    },
-    __self: this
-  }, "Posted On"), React.createElement("time", {
-    className: "date",
-    dateTime: date,
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 15
-    },
-    __self: this
-  }, moment(date).format('LLL')), modified !== date && React.createElement("time", {
-    className: "modified",
-    dateTime: modified,
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 19
-    },
-    __self: this
-  }, "Last updated on: ", moment(modified).format('LLL'))), React.createElement("span", {
-    className: "byline",
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 24
-    },
-    __self: this
-  }, React.createElement("span", {
-    className: "screen-reader-text",
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 25
-    },
-    __self: this
-  }, "Author"), React.createElement(Link, {
-    key: author.id,
-    to: "/author/".concat(author.nicename),
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 26
-    },
-    __self: this
-  }, author.nicename)), categories.length > 0 && React.createElement("span", {
-    className: "cat-links",
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 29
-    },
-    __self: this
-  }, React.createElement("span", {
-    className: "screen-reader-text",
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 30
-    },
-    __self: this
-  }, "Categories"), map(categories, function (_ref2) {
-    var id = _ref2.id,
-        name = _ref2.name,
-        slug = _ref2.slug;
-    return React.createElement(Link, {
-      key: id,
-      to: "/category/".concat(slug),
-      __source: {
-        fileName: _jsxFileName$c,
-        lineNumber: 32
-      },
-      __self: this
-    }, name);
-  })), tags.length > 0 && React.createElement("span", {
-    className: "tags-links",
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 37
-    },
-    __self: this
-  }, React.createElement("span", {
-    className: "screen-reader-text",
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 38
-    },
-    __self: this
-  }, "Tags"), map(tags, function (_ref3) {
-    var id = _ref3.id,
-        name = _ref3.name,
-        slug = _ref3.slug;
-    return React.createElement(Link, {
-      key: id,
-      to: "/tag/".concat(slug),
-      __source: {
-        fileName: _jsxFileName$c,
-        lineNumber: 40
-      },
-      __self: this
-    }, name);
-  })));
-};
-
-var postResult = function postResult(_ref4) {
-  var Attachment = _ref4.Attachment,
-      id = _ref4.id,
-      postId = _ref4.postId,
-      showContent = _ref4.showContent,
-      excerpt = _ref4.excerpt,
-      content = _ref4.content,
-      title = _ref4.title,
-      permalink = _ref4.permalink,
-      featuredImage = _ref4.featuredImage,
-      meta = _ref4.meta,
-      rest = _objectWithoutProperties(_ref4, ["Attachment", "id", "postId", "showContent", "excerpt", "content", "title", "permalink", "featuredImage", "meta"]);
-
-  var hasThumbnail = {
-    name: 'featuredImage',
-    className: 'has-post-thumbnail'
-  };
-  var className = compileClassName({
-    featuredImage: featuredImage,
-    meta: meta
-  }, "post-".concat(postId, " post type-post"), hasThumbnail);
-  return React.createElement("article", Object.assign({
-    id: "post-".concat(postId),
-    className: className
-  }, rest, {
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 73
-    },
-    __self: this
-  }), featuredImage && React.createElement(Link, {
-    className: "post-thumbnail",
-    to: "/".concat(permalink),
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 79
-    },
-    __self: this
-  }, React.createElement(Attachment, {
-    className: "attachment-post-thumbnail",
-    mediaItemId: featuredImage.mediaItemId,
-    fallback: true,
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 80
-    },
-    __self: this
-  })), React.createElement("div", {
-    className: "entry-content",
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 87
-    },
-    __self: this
-  }, showContent ? ReactHtmlParser(content) : ReactHtmlParser(excerpt)), React.createElement(EntryMeta, Object.assign({}, meta, {
-    __source: {
-      fileName: _jsxFileName$c,
-      lineNumber: 90
-    },
-    __self: this
-  })));
-};
-
-postResult.propTypes = {
-  Attachment: propTypes.func.isRequired,
-  id: propTypes.string.isRequired,
-  postId: propTypes.number.isRequired,
-  excerpt: propTypes.string,
-  title: propTypes.string,
-  featuredImage: propTypes.shape({}),
-  showContent: propTypes.bool,
-  meta: propTypes.shape({
-    author: propTypes.shape({}),
-    categories: propTypes.arrayOf(propTypes.shape({})),
-    tags: propTypes.arrayOf(propTypes.shape({})),
-    date: propTypes.string,
-    modified: propTypes.string
-  })
-};
-postResult.defaultProps = {
-  content: undefined,
-  title: undefined,
-  featuredImage: undefined,
-  showContent: true,
-  meta: {}
-};
-
-function _templateObject$2() {
-  var data = _taggedTemplateLiteral(["\n  query ArchiveQuery(\n      $first: Int,\n      $category: String,\n      $tag: String,\n      $year: Int,\n      $month: Int,\n      $day: Int,\n      $author: String,\n      $search: String\n    ) {\n    posts(\n      first: $first,\n      where: {\n        categoryName: $category,\n        tag: $tag,\n        authorName: $author,\n        dateQuery: { year: $year, month: $month, day: $day },\n        search: $search\n      }\n    ) {\n      nodes {\n        id\n        postId\n        excerpt\n        content\n        date\n        modified\n        title\n        permalink\n        featuredImage {\n          id\n          mediaItemId\n          title\n          altText\n          sourceUrl\n        }\n        tags {\n          nodes {\n            id\n            name\n            slug\n          }\n        }\n        categories {\n          nodes {\n            id\n            name\n            slug\n          }\n        }\n        author {\n          id\n          userId\n          nicename\n          avatar {\n            url\n            foundAvatar\n          }\n        }\n      }\n    }\n  }\n"]);
-
-  _templateObject$2 = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-var ARCHIVE_QUERY = gql(_templateObject$2());
-
 var css$8 = "/* Extra Small */\n/* Small */\n/* Medium */\n/* Large */\n/* Extra Large */\n";
 styleInject(css$8);
 
-var _jsxFileName$d = "/home/geoff/Dev/web/wp-graphql-composer/src/archives/archive.jsx";
+var _jsxFileName$c = "/home/geoff/Dev/web/wp-graphql-composer/src/post-type/archive.jsx";
 /**
  * Archives view component
  * 
@@ -3284,49 +3013,46 @@ var _jsxFileName$d = "/home/geoff/Dev/web/wp-graphql-composer/src/archives/archi
  */
 
 var archive$1 = function archive(_ref) {
-  var Attachment$$1 = _ref.Attachment,
-      PostResult = _ref.PostResult,
+  var Result = _ref.resultView,
       container = _ref.container,
       containerProps = _ref.containerProps,
       header = _ref.header,
       noHeader = _ref.noHeader,
       resultsData = _ref.resultsData,
-      rest = _objectWithoutProperties(_ref, ["Attachment", "PostResult", "container", "containerProps", "header", "noHeader", "resultsData"]);
+      rest = _objectWithoutProperties(_ref, ["resultView", "container", "containerProps", "header", "noHeader", "resultsData"]);
 
   var Results = function Results() {
     return React.createElement(React.Fragment, {
       __source: {
-        fileName: _jsxFileName$d,
-        lineNumber: 42
+        fileName: _jsxFileName$c,
+        lineNumber: 40
       },
       __self: this
     }, !noHeader && React.createElement("header", {
       className: "page-header",
       __source: {
-        fileName: _jsxFileName$d,
-        lineNumber: 44
+        fileName: _jsxFileName$c,
+        lineNumber: 42
       },
       __self: this
     }, React.createElement("h1", {
       className: "page-title",
       __source: {
-        fileName: _jsxFileName$d,
-        lineNumber: 45
+        fileName: _jsxFileName$c,
+        lineNumber: 43
       },
       __self: this
     }, header)), map(resultsData, function (_ref2) {
       var id = _ref2.id,
           r = _objectWithoutProperties(_ref2, ["id"]);
 
-      return React.createElement(PostResult, Object.assign({}, r, {
+      return React.createElement(Result, Object.assign({}, r, {
         id: id,
         key: id
-      }, _objectSpread({}, rest, {
-        Attachment: Attachment$$1
-      }), {
+      }, rest, {
         __source: {
-          fileName: _jsxFileName$d,
-          lineNumber: 49
+          fileName: _jsxFileName$c,
+          lineNumber: 47
         },
         __self: this
       }));
@@ -3336,14 +3062,14 @@ var archive$1 = function archive(_ref) {
   if (container === true) {
     return React.createElement("div", Object.assign({}, containerProps, {
       __source: {
-        fileName: _jsxFileName$d,
-        lineNumber: 56
+        fileName: _jsxFileName$c,
+        lineNumber: 54
       },
       __self: this
     }), React.createElement(Results, {
       __source: {
-        fileName: _jsxFileName$d,
-        lineNumber: 57
+        fileName: _jsxFileName$c,
+        lineNumber: 55
       },
       __self: this
     }));
@@ -3351,14 +3077,14 @@ var archive$1 = function archive(_ref) {
     var Container = container;
     return React.createElement(Container, Object.assign({}, containerProps, {
       __source: {
-        fileName: _jsxFileName$d,
-        lineNumber: 64
+        fileName: _jsxFileName$c,
+        lineNumber: 62
       },
       __self: this
     }), React.createElement(Results, {
       __source: {
-        fileName: _jsxFileName$d,
-        lineNumber: 65
+        fileName: _jsxFileName$c,
+        lineNumber: 63
       },
       __self: this
     }));
@@ -3366,16 +3092,15 @@ var archive$1 = function archive(_ref) {
 
   return React.createElement(Results, {
     __source: {
-      fileName: _jsxFileName$d,
-      lineNumber: 70
+      fileName: _jsxFileName$c,
+      lineNumber: 68
     },
     __self: this
   });
 };
 
 archive$1.propTypes = {
-  Attachment: propTypes.func.isRequired,
-  PostResult: propTypes.func.isRequired,
+  resultView: propTypes.func.isRequired,
   container: propTypes.oneOfType([propTypes.bool, propTypes.string, propTypes.func]),
   containerProps: propTypes.shape({}),
   noHeader: propTypes.bool,
@@ -3408,8 +3133,7 @@ var whereArgsDefaults = {
 
 archive$1.compose = queryComposer({
   view: archive$1,
-  PostResult: postResult,
-  Attachment: Attachment,
+  resultView: post,
   queries: [{
     query: ARCHIVE_QUERY,
     config: {
@@ -3439,7 +3163,9 @@ archive$1.compose = queryComposer({
 
 var Archive = archive$1.compose();
 
-// Archive component exporter
+/**
+ * Post-Type Exporter
+ */
 
 function _templateObject3$1() {
   var data = _taggedTemplateLiteral(["\n  query MenuItemQuery($id: ID!) {\n    menuItem(id: $id) {\n      childItems{\n        nodes{\n          id\n          menuItemId\n          url\n          label\n          cssClasses\n          description\n        }\n      }\n    }\n  }\n"]);
@@ -3461,16 +3187,16 @@ function _templateObject2$2() {
   return data;
 }
 
-function _templateObject$3() {
+function _templateObject$2() {
   var data = _taggedTemplateLiteral(["\n  query MenuQuery($id: ID!){\n    menu(id: $id) {\n      id\n      slug\n      menuItems{\n\t\t\t\tnodes {\n          id\n          menuItemId\n          url\n          label\n          cssClasses\n          description\n        }\n      }\n    }\n    generalSettings {\n      url\n    }\n  }\n"]);
 
-  _templateObject$3 = function _templateObject() {
+  _templateObject$2 = function _templateObject() {
     return data;
   };
 
   return data;
 }
-var MENU_QUERY = gql(_templateObject$3());
+var MENU_QUERY = gql(_templateObject$2());
 var MENU_WHERE_QUERY = gql(_templateObject2$2());
 var MENU_ITEM_QUERY = gql(_templateObject3$1());
 
@@ -3483,7 +3209,7 @@ var css$9 = ".menu-item-module_description__32JbP {\n  font-size: 80%; }\n\n.men
 var styles$5 = {"description":"menu-item-module_description__32JbP","link":"menu-item-module_link__1Qq1O","text":"menu-item-module_text__3ogqT"};
 styleInject(css$9);
 
-var _jsxFileName$e = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/menu-item.jsx";
+var _jsxFileName$d = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/menu-item.jsx";
 /**
  * MenuItem Link component
  * 
@@ -3492,7 +3218,7 @@ var _jsxFileName$e = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/menu-item
  * @returns {React.Component} 
  */
 
-var Link$1 = function Link$$1(_ref) {
+var Link = function Link(_ref) {
   var url = _ref.url,
       children = _ref.children,
       homeUrl = _ref.homeUrl,
@@ -3501,7 +3227,7 @@ var Link$1 = function Link$$1(_ref) {
   if (!url || url === '#') return React.createElement("span", {
     className: styles$5.text,
     __source: {
-      fileName: _jsxFileName$e,
+      fileName: _jsxFileName$d,
       lineNumber: 32
     },
     __self: this
@@ -3512,7 +3238,7 @@ var Link$1 = function Link$$1(_ref) {
     to: "".concat(url.substring(homeUrl.length))
   }, rest, {
     __source: {
-      fileName: _jsxFileName$e,
+      fileName: _jsxFileName$d,
       lineNumber: 38
     },
     __self: this
@@ -3522,7 +3248,7 @@ var Link$1 = function Link$$1(_ref) {
     href: url
   }, rest, {
     __source: {
-      fileName: _jsxFileName$e,
+      fileName: _jsxFileName$d,
       lineNumber: 44
     },
     __self: this
@@ -3549,31 +3275,31 @@ var menuItem = function menuItem(_ref2) {
 
   return React.createElement(React.Fragment, {
     __source: {
-      fileName: _jsxFileName$e,
+      fileName: _jsxFileName$d,
       lineNumber: 62
     },
     __self: this
   }, React.createElement(MenuContext.Consumer, {
     __source: {
-      fileName: _jsxFileName$e,
+      fileName: _jsxFileName$d,
       lineNumber: 63
     },
     __self: this
   }, function (_ref3) {
     var homeUrl = _ref3.homeUrl;
-    return React.createElement(Link$1, Object.assign({}, _objectSpread({}, rest, {
+    return React.createElement(Link, Object.assign({}, _objectSpread({}, rest, {
       url: url,
       homeUrl: homeUrl
     }), {
       __source: {
-        fileName: _jsxFileName$e,
+        fileName: _jsxFileName$d,
         lineNumber: 65
       },
       __self: this
     }), label, description && React.createElement("div", {
       className: styles$5.description,
       __source: {
-        fileName: _jsxFileName$e,
+        fileName: _jsxFileName$d,
         lineNumber: 68
       },
       __self: this
@@ -3584,7 +3310,7 @@ var menuItem = function menuItem(_ref2) {
     MenuItem: MenuItem
   }, {
     __source: {
-      fileName: _jsxFileName$e,
+      fileName: _jsxFileName$d,
       lineNumber: 75
     },
     __self: this
@@ -3655,7 +3381,7 @@ var css$b = ".sub-menu-module_dropdown__vNhpq {\n  flex-basis: auto;\n  flex-gro
 var styles$6 = {"dropdown":"sub-menu-module_dropdown__vNhpq","menu":"sub-menu-module_menu__VggfG","on":"sub-menu-module_on__opD6y"};
 styleInject(css$b);
 
-var _jsxFileName$f = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/sub-menu.jsx";
+var _jsxFileName$e = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/sub-menu.jsx";
 /**
  * SubMenu view component
  */
@@ -3700,7 +3426,7 @@ function (_React$Component) {
 
       return React.createElement(React.Fragment, {
         __source: {
-          fileName: _jsxFileName$f,
+          fileName: _jsxFileName$e,
           lineNumber: 51
         },
         __self: this
@@ -3709,7 +3435,7 @@ function (_React$Component) {
         "aria-expanded": isCollapsed,
         onClick: this.toggle,
         __source: {
-          fileName: _jsxFileName$f,
+          fileName: _jsxFileName$e,
           lineNumber: 52
         },
         __self: this
@@ -3718,7 +3444,7 @@ function (_React$Component) {
         name: "arrow_drop_down",
         dark: true,
         __source: {
-          fileName: _jsxFileName$f,
+          fileName: _jsxFileName$e,
           lineNumber: 57
         },
         __self: this
@@ -3726,7 +3452,7 @@ function (_React$Component) {
         className: className
       }, rest, {
         __source: {
-          fileName: _jsxFileName$f,
+          fileName: _jsxFileName$e,
           lineNumber: 59
         },
         __self: this
@@ -3742,7 +3468,7 @@ function (_React$Component) {
           className: itemClassName,
           key: id,
           __source: {
-            fileName: _jsxFileName$f,
+            fileName: _jsxFileName$e,
             lineNumber: 69
           },
           __self: this
@@ -3753,7 +3479,7 @@ function (_React$Component) {
           SubMenu: SubMenu
         }), {
           __source: {
-            fileName: _jsxFileName$f,
+            fileName: _jsxFileName$e,
             lineNumber: 74
           },
           __self: this
@@ -3796,14 +3522,14 @@ subMenu.compose = baseComposer({
 
 var SubMenu = subMenu.compose();
 
-var _jsxFileName$g = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/state-manager.js";
+var _jsxFileName$f = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/state-manager.js";
 var menuStateManager = function menuStateManager(BaseComponent) {
   var BaseFactory = React.createFactory(BaseComponent);
 
   var MenuStateManager =
   /*#__PURE__*/
-  function (_React$Component) {
-    _inherits(MenuStateManager, _React$Component);
+  function (_React$PureComponent) {
+    _inherits(MenuStateManager, _React$PureComponent);
 
     function MenuStateManager(props) {
       var _this;
@@ -3832,13 +3558,13 @@ var menuStateManager = function menuStateManager(BaseComponent) {
             homeUrl: homeUrl
           },
           __source: {
-            fileName: _jsxFileName$g,
+            fileName: _jsxFileName$f,
             lineNumber: 25
           },
           __self: this
         }, React.createElement(BaseFactory, Object.assign({}, newProps, {
           __source: {
-            fileName: _jsxFileName$g,
+            fileName: _jsxFileName$f,
             lineNumber: 26
           },
           __self: this
@@ -3847,7 +3573,7 @@ var menuStateManager = function menuStateManager(BaseComponent) {
     }]);
 
     return MenuStateManager;
-  }(React.Component);
+  }(React.PureComponent);
 
   {
     return setDisplayName(wrapDisplayName(BaseComponent, 'menuStateManager'))(MenuStateManager);
@@ -3856,7 +3582,7 @@ var menuStateManager = function menuStateManager(BaseComponent) {
   return MenuStateManager;
 };
 
-var _jsxFileName$h = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/menu.jsx";
+var _jsxFileName$g = "/home/geoff/Dev/web/wp-graphql-composer/src/menu/menu.jsx";
 /**
  * Menu view component
  * 
@@ -3880,7 +3606,7 @@ var menu = function menu(_ref) {
     className: className
   }, rest, {
     __source: {
-      fileName: _jsxFileName$h,
+      fileName: _jsxFileName$g,
       lineNumber: 36
     },
     __self: this
@@ -3896,7 +3622,7 @@ var menu = function menu(_ref) {
       className: itemClassName,
       key: id,
       __source: {
-        fileName: _jsxFileName$h,
+        fileName: _jsxFileName$g,
         lineNumber: 46
       },
       __self: this
@@ -3907,7 +3633,7 @@ var menu = function menu(_ref) {
       MenuItem: MenuItem$$1
     }), {
       __source: {
-        fileName: _jsxFileName$h,
+        fileName: _jsxFileName$g,
         lineNumber: 51
       },
       __self: this
@@ -4044,21 +3770,21 @@ var headerMapper = function headerMapper(_ref) {
   }, rest);
 };
 
-function _templateObject$4() {
+function _templateObject$3() {
   var data = _taggedTemplateLiteral(["\n  query HeaderQuery {\n    allSettings {\n      generalSettingsTitle\n      generalSettingsDescription\n      generalSettingsUrl\n    }\n  }\n"]);
 
-  _templateObject$4 = function _templateObject() {
+  _templateObject$3 = function _templateObject() {
     return data;
   };
 
   return data;
 }
-var HEADER_QUERY = gql(_templateObject$4());
+var HEADER_QUERY = gql(_templateObject$3());
 
 var css$c = "/**\n * HEADER COMPONENT\n */\n.header_app-header__1T7Ws {\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: flex-end;\n  padding-right: 2em; }\n\n.header_app-header__1T7Ws > * {\n  margin: 0em auto 1em; }\n\n.header_app-header__1T7Ws .header_site-branding__2yqBG {\n  display: inline-flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 2em 4em 1.25em; }\n\n.header_app-header__1T7Ws .header_site-branding__2yqBG .header_site-logo__1zZZQ {\n  margin: 0 auto; }\n\n.header_app-header__1T7Ws .header_site-branding__2yqBG .header_site-title__2g7Ck {\n  font-size: 2em; }\n\n.header_app-header__1T7Ws .header_site-branding__2yqBG .header_site-description__RcEO_ {\n  font-size: 1.9em; }\n";
 styleInject(css$c);
 
-var _jsxFileName$i = "/home/geoff/Dev/web/wp-graphql-composer/src/header/header.jsx";
+var _jsxFileName$h = "/home/geoff/Dev/web/wp-graphql-composer/src/header/header.jsx";
 /**
  * Header view component
  * 
@@ -4080,7 +3806,7 @@ var header$1 = function header(_ref) {
     role: "banner"
   }, rest, {
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$h,
       lineNumber: 31
     },
     __self: this
@@ -4088,7 +3814,7 @@ var header$1 = function header(_ref) {
     id: "masthead",
     className: "site-branding",
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$h,
       lineNumber: 32
     },
     __self: this
@@ -4102,27 +3828,27 @@ var header$1 = function header(_ref) {
       padding: '2em'
     },
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$h,
       lineNumber: 33
     },
     __self: this
   }), React.createElement("h1", {
     className: "site-title",
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$h,
       lineNumber: 43
     },
     __self: this
   }, title), React.createElement("h1", {
     className: "site-description",
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$h,
       lineNumber: 44
     },
     __self: this
   }, React.createElement("small", {
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$h,
       lineNumber: 44
     },
     __self: this
@@ -4130,7 +3856,7 @@ var header$1 = function header(_ref) {
     id: "main-navigation",
     className: "app-navigation",
     __source: {
-      fileName: _jsxFileName$i,
+      fileName: _jsxFileName$h,
       lineNumber: 46
     },
     __self: this
@@ -4178,7 +3904,7 @@ var Header = header$1.compose();
 
 // Header component exporter
 
-var _jsxFileName$j = "/home/geoff/Dev/web/wp-graphql-composer/src/main/wp-routing.js";
+var _jsxFileName$i = "/home/geoff/Dev/web/wp-graphql-composer/src/main/wp-routing.js";
 /**
  * Renders routes using react-router-dom to mimic WordPress routing.
  * 
@@ -4208,7 +3934,7 @@ var wpRoutes = function wpRoutes(_ref) {
     var postsPath = structure.replace(/%([A-z]+)%/g, ':$1').replace(/:(monthnum|day|hour|minute|second)/g, ':$1(\\d{2})').replace(/:(post_id)/g, ':$1(\\d{3})').replace(/:(year)/g, ':$1(\\d{4})');
     return React.createElement(Switch, Object.assign({}, rest, {
       __source: {
-        fileName: _jsxFileName$j,
+        fileName: _jsxFileName$i,
         lineNumber: 41
       },
       __self: this
@@ -4220,7 +3946,7 @@ var wpRoutes = function wpRoutes(_ref) {
           return React.createElement(Page, {
             id: pageOnFront,
             __source: {
-              fileName: _jsxFileName$j,
+              fileName: _jsxFileName$i,
               lineNumber: 48
             },
             __self: this
@@ -4232,14 +3958,14 @@ var wpRoutes = function wpRoutes(_ref) {
           noHeader: true,
           showContent: true,
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$i,
             lineNumber: 50
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$j,
+        fileName: _jsxFileName$i,
         lineNumber: 46
       },
       __self: this
@@ -4255,14 +3981,14 @@ var wpRoutes = function wpRoutes(_ref) {
             year: year
           },
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$i,
             lineNumber: 61
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$j,
+        fileName: _jsxFileName$i,
         lineNumber: 54
       },
       __self: this
@@ -4282,14 +4008,14 @@ var wpRoutes = function wpRoutes(_ref) {
             day: day
           },
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$i,
             lineNumber: 75
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$j,
+        fileName: _jsxFileName$i,
         lineNumber: 66
       },
       __self: this
@@ -4307,14 +4033,14 @@ var wpRoutes = function wpRoutes(_ref) {
             year: year
           },
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$i,
             lineNumber: 88
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$j,
+        fileName: _jsxFileName$i,
         lineNumber: 80
       },
       __self: this
@@ -4326,14 +4052,14 @@ var wpRoutes = function wpRoutes(_ref) {
           first: limit,
           where: params,
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$i,
             lineNumber: 97
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$j,
+        fileName: _jsxFileName$i,
         lineNumber: 94
       },
       __self: this
@@ -4345,14 +4071,14 @@ var wpRoutes = function wpRoutes(_ref) {
           first: limit,
           where: params,
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$i,
             lineNumber: 105
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$j,
+        fileName: _jsxFileName$i,
         lineNumber: 102
       },
       __self: this
@@ -4364,14 +4090,14 @@ var wpRoutes = function wpRoutes(_ref) {
           first: limit,
           where: params,
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$i,
             lineNumber: 113
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$j,
+        fileName: _jsxFileName$i,
         lineNumber: 110
       },
       __self: this
@@ -4383,14 +4109,14 @@ var wpRoutes = function wpRoutes(_ref) {
           first: limit,
           where: params,
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$i,
             lineNumber: 122
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$j,
+        fileName: _jsxFileName$i,
         lineNumber: 118
       },
       __self: this
@@ -4401,14 +4127,14 @@ var wpRoutes = function wpRoutes(_ref) {
         return React.createElement(Archive, {
           first: limit,
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$i,
             lineNumber: 133
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$j,
+        fileName: _jsxFileName$i,
         lineNumber: 129
       },
       __self: this
@@ -4422,7 +4148,7 @@ var wpRoutes = function wpRoutes(_ref) {
         if (post_id) return React.createElement(Post, {
           postId: post_id,
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$i,
             lineNumber: 144
           },
           __self: this
@@ -4430,14 +4156,14 @@ var wpRoutes = function wpRoutes(_ref) {
         if (postname) return React.createElement(Post, {
           slug: postname,
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$i,
             lineNumber: 145
           },
           __self: this
         });else throw new Error('Post not found');
       },
       __source: {
-        fileName: _jsxFileName$j,
+        fileName: _jsxFileName$i,
         lineNumber: 139
       },
       __self: this
@@ -4448,14 +4174,14 @@ var wpRoutes = function wpRoutes(_ref) {
         return React.createElement(Page, {
           uri: params[0],
           __source: {
-            fileName: _jsxFileName$j,
+            fileName: _jsxFileName$i,
             lineNumber: 156
           },
           __self: this
         });
       },
       __source: {
-        fileName: _jsxFileName$j,
+        fileName: _jsxFileName$i,
         lineNumber: 154
       },
       __self: this
@@ -4532,22 +4258,22 @@ var router = function router(routesView) {
   };
 };
 
-function _templateObject$5() {
+function _templateObject$4() {
   var data = _taggedTemplateLiteral(["\n  query LoopQuery {\n    allSettings {\n      readingSettingsPageForPosts\n      readingSettingsPageOnFront\n      readingSettingsPostsPerPage\n      permalinkSettingsStructure\n      permalinkSettingsTagBase\n      permalinkSettingsCategoryBase\n    }\n  }\n"]);
 
-  _templateObject$5 = function _templateObject() {
+  _templateObject$4 = function _templateObject() {
     return data;
   };
 
   return data;
 }
-var LOOP_QUERY = gql(_templateObject$5());
+var LOOP_QUERY = gql(_templateObject$4());
 
 var css$d = ".main-module_main__20LrB {\n  max-width: 100vw;\n  margin: 0 auto;\n  overflow-x: hidden; }\n";
 var styles$7 = {"main":"main-module_main__20LrB"};
 styleInject(css$d);
 
-var _jsxFileName$k = "/home/geoff/Dev/web/wp-graphql-composer/src/main/main.jsx";
+var _jsxFileName$j = "/home/geoff/Dev/web/wp-graphql-composer/src/main/main.jsx";
 /**
  * Main view component
  * 
@@ -4572,8 +4298,8 @@ var main = function main(_ref) {
     className: className
   }, rest, {
     __source: {
-      fileName: _jsxFileName$k,
-      lineNumber: 38
+      fileName: _jsxFileName$j,
+      lineNumber: 37
     },
     __self: this
   }), topChildren, React.createElement(Routes, {
@@ -4581,8 +4307,8 @@ var main = function main(_ref) {
     page: Page$$1,
     post: Post$$1,
     __source: {
-      fileName: _jsxFileName$k,
-      lineNumber: 40
+      fileName: _jsxFileName$j,
+      lineNumber: 39
     },
     __self: this
   }), children);
@@ -4632,5 +4358,5 @@ var Main = main.compose();
  * Default Template Exporter
  */
 
-export { compileClassName, createClient, WPProvider, whileLoading, errorHandler, forError, composeQuery, utilComposer, baseComposer, queryComposer, loading, Loading, progressMapper, error, Error$1 as Error, errorMapper, Icon, VIEWER_QUERY, LOGIN_MUTATION, login$1 as login, Login, userControls$1 as userControls, UserControls, CUSTOM_LOGO_QUERY, ATTACHMENT_QUERY, PAGE_QUERY, PAGE_BY_QUERY, POST_COMMENTS_QUERY, POST_QUERY, POST_BY_QUERY, attachment, Attachment, page, Page, post, Post, archive$1 as archive, Archive, ARCHIVE_QUERY, MENU_QUERY, MENU_WHERE_QUERY, MENU_ITEM_QUERY, menuInitialState, MenuContext, menu, Menu, menuItem, MenuItem, Link$1 as Link, subMenu, SubMenu, header$1 as header, Header, headerMapper, HEADER_QUERY, wpRoutes as wpRouting, mapLoopProps, router, LOOP_QUERY, main, Main };
+export { createClient, WPProvider, whileLoading, errorHandler, forError, composeQuery, baseComposer, standardComposer, queryComposer, loading, Loading, progressMapper, error, Error$1 as Error, errorMapper, Icon, VIEWER_QUERY, LOGIN_MUTATION, login$1 as login, Login, userControls$1 as userControls, UserControls, postPropsMapper, archiveMapper, CUSTOM_LOGO_QUERY, ATTACHMENT_QUERY, PAGE_QUERY, PAGE_BY_QUERY, POST_QUERY, POST_BY_QUERY, ARCHIVE_QUERY, attachment, Attachment, page, Page, post, Post, archive$1 as archive, Archive, MENU_QUERY, MENU_WHERE_QUERY, MENU_ITEM_QUERY, menuInitialState, MenuContext, menu, Menu, menuItem, MenuItem, Link, subMenu, SubMenu, header$1 as header, Header, headerMapper, HEADER_QUERY, wpRoutes as wpRouting, mapLoopProps, router, LOOP_QUERY, main, Main };
 //# sourceMappingURL=index.module.js.map

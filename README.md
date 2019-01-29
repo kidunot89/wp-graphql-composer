@@ -154,7 +154,7 @@ The first thing you should notice is the `queryComposer` function.
 ```
   attachment.compose = queryComposer({ ... });
 ```
-`queryComposer` is one of two functions provided for creating composers. The other is `baseComposer` which is almost identical to `queryComposer` except is doesn't have a `queries` property. The both accept an object as the parameter. The use cases are simple. Use `queryComposer` when you need Apollo/GraphQL logic, otherwise use `baseComposer`. The `Error` and `Loading` composers are created using `baseComposer`.
+`queryComposer` is one of three functions provided for creating composers. The others are `baseComposer` and `standardComposer`. `standardComposer` is almost identical to `queryComposer` except is doesn't have a `queries`, and `sharedMapper` is simply called `mapper` property. The both accept an object as the parameter. The use cases are simple. Use `queryComposer` if you need Apollo/GraphQL query data with reusable logic, use `standardComposer` if you need a `loading` and `error-handling` layer, and for simply reusable logic use `baseComposer`. The `Error` and `Loading` composers are created using `baseComposer`.
 
 The next is the first three properties of the object parameter.
 ```
@@ -212,49 +212,62 @@ loading(error(...defaultExtraHocs(...extraHocs(mapper(view)))))
 ```
 
 ## Composers
-`baseComposer` - composers created from the function create a composer wrapped in an loading state higher-order-component, error handling higher-order-component, and a props mapper.
-
+`baseComposer` - 
 ```
-const composer = baseComposer({
-  // default view layer component
-  view: ViewComponent,
-  // default properties passed to loading state handler 
-  loading: { view: LoadingViewComponent, cond: props => !!props.loading },
-  // default properties passed to error state handler
-  error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' },
-  // default HOCs wrapped around the mapper and view layer component
-  extraHocs: [],
-  // default mapper function
-  mapper: props => props,
-  // all other parameters are pass to the view component as a prop.
-  ...extraDefaults,
-})
+  const composer = baseComposer({
+    // default view layer component
+    view: viewComponent,
+    // default mapper function
+    mapper: propsMapper
+  });
 
-// all default values can be overwritten in composed instances
-const ComposedComponent = composer({ view, loading, error, extraHocs, mapper }) 
+  // all default values can be overwritten in composed instances
+  const ComposedComponent = composer({ newView, newMapper });
 ```
 
-`queryComposer` - similar to `baseComposer` but it includes conditional GraphQL HOCs each can have a `cond` function prop and `mapper`.
-```
-const composer = queryComposer({
-  // default view layer component
-  view: ViewComponent,
-  // default query properties
-  queries: [{ query: GRAPHQL_QUERY, config: { options: {...}, ... }, mapper }]
-  // default properties passed to loading state handler
-  loading: { view: LoadingViewComponent, cond: props => !!props.loading }, 
-  // default properties passed to error state handler
-  error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' }, 
-  // default HOCs wrapped around the mapper and view layer component
-  extraHocs: [],
-  // default mapper function shared by all queries
-  sharedMapper: props => props,
-  // all other parameters are pass to the view component as a props.
-  ...extraDefaults,
-})
+`standardComposer` - composers/factories created from this function are for creating components that require reusable logic wrapped in an loading state higher-order-component, error handling higher-order-component, and a props mapper.
 
-// just like with baseComposer all default values can be overwritten in composed instances
-const ComposedComponent = composer({ view, queries, loading, error, extraHocs, mapper }) 
+```
+  const composer = standardComposer({
+    // default view layer component
+    view: ViewComponent,
+    // default properties passed to loading state handler 
+    loading: { view: LoadingViewComponent, cond: props => !!props.loading },
+    // default properties passed to error state handler
+    error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' },
+    // default HOCs wrapped around the mapper and view layer component
+    extraHocs: [],
+    // default mapper function
+    mapper: props => props,
+    // all other parameters are pass to the view component as a prop.
+    ...extraDefaults,
+  });
+
+  // all default values can be overwritten in composed instances
+  const ComposedComponent = composer({ view, loading, error, extraHocs, mapper });
+```
+
+`queryComposer` - similar to `standardComposer` but it includes conditional GraphQL HOCs each can have a `cond` function prop and `mapper`.
+```
+  const composer = queryComposer({
+    // default view layer component
+    view: ViewComponent,
+    // default query properties
+    queries: [{ query: GRAPHQL_QUERY, config: { options: {...}, ... }, mapper }]
+    // default properties passed to loading state handler
+    loading: { view: LoadingViewComponent, cond: props => !!props.loading }, 
+    // default properties passed to error state handler
+    error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' }, 
+    // default HOCs wrapped around the mapper and view layer component
+    extraHocs: [],
+    // default mapper function shared by all queries
+    sharedMapper: props => props,
+    // all other parameters are pass to the view component as a props.
+    ...extraDefaults,
+  });
+
+  // just like with baseComposer all default values can be overwritten in composed instances
+  const ComposedComponent = composer({ view, queries, loading, error, extraHocs, mapper });
 ```
 
 ## Components

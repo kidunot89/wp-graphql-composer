@@ -1,4 +1,32 @@
-import { get, map, find } from 'lodash';
+// mappers.js
+/**
+ * External dependencies 
+ */
+import { find, get, map, omit } from 'lodash';
+
+export const postPropsMapper = post => {
+  const featured = get(post, 'featuredImage.id');
+  const details = {
+    author: get(post, 'author'),
+    categories: get(post, 'categories.nodes'),
+    date: get(post, 'date'),
+    modified: get(post, 'modified'),
+    tags: get(post, 'tags.nodes'),
+  };
+
+  return {
+    details,
+    featured,
+    ...omit(post, [
+      'author',
+      'categories',
+      'featuredImage',
+      'tags',
+      'date',
+      'modified',
+    ])
+  };
+};
 
 const monthNames = [
   '', 'January', 'February', 'March', 
@@ -10,7 +38,7 @@ const monthNames = [
 const thisYear = new Date().getFullYear();
 
 const getTermName = (term_slug, results, taxonomy = 'tags') => {
-  const allTerms = get(results, `[0].meta.${taxonomy}`);
+  const allTerms = get(results, `[0].details.${taxonomy}`);
   const term = find(allTerms, ({ slug }) => slug === term_slug);
   return term.name;
 }
@@ -53,25 +81,10 @@ const getHeader = ({ category, tag, day, month, year, author, search }, results)
     default:
       return 'Recent Posts';
   }
-}
+};
 
 export const archiveMapper = ({ data, first, ...rest }) => {
-  const rawResults = get(data, 'posts.nodes');
-  const resultsData = map(rawResults, ({ 
-    author, categories, tags, date,
-    modified, __typename, ...rest
-  }) => 
-  ({
-    ...rest,
-    meta: {
-      author,
-      categories: get(categories, 'nodes'),
-      tags: get(tags, 'nodes'),
-      date,
-      modified,
-    },
-  })
-  );
+  const resultsData = map(get(data, 'posts.nodes'), postPropsMapper );
   const header = getHeader(data.variables, resultsData);  
 
   return { header, resultsData, ...rest };

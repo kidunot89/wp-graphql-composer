@@ -535,25 +535,6 @@ it(`renders archive of first five most recent posts`, async () => {
   // Confirms result count
   const count = results.querySelectorAll('.post').length;
   expect(count).toBe(5);
-
-  // Confirm all footers
-  const footers = results.querySelectorAll('.entry-footer');
-  expect(footers.length).toBe(5);
-
-  // Confirm meta data of first entry
-  const meta = footers[4];
-  
-  const postedOn = meta.querySelector('.posted-on');
-  expect(postedOn).toBeTruthy();
-
-  const byline = meta.querySelector('.byline');
-  expect(byline).toBeTruthy();
-
-  const catLinks = meta.querySelector('.cat-links');
-  expect(catLinks).toBeTruthy();
-
-  const tagsLinks = meta.querySelector('.tags-links');
-  expect(tagsLinks).toBeTruthy();
 });
 
 
@@ -581,7 +562,7 @@ it(`renders archive of first five posts by day`, async () => {
 
 
 it(`renders archive of first five posts by month with a custom view layer component`, async () => {
-  const PostResult = ({
+  const resultView = ({
     id,
     postId,
     excerpt,
@@ -603,7 +584,7 @@ it(`renders archive of first five posts by month with a custom view layer compon
 
   const customArchive = ({
     Attachment,
-    PostResult,
+    resultView: Result,
     header,
     resultsData = [],
     ...rest
@@ -611,14 +592,14 @@ it(`renders archive of first five posts by month with a custom view layer compon
     <main {...rest}>
       <h2 className="archive-header">{header}</h2>
       {map(resultsData, ({ id, ...r}) => (
-        <PostResult {...r} id={id} key={id} />
+        <Result {...r} id={id} key={id} />
       ))}
     </main>
   );
 
   const CustomArchive = archive.compose({
     view: customArchive,
-    PostResult,
+    resultView,
   });
 
 
@@ -664,10 +645,6 @@ it(`renders archive of first five posts by year`, async () => {
   // Confirms result count
   let count = results.querySelectorAll('.post').length;
   expect(count).toBe(3);
-
-  // Confirm all footers
-  count = results.querySelectorAll('.entry-footer').length;
-  expect(count).toBe(3);
 });
 
 
@@ -690,10 +667,6 @@ it(`renders archive of first five posts by author`, async () => {
 
   // Confirms result count
   let count = results.querySelectorAll('.post').length;
-  expect(count).toBe(3);
-
-  // Confirm all footers
-  count = results.querySelectorAll('.entry-footer').length;
   expect(count).toBe(3);
 });
 
@@ -718,10 +691,6 @@ it(`renders archive of first five posts by category`, async () => {
   // Confirms result count
   let count = results.querySelectorAll('.post').length;
   expect(count).toBe(3);
-
-  // Confirm all footers
-  count = results.querySelectorAll('.entry-footer').length;
-  expect(count).toBe(3);
 });
 
 
@@ -745,10 +714,6 @@ it(`renders archive of first five posts by tag`, async () => {
   // Confirms result count
   let count = results.querySelectorAll('.post').length;
   expect(count).toBe(3);
-
-  // Confirm all footers
-  count = results.querySelectorAll('.entry-footer').length;
-  expect(count).toBe(3);
 });
 
 
@@ -771,10 +736,6 @@ it(`renders archive of first five posts by search`, async () => {
 
   // Confirms result count
   let count = results.querySelectorAll('.post').length;
-  expect(count).toBe(3);
-
-  // Confirm all footers
-  count = results.querySelectorAll('.entry-footer').length;
   expect(count).toBe(3);
 });
 

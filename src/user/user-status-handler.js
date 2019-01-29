@@ -5,7 +5,7 @@ import { setDisplayName, wrapDisplayName } from 'recompose';
 export default () => (BaseComponent) => {
   const BaseFactory = createFactory(BaseComponent);
 
-  class UserStatusHandler extends React.Component {
+  class UserStatusHandler extends React.PureComponent {
     constructor(props) {
       super(props);
       this.login = this.login.bind(this);

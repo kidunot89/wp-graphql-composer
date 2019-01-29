@@ -206,18 +206,27 @@ it(`renders a post by uri with a custom view component`, async () => {
   };
 
   const CustomPost = post.compose({
-    view: ({ featured, postId, title, content, details, Attachment, DetailsComponent, ...rest }) => (
+    view: ({
+      featured,
+      postId,
+      title,
+      content,
+      details,
+      attachmentView: Attachment,
+      detailsView: Details,
+      ...rest
+    }) => (
       <article id={`post-${postId}`} {...rest}>
         <Attachment mediaItemId={featured} fallback />
         <div data-testid="post-content">
           {ReactHtmlParser(content)}
         </div>
         <footer>
-          <DetailsComponent {...details} />
+          <Details {...details} />
         </footer>
       </article>
     ),
-    DetailsComponent: customDetails,
+    detailsView: customDetails,
   })
 
   const mocks = [{

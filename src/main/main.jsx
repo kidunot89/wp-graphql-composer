@@ -11,8 +11,7 @@ import classNames from 'classnames';
  */
 import { queryComposer } from '../composers';
 import { Loading, Error } from '../utils';
-import { Archive } from '../archives';
-import { Page, Post } from '../post-type';
+import { Archive, Page, Post } from '../post-type';
 import wpRouting from './wp-routing';
 import { mapLoopProps, router } from './router'; 
 import { LOOP_QUERY } from './query';

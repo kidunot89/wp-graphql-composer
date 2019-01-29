@@ -11,9 +11,8 @@ import { map } from 'lodash';
  */
 import { queryComposer } from '../composers';
 import { Error, Loading } from '../utils';
-import { Attachment } from '../post-type';
-import { archiveMapper } from './archive-mapper';
-import postResult from './post-result';
+import { archiveMapper } from './mappers';
+import { post } from './post';
 import { ARCHIVE_QUERY } from './query'
 
 /**
@@ -29,8 +28,7 @@ import './archive.scss';
  * @returns {React.Component} 
  */
 const archive = ({
-  Attachment,
-  PostResult,
+  resultView: Result,
   container,
   containerProps,
   header,
@@ -40,13 +38,13 @@ const archive = ({
 }) => {
   const Results = () => (
     <React.Fragment>
-      { !noHeader && (
+      {!noHeader && (
         <header className="page-header">
           <h1 className="page-title">{header}</h1>
         </header>
       )}
       {map(resultsData, ({ id, ...r}) => (
-        <PostResult {...r} id={id} key={id} {...{ ...rest, Attachment }} />
+        <Result {...r} id={id} key={id} {...rest} />
       ))}
     </React.Fragment>
   );
@@ -71,8 +69,7 @@ const archive = ({
 };
 
 archive.propTypes = {
-  Attachment: PropTypes.func.isRequired,
-  PostResult: PropTypes.func.isRequired,
+  resultView: PropTypes.func.isRequired,
   container: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.func]),
   containerProps: PropTypes.shape({}),
   noHeader: PropTypes.bool,
@@ -106,8 +103,7 @@ const whereArgsDefaults = {
  */
 archive.compose = queryComposer({
   view: archive,
-  PostResult: postResult,
-  Attachment,
+  resultView: post,
   queries: [{ 
     query: ARCHIVE_QUERY,
     config: {

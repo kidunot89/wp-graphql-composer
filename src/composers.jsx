@@ -136,8 +136,8 @@ export const composeQuery = queries =>
  * @param {React.Component} defaultView
  * @param {func} defaultMapper 
  */
-export const utilComposer = ({
-  defaultView, defaultMapper
+export const baseComposer = ({
+  view: defaultView, mapper: defaultMapper
 }) => ({
     view = defaultView, 
     mapper = defaultMapper ,
@@ -157,7 +157,7 @@ export const utilComposer = ({
  * @param {React.Component[]} extraHocs - default extra higher order components added before mapper
  * @param {*} extraDefaults - default extra props passed to the view layer component
  */
-export const baseComposer = ({
+export const standardComposer = ({
   view: defaultView,
   whileLoading: defaultWhileLoading,
   forError: defaultForError,

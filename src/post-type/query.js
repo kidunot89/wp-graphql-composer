@@ -72,39 +72,6 @@ export const PAGE_BY_QUERY = gql`
   }
 `;
 
-export const POST_COMMENTS_QUERY = gql`
-  query PostCommentsQuery($id: ID!) {
-    post(id: $id) {
-      id
-      postId
-      title
-      commentStatus
-      comments{
-        nodes {
-          id
-          commentId
-          type
-          content
-          date
-          author{
-            ... on User {
-              id
-              userId
-              nicename
-              avatar {
-                url
-              }
-            }
-            ... on CommentAuthor {
-              id
-              name
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 export const POST_QUERY = gql`
   query PostQuery($id: ID!) {
     post(id: $id) {
@@ -184,6 +151,75 @@ export const POST_BY_QUERY = gql`
       }
       featuredImage {
         id
+        mediaItemId
+        title
+        altText
+        sourceUrl
+      }
+    }
+  }
+`;
+
+export const ARCHIVE_QUERY = gql`
+  query ArchiveQuery(
+      $first: Int,
+      $category: String,
+      $tag: String,
+      $year: Int,
+      $month: Int,
+      $day: Int,
+      $author: String,
+      $search: String
+    ) {
+    posts(
+      first: $first,
+      where: {
+        categoryName: $category,
+        tag: $tag,
+        authorName: $author,
+        dateQuery: { year: $year, month: $month, day: $day },
+        search: $search
+      }
+    ) {
+      nodes {
+        id
+        postId
+        excerpt
+        content
+        date
+        modified
+        title
+        permalink
+        featuredImage {
+          id
+          mediaItemId
+          title
+          altText
+          sourceUrl
+        }
+        tags {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
+        categories {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
+        author {
+          id
+          userId
+          nicename
+          avatar {
+            url
+            foundAvatar
+          }
+        }
       }
     }
   }

@@ -14,7 +14,7 @@ import { Error, Loading } from '../utils';
 import { queryComposer } from '../composers';
 import { Attachment } from './attachment';
 import { POST_QUERY, POST_BY_QUERY } from './query';
-import { postStateManager } from './state-manager';
+import { postStateManager } from './state-managers';
 
 /**
  * SCSS Module
@@ -30,8 +30,13 @@ import styles from './post.module.scss';
  * @returns {React.Component}
  */
 const post = ({
-  featured, postId, title, content,
-  details, Attachment, DetailsComponent,
+  featured,
+  postId,
+  title,
+  content,
+  details,
+  attachmentView: Attachment,
+  detailsView: Details,
   as: Container, className: added, ...rest }) => {
   const className = classNames( 
     styles.post,
@@ -44,20 +49,19 @@ const post = ({
       className={className}
       {...rest}
     >
-      <Attachment
+      {Attachment && <Attachment
         id={featured}
         data-attachment-id={featured}
         className="wp-post-image"
         fallback
-      />
+      />}
       {ReactHtmlParser(content)}
-      { DetailsComponent && <DetailsComponent className={styles.details} {...details} />}
+      {Details && <Details className={styles.details} {...details} />}
     </Container>
   );
 };
 
 post.propTypes = {
-  Attachment: PropTypes.func.isRequired,
   featured: PropTypes.number,
   postId: PropTypes.number.isRequired,
   title: PropTypes.string,
@@ -85,7 +89,7 @@ post.defaultProps = {
  */
 post.compose = queryComposer({
   view: post,
-  Attachment,
+  attachmentView: Attachment,
   queries: [{
     cond: ({ postId, uri, slug }) => !!postId || !!uri || !!slug,
     query: POST_BY_QUERY,
