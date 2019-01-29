@@ -1,5 +1,5 @@
 # Changelog
-## [0.4.0]
+## [0.4.0] Breaking Change
 ### Added
 - **mappers.js** created in `./src/post-type`. Defines `post` and `archive` prop mapper functions.
 
