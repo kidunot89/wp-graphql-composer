@@ -2897,7 +2897,7 @@ var post = function post(_ref) {
   }, rest, {
     __source: {
       fileName: _jsxFileName$b,
-      lineNumber: 47
+      lineNumber: 50
     },
     __self: this
   }), Attachment$$1 && React.createElement(Attachment$$1, {
@@ -2907,7 +2907,7 @@ var post = function post(_ref) {
     fallback: true,
     __source: {
       fileName: _jsxFileName$b,
-      lineNumber: 52
+      lineNumber: 55
     },
     __self: this
   }), ReactHtmlParser(content), Details && React.createElement(Details, Object.assign({
@@ -2915,7 +2915,7 @@ var post = function post(_ref) {
   }, details, {
     __source: {
       fileName: _jsxFileName$b,
-      lineNumber: 59
+      lineNumber: 62
     },
     __self: this
   })));

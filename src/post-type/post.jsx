@@ -37,7 +37,10 @@ const post = ({
   details,
   attachmentView: Attachment,
   detailsView: Details,
-  as: Container, className: added, ...rest }) => {
+  as: Container,
+  className: added,
+  ...rest
+}) => {
   const className = classNames( 
     styles.post,
     added,

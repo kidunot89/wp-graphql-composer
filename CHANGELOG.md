@@ -10,6 +10,7 @@
 - **Post, Page, Menu, Login, and UserControls** state manager converted to pure components.
 - **Main** default routing function renamed and moved to `wpRouting` and moved to [./src/main/wp-routing.js](https://github.com/kidunot89/wp-graphql-composer/blob/develop/src/main/wp-routing.js).
 - **routeProcessor** renamed to `router`.
+- **schema patch** modified to work with changes in new `WPGraphQL` default schema shape. 
 
 ### Removed
 - **./user/profile.jsx**

@@ -2897,7 +2897,7 @@
     }, rest, {
       __source: {
         fileName: _jsxFileName$b,
-        lineNumber: 47
+        lineNumber: 50
       },
       __self: this
     }), Attachment$$1 && React__default.createElement(Attachment$$1, {
@@ -2907,7 +2907,7 @@
       fallback: true,
       __source: {
         fileName: _jsxFileName$b,
-        lineNumber: 52
+        lineNumber: 55
       },
       __self: this
     }), ReactHtmlParser(content), Details && React__default.createElement(Details, Object.assign({
@@ -2915,7 +2915,7 @@
     }, details, {
       __source: {
         fileName: _jsxFileName$b,
-        lineNumber: 59
+        lineNumber: 62
       },
       __self: this
     })));
