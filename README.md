@@ -1,9 +1,6 @@
 # WPGraphQL-Composer [![Build Status](https://travis-ci.org/kidunot89/wp-graphql-composer.svg?branch=develop)](https://travis-ci.org/kidunot89/wp-graphql-composer) [![Coverage Status](https://coveralls.io/repos/github/kidunot89/wp-graphql-composer/badge.svg?branch=develop)](https://coveralls.io/github/kidunot89/wp-graphql-composer?branch=develop) ![](https://img.shields.io/npm/v/wp-graphql-composer.svg?style=flat)
 
-![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/react.svg?style=flat)
-![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/apollo-boost.svg?style=flat)
-![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/react-apollo.svg?style=flat)
-![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/graphql.svg?style=flat)
+![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/react.svg?style=flat) ![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/apollo-boost.svg?style=flat) ![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/react-apollo.svg?style=flat) ![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/graphql.svg?style=flat) ![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/recompose.svg?style=flat)
 
 WP-GraphQL Composer is a library of [React-Apollo](https://www.apollographql.com/docs/react/) components for creating [React](https://reactjs.org) apps served by a WordPress site.
 
