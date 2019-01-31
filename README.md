@@ -1,5 +1,4 @@
-# WPGraphQL-Composer
-[![Build Status](https://travis-ci.org/kidunot89/wp-graphql-composer.svg?branch=develop)](https://travis-ci.org/kidunot89/wp-graphql-composer)
+# WPGraphQL-Composer [![Build Status](https://travis-ci.org/kidunot89/wp-graphql-composer.svg?branch=develop)](https://travis-ci.org/kidunot89/wp-graphql-composer)
 [![Coverage Status](https://coveralls.io/repos/github/kidunot89/wp-graphql-composer/badge.svg?branch=develop)](https://coveralls.io/github/kidunot89/wp-graphql-composer?branch=develop)
 ![](https://img.shields.io/npm/v/wp-graphql-composer.svg?style=flat)
 
