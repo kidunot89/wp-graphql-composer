@@ -104,9 +104,9 @@ export const forError = ({
   );
 
 /**
- * @typedef QueryCondition
- * @property {func} cond - condition function ex. (props) -> !!props.id
+ * @typedef QueryCondition 
  * @property {gql} query - query to be request
+ * @property {func} cond - condition function ex. (props) -> !!props.id
  * @property {object} config - graphql(query, config)
  * @property {func} mapper - props mapper function
  */
@@ -136,8 +136,8 @@ export const composeQuery = queries =>
  * @param {React.Component} defaultView
  * @param {func} defaultMapper 
  */
-export const utilComposer = ({
-  defaultView, defaultMapper
+export const baseComposer = ({
+  view: defaultView, mapper: defaultMapper
 }) => ({
     view = defaultView, 
     mapper = defaultMapper ,
@@ -148,7 +148,7 @@ export const utilComposer = ({
 /**
  * Returns composer function that creates a component 
  * wrapped multiple components for handling rudimentary
- * Loading->Error->mapper(view)
+ * Loading->Error->mapper->...extraHocs(view)
  * 
  * @param {React.Component} view - default properties for view layer component
  * @param {object} whileLoading - default properties for loading component
@@ -157,7 +157,7 @@ export const utilComposer = ({
  * @param {React.Component[]} extraHocs - default extra higher order components added before mapper
  * @param {*} extraDefaults - default extra props passed to the view layer component
  */
-export const baseComposer = ({
+export const standardComposer = ({
   view: defaultView,
   whileLoading: defaultWhileLoading,
   forError: defaultForError,

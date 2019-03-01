@@ -9,7 +9,7 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import { utilComposer } from '../composers';
+import { baseComposer } from '../composers';
 import progressMapper from './process-loading';
 
 /**
@@ -68,7 +68,7 @@ loading.defaultProps = {
 /**
  * Creates composer for loading component
  */
-loading.compose = utilComposer({ defaultView: loading, defaultMapper: progressMapper });
+loading.compose = baseComposer({ view: loading, mapper: progressMapper });
 const Loading = loading.compose();
 
 export {

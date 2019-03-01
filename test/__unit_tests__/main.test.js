@@ -26,10 +26,12 @@ const loopQueryResults = {
   result: {
     data: {
       allSettings: {
-        pageForPosts: 'blog',
-        pageOnFront: "W0T5R0x",
-        permalinkStructure: '/%monthnum%/%year%/%day%/%postname%/',
+        readingSettingsPageForPosts: 'blog',
+        readingSettingsPageOnFront: "W0T5R0x",
         readingSettingsPostsPerPage: 5,
+        permalinkSettingsStructure: '/%monthnum%/%year%/%day%/%postname%/',
+        permalinkSettingsTagBase: 'hash',
+        permalinkSettingsCategoryBase: 'cat',
         __typename: 'Settings',
       },
     }
@@ -542,7 +544,7 @@ it(`navigates to an posts archive of the most recent posts
   with custom view layer component`, async () => {
   const customMain = ({ Archive, Page, Post, Routes, ...rest }) => (
     <main {...rest}>
-      <Routes {...{ Archive, Page, Post }} />
+      <Routes archive={Archive} page={Page} post={Post} />
     </main>
   );
 
@@ -637,10 +639,10 @@ it(`navigates to an posts archive by author`, async () => {
   expect(content).toBeTruthy();
 });
 
-it(`navigates to an posts archive by category`, async () => {
+it(`navigates to an posts archive by category using categoryBase`, async () => {
   const { getByTestId, getByText } = render(
     <MockedProvider mocks={mocks} cache={cache} addTypename>
-      <MemoryRouter initialEntries={[ '/category/web-dev' ]}>
+      <MemoryRouter initialEntries={[ '/cat/web-dev' ]}>
         <Main data-testid="test-main" />
       </MemoryRouter>
     </MockedProvider>
@@ -655,10 +657,10 @@ it(`navigates to an posts archive by category`, async () => {
   expect(content).toBeTruthy();
 });
 
-it(`navigates to an posts archive by tag`, async () => {
+it(`navigates to an posts archive by tag using tagBase`, async () => {
   const { getByTestId, getByText } = render(
     <MockedProvider mocks={mocks} cache={cache} addTypename>
-      <MemoryRouter initialEntries={[ '/tag/javascript' ]}>
+      <MemoryRouter initialEntries={[ '/hash/javascript' ]}>
         <Main data-testid="test-main" />
       </MemoryRouter>
     </MockedProvider>

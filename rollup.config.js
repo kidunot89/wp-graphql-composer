@@ -28,7 +28,7 @@ export default {
         'recompose',
         'uuid/v3',
     ],
-    context: 'window',
+    context: 'global',
     input: 'src/index.js',
     output: [
         {

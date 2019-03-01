@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { queryComposer } from '../composers';
 import { Error, Loading } from '../utils'
 import { Attachment } from '../post-type'
-import { headerMapper } from './header-mapper';
+import { headerMapper } from './mapper';
 import { HEADER_QUERY } from './query';
 
 /**

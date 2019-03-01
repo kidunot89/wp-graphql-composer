@@ -11,9 +11,9 @@ import classNames from 'classnames';
  */
 import { queryComposer } from '../composers';
 import { Loading, Error } from '../utils';
-import { Archive } from '../archives';
-import { Page, Post } from '../post-type';
-import { mapLoopProps, defaultRoutes, routesProcessor } from './router' 
+import { Archive, Page, Post } from '../post-type';
+import wpRouting from './wp-routing';
+import { mapLoopProps, router } from './router'; 
 import { LOOP_QUERY } from './query';
 
 /**
@@ -36,7 +36,7 @@ const main = ({ Archive, children, className: added, Page, Post, Routes, topChil
   return (
     <main role="main" className={className} {...rest}>
       {topChildren}
-      <Routes {...{ Archive, Page, Post }} />
+      <Routes archive={Archive} page={Page} post={Post} />
       {children}
     </main>
   );
@@ -65,7 +65,7 @@ main.compose = queryComposer({
   queries: [{ query: LOOP_QUERY, mapper: mapLoopProps }],
   whileLoading: { view: Loading },
   forError: { view: Error },
-  extraHocs: [routesProcessor(defaultRoutes)],
+  extraHocs: [router(wpRouting)],
 });
 
 /**

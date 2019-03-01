@@ -6,7 +6,7 @@ import { MenuContext, menuInitialState } from './context';
 export const menuStateManager = (BaseComponent) => {
   const BaseFactory = React.createFactory(BaseComponent);
 
-  class MenuStateManager extends React.Component {
+  class MenuStateManager extends React.PureComponent {
     constructor(props) {
       super(props);
       this.state = menuInitialState;

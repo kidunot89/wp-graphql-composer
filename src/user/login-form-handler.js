@@ -7,7 +7,7 @@ import { VIEWER_QUERY } from './query';
 export default () => (BaseComponent) => {
   const BaseFactory = createFactory(BaseComponent);
 
-  class LoginFormHandler extends React.Component {
+  class LoginFormHandler extends React.PureComponent {
     constructor(props) {
       super(props);
       this.reset = this.reset.bind(this);

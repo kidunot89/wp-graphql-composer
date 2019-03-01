@@ -1,6 +1,6 @@
-# WPGraphQL-Composer
-[![Build Status](https://travis-ci.org/kidunot89/wp-graphql-composer.svg?branch=develop)](https://travis-ci.org/kidunot89/wp-graphql-composer)
-[![Coverage Status](https://coveralls.io/repos/github/kidunot89/wp-graphql-composer/badge.svg?branch=develop)](https://coveralls.io/github/kidunot89/wp-graphql-composer?branch=develop)
+# WPGraphQL-Composer [![Build Status](https://travis-ci.org/kidunot89/wp-graphql-composer.svg?branch=develop)](https://travis-ci.org/kidunot89/wp-graphql-composer) [![Coverage Status](https://coveralls.io/repos/github/kidunot89/wp-graphql-composer/badge.svg?branch=develop)](https://coveralls.io/github/kidunot89/wp-graphql-composer?branch=develop) ![](https://img.shields.io/npm/v/wp-graphql-composer.svg?style=flat)
+
+![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/react.svg?style=flat) ![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/apollo-boost.svg?style=flat) ![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/react-apollo.svg?style=flat) ![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/graphql.svg?style=flat) ![](https://img.shields.io/npm/dependency-version/wp-graphql-composer/peer/recompose.svg?style=flat)
 
 WP-GraphQL Composer is a library of [React-Apollo](https://www.apollographql.com/docs/react/) components for creating [React](https://reactjs.org) apps served by a WordPress site.
 
@@ -72,7 +72,7 @@ import { isEmpty, map } from 'lodash';
     </nav>
   );
 ```
-3. Last use the `compose` function on each of the imported components to compose a new `CustomMenu` Component.
+3. Last use the `composer` assigned to `compose` on each of the imported view components to compose a new `CustomMenu` Component.
 ```
   const SubMenu = subMenu.compose({ view: subMenuView });
   const MenuItem = menuItem.compose({ view: menuItemView });
@@ -88,11 +88,12 @@ import { isEmpty, map } from 'lodash';
     </WPProvider>
   );
 ```
-The following view component have a `compose` functions.
+The following view components have a `composer`.
 - **archives**
 - **header**
 - **main**
 - **menu**
+- **menuItem**
 - **attachment**
 - **page**
 - **post**
@@ -100,66 +101,279 @@ The following view component have a `compose` functions.
 - **userControls**
 - **error**
 - **loading**
-And customizing them is generally the same with a few key differences in the logic/state handling layers. Read more about the composer function below.
 
-## Creating New Composers
-You can create a completely new composer function using the helper composer functions in `lib/composers`. There are two primary functions made `baseComposer` and `queryComposer`. They are similar but their uses are little different.
+And customizing them is generally the same with a few key differences in the logic/state handling layers. Read more about the `composers` below.
 
-`baseComposer` - composers created from the function create a composer wrapped in an loading component, errorComponent, and propMapper. Example below.
+## What is a Composer?
+A Composer is component *factory* made up of higher-order component stitched together with **[compose](https://github.com/acdlite/recompose/blob/master/docs/API.md#compose)** from the **[Recompose](https://github.com/acdlite/recompose)** library.
+
+### How does it work?
+```
+  // attachment.jsx
+  ...
+  /**
+   * Internal dependencies
+   */
+  import { Error, Loading } from '../utils'; 
+  import { queryComposer } from '../composers';
+  import { CUSTOM_LOGO_QUERY, ATTACHMENT_QUERY } from './query';
+  import { customLogoMapper, attachmentMapper } from './attachment-mapper';
+
+  ...
+
+  attachment.compose = queryComposer({
+    view: attachment, 
+    whileLoading: { view: Loading },
+    forError: { view: Error, type: '404-image' },
+    queries: [
+      {
+        query: CUSTOM_LOGO_QUERY,
+        cond: ({ customLogo }) => !!customLogo,
+        mapper: customLogoMapper,
+      },
+      {
+        query: ATTACHMENT_QUERY,
+        cond: ({ customLogo }) => !customLogo,
+        mapper: attachmentMapper,
+        config: {
+          options: ({ id, mediaItemId, slug, uri }) => ({ id, mediaItemId, slug, uri }),
+          skip: ({ id, mediaItemId, slug, uri }) => !id && !mediaItemId && !slug && !uri
+        }
+      },
+    ],
+  });
+
+  const Attachment = attachment.compose();
+
+  export { attachment, Attachment };
+```
+
+The above snippet is the definition for the [Attachment](#attachment) composer.
+
+The first thing you should notice is the `queryComposer` function.
+```
+  attachment.compose = queryComposer({ ... });
+```
+`queryComposer` is one of three functions provided for creating composers. The others are `baseComposer` and `standardComposer`. `standardComposer` is almost identical to `queryComposer` except is doesn't have a `queries`, and `sharedMapper` is simply called `mapper` property. The both accept an object as the parameter. The use cases are simple. Use `queryComposer` if you need Apollo/GraphQL query data with reusable logic, use `standardComposer` if you need a `loading` and `error-handling` layer, and for simply reusable logic use `baseComposer`. The `Error` and `Loading` composers are created using `baseComposer`.
+
+The next is the first three properties of the object parameter.
+```
+  view: attachment, 
+  whileLoading: { view: Loading },
+  forError: { view: Error, type: '404-image' },
+```
+`view`, `whileLoading`, and `forError`. These properties define **loading**, **error**, and **view** layers of the factory.
+- **view** *Component* - view layer component rendered after all other layers have been processed and component has left the loading state and no errors have been thrown.
+- **whileLoading** *object* - the first Higher-Order-Component called in composers created by the `baseComposer` and second after `queries` in the `queryComposer`. It renders an alternative component base upon a conditional statement. Its takes an object with two properties as the parameter.
+  - **view** *Component* - component rendered when `cond` returns *truthy* value.
+  - **cond** *function* *optional - conditional to determine if component is in a loading state or not. Component `props` object is provided as a parameter. It defaults to `props => !!props.data.loading`.
+- **forError** *object* - Higher-Order-Component called after `whileLoading`. It handles errors thrown in the **query** layer HOC before its called and catches any error thrown in the layers called after it. And like `whileLoading` it takes an object with properties as the parameter.
+  - **view** *Component* - component rendered when error thrown.
+  - **cond** *function* *optional - conditional to determine if error was flagged in layer called before the error layer. Component `props` object is provided as a parameter. It defaults to `props => (!!props[errorProp] || !!props.error)`.
+  - **errorProp** *string* *optional - path to prop used as `errorProp` in `cond`. Defaults to `data.error.message`.
+  - **type** *string** *optional - error type flagged when `cond` returns *truthy* value.
+
+The last key thing to note is the `queries` property. 
+```
+  queries: [
+    {
+      query: CUSTOM_LOGO_QUERY,
+      cond: ({ customLogo }) => !!customLogo,
+      mapper: customLogoMapper,
+    },
+    {
+      query: ATTACHMENT_QUERY,
+      cond: ({ customLogo }) => !customLogo,
+      mapper: attachmentMapper,
+      config: {
+        options: ({ id, mediaItemId, slug, uri }) => ({ id, mediaItemId, slug, uri }),
+        skip: ({ id, mediaItemId, slug, uri }) => !id && !mediaItemId && !slug && !uri
+      }
+    },
+  ],
+```
+This is one of two properties unique to the `queryComposer` and it's the most complex. 
+- **queries** *array* - array of query configurations to be used by the resulting component. The configurations take for properies.
+  - **query** *gql* - query to be requested
+  - **cond** *function* *optional - conditional function to determine if `query` should be used based upon prop provided. Ex. `props => !!props.id`.
+  - **config** *object* *optional - configuration use by **Apollo**'s [graphql](https://www.apollographql.com/docs/react/api/react-apollo.html#graphql) higher-order component
+  - **mapper** *function* *optional - props mapper function called after query is successful and loading state has been passed.
+
+Also, take in account that the first configuration with a `cond` that returns true is the configurations used.
+
+There are a few more properties, you can find out more about in the next section. Try a remember the composers layer hierachy shown below and everything should work out.
 
 ```
-const composer = baseComposer({
-  // default view layer component
-  view: ViewComponent,
-  // default properties passed to loading state handler 
-  loading: { view: LoadingViewComponent, cond: props => !!props.loading },
-  // default properties passed to error state handler
-  error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' },
-  // default HOCs wrapped around the mapper and view layer component
-  extraHocs: [],
-  // default mapper function
-  mapper: props => props,
-  // all other parameters are pass to the view component as a prop.
-  ...extraDefaults,
-})
+// QueryComposer
+...queries(loading(error(queryMapper(...defaultExtraHocs(...extraHocs(sharedMapper(view)))))))
 
-// all default values can be overwritten in composed instances
-const ComposedComponent = composer({ view, loading, error, extraHocs, mapper }) 
+// BaseComposer
+loading(error(...defaultExtraHocs(...extraHocs(mapper(view)))))
 ```
 
-`queryComposer` - similar to `baseComposer` but it includes conditional GraphQL HOCs each can have a `cond` function prop and `mapper`.
+## Composers
+`baseComposer` - 
 ```
-const composer = queryComposer({
-  // default view layer component
-  view: ViewComponent,
-  // default query properties
-  queries: [{ query: GRAPHQL_QUERY, config: { options: {...}, ... }, mapper }]
-  // default properties passed to loading state handler
-  loading: { view: LoadingViewComponent, cond: props => !!props.loading }, 
-  // default properties passed to error state handler
-  error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' }, 
-  // default HOCs wrapped around the mapper and view layer component
-  extraHocs: [],
-  // default mapper function shared by all queries
-  sharedMapper: props => props,
-  // all other parameters are pass to the view component as a props.
-  ...extraDefaults,
-})
+  const composer = baseComposer({
+    // default view layer component
+    view: viewComponent,
+    // default mapper function
+    mapper: propsMapper
+  });
 
-// just like with baseComposer all default values can be overwritten in composed instances
-const ComposedComponent = composer({ view, queries, loading, error, extraHocs, mapper }) 
+  // all default values can be overwritten in composed instances
+  const ComposedComponent = composer({ newView, newMapper });
+```
+
+`standardComposer` - composers/factories created from this function are for creating components that require reusable logic wrapped in an loading state higher-order-component, error handling higher-order-component, and a props mapper.
+
+```
+  const composer = standardComposer({
+    // default view layer component
+    view: ViewComponent,
+    // default properties passed to loading state handler 
+    loading: { view: LoadingViewComponent, cond: props => !!props.loading },
+    // default properties passed to error state handler
+    error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' },
+    // default HOCs wrapped around the mapper and view layer component
+    extraHocs: [],
+    // default mapper function
+    mapper: props => props,
+    // all other parameters are pass to the view component as a prop.
+    ...extraDefaults,
+  });
+
+  // all default values can be overwritten in composed instances
+  const ComposedComponent = composer({ view, loading, error, extraHocs, mapper });
+```
+
+`queryComposer` - similar to `standardComposer` but it includes conditional GraphQL HOCs each can have a `cond` function prop and `mapper`.
+```
+  const composer = queryComposer({
+    // default view layer component
+    view: ViewComponent,
+    // default query properties
+    queries: [{ query: GRAPHQL_QUERY, config: { options: {...}, ... }, mapper }]
+    // default properties passed to loading state handler
+    loading: { view: LoadingViewComponent, cond: props => !!props.loading }, 
+    // default properties passed to error state handler
+    error: { view: ErrorViewComponent, errorType: 'error', errorProp: 'error' }, 
+    // default HOCs wrapped around the mapper and view layer component
+    extraHocs: [],
+    // default mapper function shared by all queries
+    sharedMapper: props => props,
+    // all other parameters are pass to the view component as a props.
+    ...extraDefaults,
+  });
+
+  // just like with baseComposer all default values can be overwritten in composed instances
+  const ComposedComponent = composer({ view, queries, loading, error, extraHocs, mapper });
 ```
 
 ## Components
-- Archives - Schema patch needed. Read more below.
-- Attachment - CUSTOM_LOGO_QUERY unusable until WPGraphQL PR#571 merged
-- Header
-- Main - Schema patch needed. Read more below.
-- Menu
-- Page - Schema patch needed. Read more below.
-- Post - Schema patch needed. Read more below.
-- Login
-- UserControls
+### WPProvider
+Handles setting up an `ApolloProvider` and authenication middleware for using **[WPGraphQL JWT Authentication](https://github.com/wp-graphql/wp-graphql-jwt-authentication)**
+
+#### Props
+- **link** *Apollo HttpLink* HttpLink object used designating the GraphQL server information
+- **fragmentData** *object/shape* - GraphQL server information used to describe query info. See more [below](#introspection-cli).
+
+#### Example
+```
+  import React from react;
+  import ReactDOM from 'react-dom';
+  import { HttpLink } from 'apollo-link-http';
+  import { WPProvider } from 'wp-graphql-composer';
+
+  const httpLink = new HttpLink({
+      uri: endpoint,
+      credentials: 'same-origin',
+  });
+
+  ReactDOM.render (
+    <WPProvider link={ httpLink }>
+      { children }
+    </WPProvider>
+  );
+```
+
+### Main
+Handles routing by querying for WordPress reading and permalink setting and passing it on to a routing function that process the data and returns a Routing Component that is provided to the view component as prop named `Routes`. The routing function can be substituted for a custom Routing setup. 
+
+#### Notes
+The default routing function is designed to mimics WordPress' default pretty permalink and has two key requirements.
+- Pretty permalinks must be enabled on the WordPress site serving the WPGraphQL server.
+- `react-router-dom` package be installed and *Main* is wrapped in a `BrowserRouter`, `HashRouter` or the like.
+
+#### WPRouting Component props
+- **archive** *Component* component for handling WP Archive routes including `tag` and `category` paths
+- **page** *Component* component for handling WP Page routes
+- **post** *Component* component for handling WP Post routes
+- **frontChildren** *any* for inserting extra routes at the start of `react-router-dom` **Switch** component.
+- **children** *any* for inserting extra routes before the catch-all route of `react-router-dom` **Switch** component.
+
+#### Custom view component example using Routes
+```
+  import React from 'react';
+  import { main } from 'wp-graphql-composer';
+
+  const view = ({ Archive, Page, Post, Routes, ...rest }) => {
+    return (
+      <main className="main" {...rest}>
+        <Routes archive={Archive} page={Page} post={Post}>
+          <Route exact path="/books/:id" component={Book} />
+        <Routes>
+      </main>
+    );
+  };
+
+  const Main = main.compose({ view });
+```
+
+### Attachment
+Renders images stored in the WP media library 
+
+#### Props
+
+#### Notes
+- `CUSTOM_LOGO_QUERY` unusable until WPGraphQL PR#571 merged*
+
+### Page
+Renders component using WP Page data
+
+#### Notes
+- Schema patch needed for use. Read more [below](#schema-patch).
+
+### Post
+Renders component using WP Post data
+
+#### Notes
+- Schema patch needed for use. Read more [below](#schema-patch).
+
+### Archives
+Queries a list of WP Posts based on props provided.
+
+#### Props
+- **where** *object/shape* filter parameters
+  - **category** *string* post category
+  - **tag** *string* post tag
+  - **year** *integer* year post created
+  - **month** *integer* month post created
+  - **author** *string* post author
+  - **search** *string* post search
+- **first** *integer* post count limit
+
+#### Notes
+- Schema patch needed. Read more [below](#schema-patch).
+
+### Header
+Renders Site Info(Title and Description)
+
+### Menu
+Renders component using WP Menu data
+
+### Login
+Handles user login using `login` mutation provided by the [WPGraphQL-JWT-Authenication]() plugin and the authenication middleware managed by the `WPProvider` component. This means that in order for this component to work the **WPGraphQL-JWT-Authenication** must be installed and activated on the WordPress site behind the GraphQL endpoint.
 
 ## Util Components
 - Error
@@ -212,63 +426,6 @@ use \WPGraphQL\Data\DataSource;
 
 function wp_graphql_schema_patch() {
   register_graphql_fields( 'Settings', [
-    /** 
-     * Defines the page_on_front setting
-     */
-    'pageOnFront' => [
-      'type' => 'ID',
-      'description' => __( 'The page that should be displayed on the front page' ),
-      'resolve' => function() {
-        $id = get_option( 'page_on_front', null );
-        return ! empty( $id ) ? Relay::toGlobalId( 'page', $id ) : null;
-      },
-    ],
-
-    /** 
-     * Defines the page_for_posts setting
-     */
-    'pageForPosts' => [
-      'type' => 'String',
-      'description' => __( 'The page that displays posts' ),
-      'resolve' => function() {
-        $id = get_option( 'page_for_posts' );
-        return ! empty( $id ) ? DataSource::resolve_post_object( $id, 'page' )->post_name : null;
-      },
-    ],
-
-    /** 
-     * Defines the show_avatar setting
-     */
-    'showAvatars' => [
-      'type' => 'Boolean',
-      'description' => __( 'Avatar Display' ),
-      'resolve' => function() {
-        return get_option( 'show_avatars', false );
-      },
-    ],
-
-    /** 
-     * Defines the users_can_register setting
-     */
-    'usersCanRegister' => [
-      'type' => 'Boolean',
-      'description' => __( 'Anyone can register' ),
-      'resolve' => function() {
-        return get_option( 'users_can_register', false );
-      },
-    ],
-
-    /** 
-     * Defines the permalink_structure setting
-     */
-    'permalinkStructure' => [
-      'type' => 'String',
-      'description' => __( 'The structure of the blog\'s permalinks.' ),
-      'resolve' => function() {
-        return get_option( 'permalink_structure' );
-      },
-    ],
-
     /** 
      * Defines the home_url setting
      */

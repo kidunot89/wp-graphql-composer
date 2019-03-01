@@ -1,11 +1,20 @@
+// state-managers.js
+/**
+ * External dependencies
+ */
 import React from 'react';
-import { get, omit } from 'lodash';
+import { get } from 'lodash';
 import { setDisplayName, wrapDisplayName } from 'recompose';
+
+/**
+ * Internal dependencies 
+ */
+import { postPropsMapper } from './mappers';
 
 export const pageStateManager = (BaseComponent) => {
   const BaseFactory = React.createFactory(BaseComponent);
 
-  class PageStateManager extends React.Component {
+  class PageStateManager extends React.PureComponent {
     componentDidUpdate(prevProps) {
       const { id, pageId, uri } = this.props;
       if(
@@ -36,7 +45,7 @@ export const pageStateManager = (BaseComponent) => {
 export const postStateManager = (BaseComponent) => {
   const BaseFactory = React.createFactory(BaseComponent);
 
-  class PostStateManager extends React.Component {
+  class PostStateManager extends React.PureComponent {
     componentDidUpdate(prevProps) {
       const { id, pageId, uri, slug } = this.props;
       if(
@@ -51,32 +60,9 @@ export const postStateManager = (BaseComponent) => {
 
     render() {
       const { data, ...rest } = this.props;
-
       const post = get(data, 'post') || get(data, 'postBy');
-      const featured = get(post, 'featuredImage.id');
-      const details = {
-        author: get(post, 'author'),
-        categories: get(post, 'categories.nodes'),
-        date: get(post, 'date'),
-        modified: get(post, 'modified'),
-        tags: get(post, 'tags.nodes'),
-      }
 
-      const newProps = {
-        details,
-        featured,
-        ...omit(post, [
-          'author',
-          'categories',
-          'featuredImage',
-          'tags',
-          'date',
-          'modified',
-        ]),
-        ...rest
-      };
-
-      return BaseFactory(newProps);
+      return BaseFactory({...postPropsMapper(post), ...rest});
     }
   }
 

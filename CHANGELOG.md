@@ -1,4 +1,22 @@
 # Changelog
+## [0.4.0] Breaking Change
+### Added
+- **mappers.js** created in `./src/post-type`. Defines `post` and `archive` prop mapper functions.
+
+### Changes
+- **archive** code moved to `./src/post-type`.
+- **Archive** default view component set to `post` view component.
+- **Two composer functions** renamed, `utilComposer` => `baseComposer` and `baseComposer` => `standardComposer`.
+- **Post, Page, Menu, Login, and UserControls** state manager converted to pure components.
+- **Main** default routing function renamed and moved to `wpRouting` and moved to [./src/main/wp-routing.js](https://github.com/kidunot89/wp-graphql-composer/blob/develop/src/main/wp-routing.js).
+- **routeProcessor** renamed to `router`.
+- **schema patch** modified to work with changes in new `WPGraphQL` default schema shape. 
+
+### Removed
+- **./user/profile.jsx**
+- **./user/profile.scss**
+- **./style.css**
+
 ## [0.3.2]
 ### Changes
 - **README.md** updated.
