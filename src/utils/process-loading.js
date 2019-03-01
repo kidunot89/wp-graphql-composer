@@ -3,12 +3,8 @@ import { get } from 'lodash';
 
 import { Icon } from './icon';
 
-export const defaultIcon = (
-  (<Icon name="autorenew" size="large" />)
-)
-
 export default ({ data, icon: altIcon, message, ...rest }) => {
-  const icon = (altIcon) ? altIcon : defaultIcon;
+  const icon = (altIcon) ? altIcon : <Icon name="autorenew" size="large" />;
 
   const total = get(data, 'networkStatus') || get(data, 'loading');
   if ( total ) {
