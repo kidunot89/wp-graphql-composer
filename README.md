@@ -10,7 +10,7 @@ This library was created to be an extension of the [WPGraphQL](https://wpgraphql
 This component library is meant to serve a different purpose than most component libraries. The focus of the library is the minimize the logic workload of creating a React-Apollo app from a [WPGraphQL](https://wpgraphql.com/)-served endpoint. This is made possible by stitching together state/logic management components and view component using the [Recompose](https://github.com/acdlite/recompose) library. Each component can be customized heavily using there `.compose()` function. View the **[Creating New Composers](#creating-new-composers)** for more detail. If you view any of the following examples you'll notice the components have minimal styling. The components are designed to be used as boilerplates.
 
 ## Getting Started
-Run the command `npm install recompose wp-graphql-composer` in a the project directory of the Apollo-React app directory.
+Run the command `npm install recompose wp-graphql-composer` in a the project working directory of the Apollo-React app.
 Import `HttpLink` from `apollo-link-http` and `WPProvider` from `wp-graphql-composer` and wrap you root component in a `WPProvider` component. `WPProvider` is a wrapper component for `ApolloProvider`. It handles authentication middleware and reads JWT user tokens from HTML5 localStorage.
 ```
   import React from "react";
