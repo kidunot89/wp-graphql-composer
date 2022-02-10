@@ -67,7 +67,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^23.6.0",
     "node-fetch": "^2.3.0",
-    "node-sass": "^4.10.0",
+    "node-sass": "^7.0.0",
     "postcss-scss": "^2.0.0",
     "react": "^16.6.3",
     "react-apollo": "^2.2.4",
